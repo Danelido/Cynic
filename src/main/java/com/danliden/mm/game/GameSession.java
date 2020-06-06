@@ -18,8 +18,6 @@ import java.util.List;
 /**
  *  Must haves in a package
  *  "pid" -> Package ID
- *
- *  --- packet specific info ---
  */
 
 public class GameSession {
@@ -158,8 +156,8 @@ public class GameSession {
     }
 
     private void onJoinSession(@NotNull DatagramPacket packet){
+        // Check if client already exists
         PlayerClient client = findPlayerByAddr(packet.getAddress(), packet.getPort());
-
         if(client != null){
             // Resend info to the confused client
             sendPlayerInfo(PacketType.JOIN_SESSION, client, client);
@@ -167,27 +165,25 @@ public class GameSession {
         }
 
         if (isJoinable()) {
-            // Check if client already exists
             PlayerClient newClient = join(packet.getAddress(), packet.getPort(), "Player " + (clients.size() + 1));
 
             // Send the player information to the new client
             sendPlayerInfo(PacketType.JOIN_SESSION, newClient, newClient);
-            //TODO REMOVE THIS
-            {
-                JSONObject temp = new JSONObject();
-                temp.put(PacketDataKey.PacketId, PacketType.TEST_PACKET);
-                sendWithAck(temp, newClient, 10, 500);
-            }
-            // Send the player information to all other clients
+
+            // Send the player information to all other clients as
+            // well as sending the other clients to the new player
             for (PlayerClient currClient : clients) {
                 if (currClient.id != newClient.id) {
                     // Serialize the new client and send to all other clients
-                    sendPlayerInfo(PacketType.NEW_PLAYER, newClient, currClient);
+                    JSONObject newClientJson = newClient.getAsJson();
+                    newClientJson.put(PacketDataKey.PacketId, PacketType.NEW_PLAYER);
+                    sendWithAck(newClientJson, currClient, 500, 100);
 
                     // Serialize the current client and send to the new client
-                    sendPlayerInfo(PacketType.NEW_PLAYER, currClient, newClient);
+                    JSONObject currClientJson = newClient.getAsJson();
+                    currClientJson.put(PacketDataKey.PacketId, PacketType.NEW_PLAYER);
+                    sendWithAck(currClientJson, newClient, 500, 100);
                 }
-
             }
         }else{
             declineClient(packet.getAddress(), packet.getPort());
@@ -296,10 +292,7 @@ public class GameSession {
         );
 
         clients.add(client);
-        // Broadcast
-        // TODO
-
-        return  client;
+        return client;
     }
 
     @Nullable
