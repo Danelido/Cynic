@@ -6,10 +6,13 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import sun.nio.ch.Net;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerInstance implements Runnable {
@@ -29,25 +32,18 @@ public class ServerInstance implements Runnable {
 
     public ServerInstance() throws Exception{
         socket = new DatagramSocket();
-        logger.info("Server socket bound: %s" + socket.isBound());
-        logger.info("Server socket closed: " + socket.isClosed());
-        logger.info("Server socket connected: " + socket.isConnected());
         logger.info(String.format("Creating server instance on port %d", socket.getLocalPort()));
-
         sessionIDCreator = new UniqueId(MAX_GAME_SESSIONS);
     }
 
     public void run() {
         is_active = true;
-        logger.info("Update worker started");
         runUpdateWorker();
-        logger.info("Heartbeat worker started");
         runHeartbeatWorker();
         while(is_active){
             try{
                 handleIncomingPackages();
             }catch (Exception e){
-                /* Empty */
                 logger.info(e.getMessage());
             }
         }
@@ -98,12 +94,10 @@ public class ServerInstance implements Runnable {
     }
 
     private GameSession createNewGameSession(){
-        logger.info("Creating a new game session");
         int sessionID = sessionIDCreator.getId();
         GameSession session = new GameSession(socket, sessionID);
-        logger.info("Creating a new game session1");
         gameSessionMap.put(sessionID, session);
-        logger.info("Creating a new game session2");
+
         return session;
     }
 
@@ -139,11 +133,11 @@ public class ServerInstance implements Runnable {
             }
         };
         updateWorker.start();
+        logger.info("Update worker started");
     }
 
     private void runHeartbeatWorker(){
         Thread heartbeatWorker = new Thread("Heartbeat") {
-            @Override
             public void run() {
                 while (true) try {
                     handleHeartbeat();
@@ -153,7 +147,7 @@ public class ServerInstance implements Runnable {
             }
         };
         heartbeatWorker.start();
+        logger.info("Heartbeat worker started");
     }
-
 
 }

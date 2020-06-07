@@ -70,7 +70,7 @@ public class GameSession {
             }
         }
 
-        synchronized (this) {
+        synchronized (ackList) {
             final int startIndex = ackList.size() - 1;
             for(int i = startIndex; i >= 0; i--){
                 Ack ack = ackList.get(i);
@@ -138,7 +138,7 @@ public class GameSession {
     private boolean handleAcks(JSONObject data){
         try{
             final int ackId = data.getInt(PacketDataKey.AckId);
-            synchronized(this) {
+            synchronized(ackList) {
                 for(int i = 0; i < ackList.size(); i++){
                     Ack ack = ackList.get(i);
                     if(ack.ackId == ackId){

@@ -13,20 +13,21 @@ public class HTTPResponse {
 
     public HTTPResponse setStatusCode(int statusCode){
        obj.put(statusCodeId, statusCode);
+
        return this;
     }
 
     public HTTPResponse append(String key, Object data){
         obj.put(key,data);
+
         return this;
     }
 
     public String toString(){
-        String data = "";
-        try{ data = obj.toString();}
+        try{ return obj.toString();}
         catch(NullPointerException e){}
 
-        return data;
+        return "";
     }
 
     public int StatusCode(){
