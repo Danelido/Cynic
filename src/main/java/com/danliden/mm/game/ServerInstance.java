@@ -6,10 +6,13 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import sun.nio.ch.Net;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerInstance implements Runnable {
@@ -23,6 +26,7 @@ public class ServerInstance implements Runnable {
     private boolean is_active;
     private DatagramSocket socket;
     private Map<Integer, GameSession> gameSessionMap = new HashMap<>();
+    private List<NetClient> netClients = new ArrayList<>();
     private UniqueId sessionIDCreator;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

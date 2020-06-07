@@ -1,5 +1,4 @@
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\rest\Paths.java
-C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\BlowFish.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\PacketDataKey.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\ServerManager.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\GameState.java
@@ -7,7 +6,10 @@ C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\PlayerClie
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\Vector2.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\GameSession.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\rest\HTTPResponse.java
+C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\KeyGenerator.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\PacketType.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\UniqueId.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\GameServer.java
 C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\ServerInstance.java
+C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\utils\Encryption.java
+C:\repos\MultiModeGameServerModule\src\main\java\com\danliden\mm\game\NetClient.java
