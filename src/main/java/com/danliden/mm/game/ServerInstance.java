@@ -26,6 +26,7 @@ public class ServerInstance implements Runnable {
     private boolean is_active;
     private DatagramSocket socket;
     private Map<Integer, GameSession> gameSessionMap = new HashMap<>();
+    private List<NetClient> netClients = new ArrayList<>();
     private UniqueId sessionIDCreator;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

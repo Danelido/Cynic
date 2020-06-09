@@ -1,9 +1,7 @@
 package com.danliden.mm.game;
 
 import com.danliden.mm.utils.Vector2;
-import com.sun.javafx.geom.Vec2f;
 import org.json.JSONObject;
-
 import java.net.InetAddress;
 
 public class PlayerClient {
