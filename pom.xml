@@ -28,7 +28,7 @@
                 <version>2.3.0.RELEASE</version>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>com.danliden.mm.game.GameServer</mainClass>
+                    <mainClass>com.danliden.mm.game.server.GameServer</mainClass>
                 </configuration>
                 <executions>
                     <execution>
