@@ -1,8 +1,9 @@
 package com.danliden.mm.game.session;
 
-import com.danliden.mm.game.packet.PacketDataKey;
+import com.danliden.mm.game.packet.ValidPacketDataKeys;
 import com.danliden.mm.utils.Vector2;
 import org.json.JSONObject;
+
 import java.net.InetAddress;
 
 public class PlayerClient {
@@ -16,7 +17,7 @@ public class PlayerClient {
     public int nrOfFlatLines = 0; // Used with session heartbeats.
     public Vector2 position = new Vector2();
 
-    public PlayerClient(String name, InetAddress address, int port, int id, int sessionId, int maxHealth){
+    public PlayerClient(String name, InetAddress address, int port, int id, int sessionId, int maxHealth) {
         this.name = name;
         this.address = address;
         this.port = port;
@@ -25,21 +26,21 @@ public class PlayerClient {
         this.health = maxHealth;
     }
 
-    public JSONObject getAsJson(){
+    public JSONObject getAsJson() {
         JSONObject obj = new JSONObject();
-        obj.put(PacketDataKey.PlayerId, id);
-        obj.put(PacketDataKey.SessionID, sessionId);
-        obj.put(PacketDataKey.PlayerName, name);
-        obj.put(PacketDataKey.PlayerXPos, position.x);
-        obj.put(PacketDataKey.PlayerYPos, position.y);
-        obj.put(PacketDataKey.PlayerHealth, health);
+        obj.put(ValidPacketDataKeys.PlayerId, id);
+        obj.put(ValidPacketDataKeys.SessionID, sessionId);
+        obj.put(ValidPacketDataKeys.PlayerName, name);
+        obj.put(ValidPacketDataKeys.PlayerXPos, position.x);
+        obj.put(ValidPacketDataKeys.PlayerYPos, position.y);
+        obj.put(ValidPacketDataKeys.PlayerHealth, health);
         return obj;
     }
 
-    public void updatePlayer(JSONObject obj){
-        health = obj.getInt(PacketDataKey.PlayerHealth);
-        position.set(obj.getFloat(PacketDataKey.PlayerXPos),
-                obj.getFloat(PacketDataKey.PlayerYPos));
+    public void updatePlayer(JSONObject obj) {
+        health = obj.getInt(ValidPacketDataKeys.PlayerHealth);
+        position.set(obj.getFloat(ValidPacketDataKeys.PlayerXPos),
+                obj.getFloat(ValidPacketDataKeys.PlayerYPos));
     }
 
 
@@ -47,7 +48,7 @@ public class PlayerClient {
         nrOfFlatLines++;
     }
 
-    public synchronized void resetFlatline(){
+    public synchronized void resetFlatline() {
         nrOfFlatLines = 0;
     }
 

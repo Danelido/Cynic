@@ -2,7 +2,7 @@ package com.danliden.mm.utils;
 
 public class Encryption {
 
-    public static String encryptOrDecrypt(String input, String key) throws Exception {
+    public static String encryptOrDecrypt(String input, String key) {
         StringBuilder builder = new StringBuilder();
         while (key.length() < input.length()) {
             key += key;

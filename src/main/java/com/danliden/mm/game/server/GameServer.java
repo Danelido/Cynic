@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication(exclude = {JmxAutoConfiguration.class})
 @RestController
 public class GameServer {
-    private ServerManager serverManager;
+    private final ServerManager serverManager;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public GameServer() {
@@ -25,8 +25,9 @@ public class GameServer {
         return serverManager.findAvailableSession().toString();
     }
 
-    @GetMapping(path= Paths.FindServerSession)
-    public String FindServerSession(){
+    @SuppressWarnings("unused")
+    @GetMapping(path = Paths.FindServerSession)
+    public String FindServerSession() {
         try {
             return findAvailableGameSession();
         } catch (Exception e) {

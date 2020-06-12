@@ -1,3 +1,4 @@
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/logic/UpdatePlayer.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/PacketType.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/utils/Encryption.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/server/ServerManager.java
@@ -6,9 +7,18 @@
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/utils/GameState.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/utils/UniqueId.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/server/GameServer.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/session/SessionPlayers.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/ValidPacketDataKeys.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/logic/LeaveSession.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/utils/KeyGenerator.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/session/GameSession.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/logic/Heartbeat.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/session/SessionAckHandler.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/session/AckEntity.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/session/PlayerClient.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/server/PacketSender.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/rest/HTTPResponse.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/ServerPacketBundle.java
 /home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/utils/Vector2.java
-/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/PacketDataKey.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/logic/JoinSession.java
+/home/danelido/Desktop/Dev/Cynic/src/main/java/com/danliden/mm/game/packet/logic/IPacketLogic.java

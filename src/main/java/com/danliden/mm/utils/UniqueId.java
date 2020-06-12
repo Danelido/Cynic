@@ -1,25 +1,24 @@
 package com.danliden.mm.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class UniqueId {
 
-    private List<Integer> ids = new ArrayList<Integer>();
+    private final List<Integer> ids = new ArrayList<>();
 
-    public UniqueId(int range){
-        for(int i = 0; i < range; i++){
+    public UniqueId(int range) {
+        for (int i = 0; i < range; i++) {
             ids.add(i);
         }
     }
 
-    public void giveBackID(int id){
+    public void giveBackID(int id) {
         ids.add(id);
     }
 
-    public int getId(){
-        if(ids.size() == 0){
+    public int getId() {
+        if (ids.size() == 0) {
             return -1;
         }
 
