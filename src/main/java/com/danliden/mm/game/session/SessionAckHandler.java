@@ -25,7 +25,8 @@ public class SessionAckHandler {
                 AckEntity ackEntity = ackList.get(i);
                 ackEntity.addTimeSinceLastSend(updateInterval);
 
-                if (ackEntity.getIntervalMS() >= ackEntity.getTimeSinceLastSend()) {
+                if (ackEntity.getIntervalMS() <= ackEntity.getTimeSinceLastSend()) {
+                    sender.send(ackEntity.getOutgoingData(), ackEntity.getClient().address, ackEntity.getClient().port);
                     ackEntity.resetTimeSinceLastSend();
                     ackEntity.incrementTry();
 
@@ -33,8 +34,6 @@ public class SessionAckHandler {
                         // Give up
                         ackIDGenerator.giveBackID(ackEntity.getAckId());
                         ackList.remove(i);
-                    } else {
-                        sender.send(ackEntity.getOutgoingData(), ackEntity.getClient().address, ackEntity.getClient().port);
                     }
                 }
 
@@ -86,4 +85,7 @@ public class SessionAckHandler {
         }
     }
 
+    public int getNumAcksInProcess() {
+        return ackList.size();
+    }
 }

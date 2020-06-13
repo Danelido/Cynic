@@ -14,7 +14,12 @@ public class JoinSession implements IPacketLogic {
 
     @Override
     public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        if (isSessionJoinAble(gameState, sessionPlayers) && !doesClientExist(bundle, sessionPlayers)) {
+
+        if (doesClientExist(bundle, sessionPlayers)) {
+            return;
+        }
+
+        if (isSessionJoinAble(gameState, sessionPlayers)) {
             PlayerClient newClient = sessionPlayers.createPlayer(bundle);
 
             sendConfirmationToClient(sender, ackHandler, newClient);

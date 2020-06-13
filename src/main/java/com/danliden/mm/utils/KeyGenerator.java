@@ -4,9 +4,9 @@ import java.util.SplittableRandom;
 
 public class KeyGenerator {
 
+    public static final int LENGTH = 128;
     private static final String TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SplittableRandom random = new SplittableRandom();
-    private static final int LENGTH = 128;
 
     /**
      * @return 128 bytes encryption key
@@ -21,5 +21,4 @@ public class KeyGenerator {
         return keyStrBuffer.toString();
 
     }
-
 }

@@ -112,7 +112,7 @@ public class ServerInstance implements Runnable {
     private void handleGeneralUpdate() throws Exception {
         for (Map.Entry<Integer, GameSession> entry : gameSessionMap.entrySet()) {
             GameSession session = entry.getValue();
-            session.update(UPDATE_INTERVAL_MS);
+            session.onServerUpdate(UPDATE_INTERVAL_MS);
         }
         Thread.sleep(UPDATE_INTERVAL_MS);
     }
@@ -137,7 +137,7 @@ public class ServerInstance implements Runnable {
     private void handleHeartbeat() throws Exception {
         for (Map.Entry<Integer, GameSession> entry : gameSessionMap.entrySet()) {
             GameSession session = entry.getValue();
-            session.heartbeat();
+            session.onServerHeartbeat();
         }
         Thread.sleep(HEARTBEAT_INTERVAL_MS);
     }

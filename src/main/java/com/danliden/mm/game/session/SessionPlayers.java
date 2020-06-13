@@ -14,26 +14,28 @@ public class SessionPlayers {
     private final int MAX_PLAYERS;
 
     public SessionPlayers(final int MAX_PLAYERS) {
-        players = new ArrayList<>();
         this.MAX_PLAYERS = MAX_PLAYERS;
-        IDGenerator = new UniqueId(MAX_PLAYERS * 2);
+        players = new ArrayList<>();
+        IDGenerator = new UniqueId(MAX_PLAYERS);
     }
 
     public PlayerClient createPlayer(final ServerPacketBundle bundle) {
+        if(!isFull()) {
+            int maxHealth = 3;
+            PlayerClient client = new PlayerClient(
+                    "John Doe",
+                    bundle.getDatagramPacket().getAddress(),
+                    bundle.getDatagramPacket().getPort(),
+                    IDGenerator.getId(),
+                    bundle.getSessionId(),
+                    maxHealth
+            );
 
-        int maxHealth = 3;
-        PlayerClient client = new PlayerClient(
-                "John Doe",
-                bundle.getDatagramPacket().getAddress(),
-                bundle.getDatagramPacket().getPort(),
-                IDGenerator.getId(),
-                bundle.getSessionId(),
-                maxHealth
-        );
+            players.add(client);
+            return client;
+        }
 
-        players.add(client);
-
-        return client;
+        return null;
     }
 
     public void removePlayer(final int ID) {
