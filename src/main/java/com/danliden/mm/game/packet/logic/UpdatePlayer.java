@@ -21,9 +21,13 @@ public class UpdatePlayer implements IPacketLogic {
 
         if (client != null) {
             client.updatePlayer(bundle.getPacketJsonData());
-            JSONObject updatePlayerJsonData = client.getAsJson();
-            updatePlayerJsonData.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
-            sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), client);
+            notifyOtherClients(sender, sessionPlayers, client);
         }
+    }
+
+    private void notifyOtherClients(PacketSender sender, SessionPlayers sessionPlayers, PlayerClient client) {
+        JSONObject updatePlayerJsonData = client.getAsJson();
+        updatePlayerJsonData.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
+        sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), client);
     }
 }

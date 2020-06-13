@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class GameSession {
 
     private final Map<Integer, IPacketLogic> packetLogicMapping = new HashMap<>();
@@ -34,27 +33,12 @@ public class GameSession {
         mapPacketLogic();
     }
 
-    /* This will be called multiple times during a second*/
-    public void update(final int updateInterval) {
-        for (PlayerClient client : sessionPlayers.getPlayers()) {
-            if (client.nrOfFlatLines >= MAX_FLAT_LINES) {
-                disconnectPlayer(client);
-            }
-        }
-
+    public void onServerUpdate(final int updateInterval) {
+        checkClientsHeartbeat();
         ackHandler.update(updateInterval);
-
     }
 
-    private void disconnectPlayer(PlayerClient client) {
-        JSONObject disconnectPackage = new JSONObject()
-                .put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
-                .put(ValidPacketDataKeys.PlayerId, client.id);
-        sessionPlayers.removePlayer(client.id);
-        sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
-    }
-
-    public void heartbeat() {
+    public void onServerHeartbeat() {
         // Increase flat lines
         for (PlayerClient client : sessionPlayers.getPlayers()) {
             client.addFlatline();
@@ -64,7 +48,6 @@ public class GameSession {
 
     }
 
-    /* This will only be called when there is a packet for this session */
     public void handleData(ServerPacketBundle bundle) {
 
         // If this packet is not an ack then execute packet logic
@@ -78,6 +61,22 @@ public class GameSession {
             }
         }
 
+    }
+
+    private void checkClientsHeartbeat() {
+        for (PlayerClient client : sessionPlayers.getPlayers()) {
+            if (client.nrOfFlatLines >= MAX_FLAT_LINES) {
+                disconnectPlayer(client);
+            }
+        }
+    }
+
+    private void disconnectPlayer(PlayerClient client) {
+        JSONObject disconnectPackage = new JSONObject()
+                .put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
+                .put(ValidPacketDataKeys.PlayerId, client.id);
+        sessionPlayers.removePlayer(client.id);
+        sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
     }
 
     private void mapPacketLogic() {
@@ -104,6 +103,5 @@ public class GameSession {
     public final int getSessionId() {
         return SESSION_ID;
     }
-
 
 }

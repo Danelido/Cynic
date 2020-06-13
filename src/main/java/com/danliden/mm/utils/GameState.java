@@ -1,5 +1,6 @@
 package com.danliden.mm.utils;
 
 public enum GameState {
-    LOBBY
+    LOBBY,
+    IN_SESSION
 }

@@ -2,6 +2,8 @@ package com.danliden.mm.game.session;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.utils.UniqueId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -9,14 +11,15 @@ import java.util.List;
 
 public class SessionPlayers {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final List<PlayerClient> players;
     private final UniqueId IDGenerator;
     private final int MAX_PLAYERS;
 
     public SessionPlayers(final int MAX_PLAYERS) {
-        players = new ArrayList<>();
         this.MAX_PLAYERS = MAX_PLAYERS;
-        IDGenerator = new UniqueId(MAX_PLAYERS * 2);
+        players = new ArrayList<>();
+        IDGenerator = new UniqueId(MAX_PLAYERS);
     }
 
     public PlayerClient createPlayer(final ServerPacketBundle bundle) {
@@ -32,7 +35,6 @@ public class SessionPlayers {
         );
 
         players.add(client);
-
         return client;
     }
 

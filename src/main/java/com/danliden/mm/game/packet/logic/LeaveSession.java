@@ -19,10 +19,11 @@ public class LeaveSession implements IPacketLogic {
 
 
         PlayerClient client = sessionPlayers.findById(playerId);
-        JSONObject disconnectPackage = buildDisconnectPackageAsJson(client);
-        sessionPlayers.removePlayer(client.id);
-        sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
-
+        if (client != null) {
+            JSONObject disconnectPackage = buildDisconnectPackageAsJson(client);
+            sessionPlayers.removePlayer(client.id);
+            sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
+        }
     }
 
     private JSONObject buildDisconnectPackageAsJson(PlayerClient client) {
