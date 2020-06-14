@@ -9,7 +9,7 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*'
             }
         }
-        stage('Test') {
+        stage('Deploy') {
             steps {
                 sh 'echo "Running..."'
                 sh 'chmod +x run-dev.sh'
