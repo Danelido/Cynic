@@ -5,9 +5,6 @@ then
     kill -9 $apid
 fi
 
-cd $WORKSPACE/Cynic/
-git pull
-mvn package
 java -jar target/MultiModeGameServerModule-1.0-SNAPSHOT.jar &
 
 
