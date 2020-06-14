@@ -1,7 +1,0 @@
-com/danliden/mm/utils/TestEncryption.class
-com/danliden/mm/game/packet/logic/TestUpdatePlayer.class
-com/danliden/mm/utils/TestKeyGenerator.class
-com/danliden/mm/utils/TestUniqueId.class
-com/danliden/mm/game/packet/logic/TestHeartbeat.class
-com/danliden/mm/game/packet/logic/TestLeaveSession.class
-com/danliden/mm/game/packet/logic/TestJoinSession.class

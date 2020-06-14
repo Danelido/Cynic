@@ -1,7 +1,0 @@
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/game/packet/logic/TestJoinSession.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/utils/TestUniqueId.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/game/packet/logic/TestUpdatePlayer.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/utils/TestEncryption.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/game/packet/logic/TestHeartbeat.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/utils/TestKeyGenerator.java
-/home/danelido/Desktop/Dev/Cynic/src/test/java/com/danliden/mm/game/packet/logic/TestLeaveSession.java

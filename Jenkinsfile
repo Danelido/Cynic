@@ -9,13 +9,5 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*'
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'echo "Deploying..."'
-                sh 'chmod +x deploy.sh'
-                sh './deploy.sh'
-                sh 'echo "Deployed :)"'
-            }
-        }
     }
 }
