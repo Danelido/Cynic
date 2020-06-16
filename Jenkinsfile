@@ -1,12 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('Build And Test') {
+        stage('Build') {
             steps {
                 sh 'echo "Building..."'
                 sh 'chmod +x build.sh'
                 sh './build.sh'
-                archiveArtifacts artifacts: 'target/*'
+                archiveArtifacts artifacts: 'CynicServer/target/*', 'CynicServerTest/target/*'
+            }
+        }
+        stage('Cynic Server Test') {
+            steps {
+                sh 'echo "CST..."'
+                sh 'chmod +x ServerTest.sh'
+                sh './ServerTest.sh'
             }
         }
     }

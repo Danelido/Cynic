@@ -1,5 +1,5 @@
 #!/bin/sh
-if apid=$(pgrep -f target/MultiModeGameServerModule-1.0-SNAPSHOT.jar)
+if apid=$(pgrep -f target/CynicServer-1.0-SNAPSHOT.jar)
 then
     echo "Running, pid is $apid"
     kill -9 $apid
@@ -8,7 +8,7 @@ echo "Cleaning and packaging Jar"
 mvn clean package
 
 echo "Running..."
-java -jar target/MultiModeGameServerModule-1.0-SNAPSHOT.jar &
+java -jar CynicServer/target/CynicServer-1.0-SNAPSHOT.jar &
 
 
 

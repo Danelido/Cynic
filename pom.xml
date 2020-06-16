@@ -7,7 +7,11 @@
     <groupId>org.example</groupId>
     <artifactId>MultiModeGameServerModule</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>CynicServerTest</module>
+        <module>CynicServer</module>
+    </modules>
+    <packaging>pom</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -28,7 +32,7 @@
                 <version>2.3.0.RELEASE</version>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>com.danliden.mm.game.server.GameServer</mainClass>
+                    <mainClass>com.danliden.com.danliden.mm.game.server.GameServer</mainClass>
                 </configuration>
                 <executions>
                     <execution>
