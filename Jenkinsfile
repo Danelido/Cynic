@@ -6,7 +6,7 @@ pipeline {
                 sh 'echo "Building..."'
                 sh 'chmod +x build.sh'
                 sh './build.sh'
-                archiveArtifacts artifacts: 'CynicServer/target/*', 'CynicServerTest/target/*'
+                archiveArtifacts artifacts: '**/target/*'
             }
         }
         stage('Cynic Server Test') {
