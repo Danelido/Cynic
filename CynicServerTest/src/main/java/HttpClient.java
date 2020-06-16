@@ -18,19 +18,23 @@ public class HttpClient {
             HttpGet request = new HttpGet(uri);
 
             // add request headers
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
+            try {
+
+                CloseableHttpResponse response = httpClient.execute(request);
 
                 // Get HttpResponse Status
-                logger.info("Status line: ", response.getStatusLine().toString());
+                logger.info("Status line: " + response.getStatusLine().toString());
                 HttpEntity entity = response.getEntity();
 
                 if(entity != null) {
                     // return it as a String
                     String payload =  EntityUtils.toString(entity);
-                    logger.info("Receive payload: ", payload);
+                    logger.info("Receive payload: " + payload);
                     return payload;
                 }
 
+            }catch(Exception e){
+                logger.warn(e.getMessage());
             }
             logger.info("Could not fetch http request, retrying... ");
             Thread.sleep(interval);

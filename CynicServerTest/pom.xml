@@ -9,9 +9,28 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>CynicModuleTest</artifactId>
-    <version>1.0</version>
-    <packaging>jar</packaging>
+    <artifactId>CynicServerTest</artifactId>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.0.RELEASE</version>
+                <configuration>
+                    <fork>true</fork>
+                    <mainClass>Main</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
