@@ -19,7 +19,7 @@
                 <version>2.3.0.RELEASE</version>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>Main</mainClass>
+                    <mainClass>com.danliden.mm.execution.Main</mainClass>
                 </configuration>
                 <executions>
                     <execution>
