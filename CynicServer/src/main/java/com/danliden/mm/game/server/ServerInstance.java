@@ -146,7 +146,6 @@ public class ServerInstance implements Runnable {
         byte[] byteData = new byte[MAX_PACKET_SIZE];
         DatagramPacket dataPacket = new DatagramPacket(byteData, byteData.length);
         socket.receive(dataPacket);
-
         ServerPacketBundle packetBundle = new ServerPacketBundle(dataPacket).build();
 
         GameSession session = findSessionFromId(packetBundle.getSessionId());

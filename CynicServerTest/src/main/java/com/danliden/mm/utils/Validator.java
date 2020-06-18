@@ -15,8 +15,39 @@ public class Validator {
             response.getInt("SessionId");
 
             if (statusCode != HttpStatus.OK.value()) {
+                logger.info("FSS Response NOT OK! Status code: " + statusCode);
                 return false;
             }
+            logger.info("FSS Response OK");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public static boolean validateJoinResponse(JSONObject response) {
+        try {
+            logger.info("Full response: " + response.toString());
+
+            logger.info("Extracting received packetId");
+            int packetId = response.getInt(ValidPacketDataKeys.PacketId);
+
+            if (packetId != PacketType.Incoming.JOIN_ACCEPTED) {
+                logger.info("PacketID mismatch");
+                return false;
+            }
+
+            response.getInt(ValidPacketDataKeys.PlayerId);
+            response.getInt(ValidPacketDataKeys.SessionID);
+            response.getString(ValidPacketDataKeys.PlayerName);
+            response.getFloat(ValidPacketDataKeys.PlayerXPos);
+            response.getFloat(ValidPacketDataKeys.PlayerYPos);
+            response.getInt(ValidPacketDataKeys.PlayerHealth);
+
+            logger.info("Join Response OK");
 
         } catch (Exception e) {
             logger.error(e.getMessage());

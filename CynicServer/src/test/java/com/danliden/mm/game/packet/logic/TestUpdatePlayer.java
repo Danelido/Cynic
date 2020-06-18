@@ -1,6 +1,5 @@
 package com.danliden.mm.game.packet.logic;
 
-import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.ValidPacketDataKeys;
 import com.danliden.mm.game.server.PacketSender;
@@ -12,7 +11,6 @@ import com.danliden.mm.utils.Vector2;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;

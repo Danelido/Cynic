@@ -1,6 +1,5 @@
 package com.danliden.mm.game.packet.logic;
 
-import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.ValidPacketDataKeys;
 import com.danliden.mm.game.server.PacketSender;

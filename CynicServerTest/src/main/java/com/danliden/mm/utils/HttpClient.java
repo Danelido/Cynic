@@ -1,5 +1,6 @@
 package com.danliden.mm.utils;
 
+import com.danliden.mm.execution.Main;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,11 +16,14 @@ import java.io.IOException;
 public class HttpClient {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final static String SERVER_ADDRESS = "http://139.162.149.158:13500";
+
 
     public JSONObject get(String requestPath, int retries, long interval) throws Exception {
+        String fullPath = "http://" + Main.SERVER_ADDRESS + ":" + Main.PORT + "/" + requestPath;
+        logger.info("Full request path: " + fullPath);
+
         for (int i = 0; i < retries; i++) {
-            HttpGet request = new HttpGet(SERVER_ADDRESS + "/" + requestPath);
+            HttpGet request = new HttpGet(fullPath);
 
             try {
                 CloseableHttpResponse response = httpClient.execute(request);
@@ -34,6 +38,7 @@ public class HttpClient {
                 }
 
             } catch (Exception e) {
+                logger.error("Failed to get http request from server");
                 logger.warn(e.getMessage());
             }
             logger.info("Could not fetch http request, retrying... ");
