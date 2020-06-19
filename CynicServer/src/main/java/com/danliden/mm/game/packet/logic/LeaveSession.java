@@ -23,6 +23,8 @@ public class LeaveSession implements IPacketLogic {
             JSONObject disconnectPackage = buildDisconnectPackageAsJson(client);
             sessionPlayers.removePlayer(client.id);
             sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
+        } else {
+            sender.sendNotConnectedPacketToSender(bundle);
         }
     }
 

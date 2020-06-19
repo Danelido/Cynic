@@ -1,0 +1,5 @@
+Requirements of the client in order to use Cynic Server:
+
+* Must be able to handle ackId's
+* Must be able to Interpret all packet types
+* Must be able to respond to heartbeats

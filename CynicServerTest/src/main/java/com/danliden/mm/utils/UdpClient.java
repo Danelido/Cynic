@@ -62,7 +62,7 @@ public class UdpClient {
         listenerThread = new Thread("listener") {
             @Override
             public void run() {
-                while (true) {
+                while (!socket.isClosed()) {
                     try {
                         byte[] byteData = new byte[maxPacketSize];
                         DatagramPacket dataPacket = new DatagramPacket(byteData, byteData.length);

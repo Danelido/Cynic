@@ -57,6 +57,42 @@ public class TestLeaveSession {
 
     }
 
+    @Test
+    public void testDisconnectingInvalidPlayer() {
+        // Setup
+        final int hostAddressMock = 0;
+        JSONObject mockJson = mock(JSONObject.class);
+        IPacketLogic leaveSessionLogic = new LeaveSession();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = GameState.IN_SESSION;
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        assert (player != null);
+
+        Mockito.when(mockJson.getInt(ValidPacketDataKeys.PlayerId)).thenReturn(-1);
+
+        // Execute logic
+        leaveSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        assert (sessionPlayers.findById(player.id) != null);
+        assert (sessionPlayers.getNumberOfPlayers() == 4);
+
+        Mockito.verify(senderMock, Mockito.times(1))
+                .sendNotConnectedPacketToSender(bundle);
+
+    }
+
+
+
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int hostAddressMock) {
         InetAddress playerAddress = mock(InetAddress.class);
         Mockito.when(dgPacket.getAddress()).thenReturn(playerAddress);

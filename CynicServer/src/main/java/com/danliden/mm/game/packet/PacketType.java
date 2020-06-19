@@ -10,6 +10,7 @@ public abstract class PacketType {
     }
 
     public abstract static class Outgoing {
+        public static final int NOT_CONNECTED = -1;
         public static final int JOIN_ACCEPTED = 0;
         public static final int LOST_CLIENT = 1;
         public static final int HEARTBEAT_REQUEST = 2;

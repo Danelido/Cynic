@@ -22,6 +22,8 @@ public class UpdatePlayer implements IPacketLogic {
         if (client != null) {
             client.updatePlayer(bundle.getPacketJsonData());
             notifyOtherClients(sender, sessionPlayers, client);
+        } else {
+            sender.sendNotConnectedPacketToSender(bundle);
         }
     }
 

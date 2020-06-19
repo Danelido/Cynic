@@ -18,6 +18,8 @@ public class Heartbeat implements IPacketLogic {
         PlayerClient client = sessionPlayers.findById(id);
         if (client != null) {
             client.resetFlatline();
+        } else {
+            sender.sendNotConnectedPacketToSender(bundle);
         }
     }
 }

@@ -1,0 +1,67 @@
+{
+  "Incoming packages": {
+      "JOIN_REQUEST": {
+        "PacketId": "A Valid packet type, in this case \"JOIN_REQUEST\"",
+        "SessionId": "Id of the game session"
+      },
+      "HEARTBEAT": {
+        "PacketId": "A Valid packet type, in this case \"HEARTBEAT\"",
+        "PlayerId": "Id of the player"
+      },
+      "LEFT_SESSION": {
+        "PacketId": "A Valid packet type, in this case \"LEFT_SESSION\"",
+        "PlayerId": "Id of the player"
+      },
+      "CLIENT_UPDATE": {
+        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+        "PlayerId": "Id of the player",
+        "Health": "Current health of the client",
+        "X": "X-Position of the client",
+        "Y": "Y-Position of the client"
+      }
+  },
+  "Outgoing packages": {
+      "NOT_CONNECTED": {
+        "PacketId": "A Valid packet type, in this case \"NOT_CONNECTED\""
+      },
+      "JOIN_ACCEPTED": {
+        "PacketId": "A Valid packet type, in this case \"JOIN_ACCEPTED\"",
+        "AckId": "Unique ack id that the client needs to answer back",
+        "PlayerId": "Id of the player",
+        "SessionId": "Id of the game session",
+        "PlayerName": "Name of the player (Not supported)",
+        "PlayerXPos": "The start x position of the player",
+        "PlayerYPos": "The start y position of the player",
+        "PlayerHealth": "The start health of the player"
+      },
+      "LOST_CLIENT": {
+          "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
+          "PlayerId": "Id of the player that was lost"
+      },
+      "HEARTBEAT_REQUEST": {
+        "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\""
+      },
+      "UPDATED_CLIENT": {
+        "PacketId": "A Valid packet type, in this case \"UPDATED_CLIENT\"",
+        "PlayerId": "Id of the updated player",
+        "SessionId": "Id of the game session",
+        "PlayerName": "Name of the updated player (Not supported)",
+        "PlayerXPos": "The updated x position of the player",
+        "PlayerYPos": "The updated y position of the player",
+        "PlayerHealth": "The updated health of the player"
+      },
+      "DECLINED_JOIN_REQUEST": {
+        "PacketId": "A Valid packet type, in this case \"DECLINED_JOIN_REQUEST\""
+      },
+      "NEW_PLAYER_JOINED" : {
+        "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
+        "AckId": "Unique ack id that the client needs to answer back",
+        "PlayerId": "Id of the new player",
+        "SessionId": "Id of the game session",
+        "PlayerName": "Name of the new player (Not supported)",
+        "PlayerXPos": "The start x position of the new player",
+        "PlayerYPos": "The start y position of the new player",
+        "PlayerHealth": "The start health of the player"
+      }
+  }
+}

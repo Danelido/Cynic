@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>MultiModeGameServerModule</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>org.danelido.goodshits</groupId>
+    <artifactId>Cynic</artifactId>
+    <version>${cynic.version}</version>
     <modules>
         <module>CynicServerTest</module>
         <module>CynicServer</module>
@@ -20,6 +20,7 @@
         <!-- lookup parent from repository -->
     </parent>
     <properties>
+        <cynic.version>1.0.0</cynic.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -78,8 +79,6 @@
             <version>3.3.3</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
 </project>

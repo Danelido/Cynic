@@ -54,6 +54,35 @@ public class TestUpdatePlayer {
         verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
     }
 
+    @Test
+    public void testUpdatingInvalidPlayer() {
+        // Setup
+        final int hostAddressMock = 0;
+        IPacketLogic updatePlayerLogic = new UpdatePlayer();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = GameState.IN_SESSION;
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        assert (player != null);
+
+        Vector2 newPosition = new Vector2(400, -200);
+        int newHealth = 1;
+        JSONObject playerJsonUpdatedData = createPlayerUpdateData(-1, newHealth, newPosition);
+
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
+
+        // Execute logic
+        updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        assert (sessionPlayers.findById(player.id) != null);
+        // Build the expected outgoing packet
+        verify(senderMock, times(1)).sendNotConnectedPacketToSender(bundle);
+    }
+
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int hostAddressMock) {
         InetAddress playerAddress = mock(InetAddress.class);
         Mockito.when(dgPacket.getAddress()).thenReturn(playerAddress);

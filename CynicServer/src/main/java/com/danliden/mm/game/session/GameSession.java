@@ -49,7 +49,6 @@ public class GameSession {
     }
 
     public void handleData(ServerPacketBundle bundle) {
-
         // If this packet is not an ack then execute packet logic
         if (!ackHandler.handleIfPacketIsAck(bundle.getPacketJsonData())) {
             int pid = bundle.getPacketJsonData()
