@@ -16,7 +16,7 @@ public class ServerPacketBundle {
     public ServerPacketBundle build() {
         String data = new String(datagramPacket.getData());
         packetJsonData = new JSONObject(data);
-        sessionId = packetJsonData.getInt(ValidPacketDataKeys.SessionID);
+        sessionId = packetJsonData.getInt(PacketKeys.SessionID);
 
         return this;
     }

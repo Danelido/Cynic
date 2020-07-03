@@ -1,7 +1,7 @@
 package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -44,7 +44,7 @@ public class TestLeaveSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
         assert (player != null);
 
-        Mockito.when(mockJson.getInt(ValidPacketDataKeys.PlayerId)).thenReturn(player.id);
+        Mockito.when(mockJson.getInt(PacketKeys.PlayerId)).thenReturn(player.id);
 
         // Execute logic
         leaveSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
@@ -78,7 +78,7 @@ public class TestLeaveSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
         assert (player != null);
 
-        Mockito.when(mockJson.getInt(ValidPacketDataKeys.PlayerId)).thenReturn(-1);
+        Mockito.when(mockJson.getInt(PacketKeys.PlayerId)).thenReturn(-1);
 
         // Execute logic
         leaveSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);

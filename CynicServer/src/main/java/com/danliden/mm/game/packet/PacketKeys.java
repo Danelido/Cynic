@@ -1,6 +1,6 @@
 package com.danliden.mm.game.packet;
 
-public class ValidPacketDataKeys {
+public class PacketKeys {
     public static final String PacketId = "PacketId";
     public static final String SessionID = "SessionId";
     public static final String PlayerId = "PlayerId";

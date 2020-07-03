@@ -2,7 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -32,13 +32,13 @@ public class JoinSession implements IPacketLogic {
 
     private void sendConfirmationToClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient) {
         JSONObject newClientJsonData = newClient.getAsJson();
-        newClientJsonData.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.JOIN_ACCEPTED);
+        newClientJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.JOIN_ACCEPTED);
         sender.sendWithAck(ackHandler, newClientJsonData, newClient, 30, 2000);
     }
 
     private void tellExistingClientsAboutNewClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient, SessionPlayers sessionPlayers) {
         JSONObject newClientJsonData = newClient.getAsJson();
-        newClientJsonData.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
+        newClientJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
         sender.sendToMultipleWithAckAndExclude(ackHandler, newClientJsonData, sessionPlayers.getPlayers(), 30, 2000, newClient);
     }
 
@@ -46,7 +46,7 @@ public class JoinSession implements IPacketLogic {
         for (PlayerClient client : sessionPlayers.getPlayers()) {
             if (client.id != newClient.id) {
                 JSONObject clientAsJson = client.getAsJson();
-                clientAsJson.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
+                clientAsJson.put(PacketKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
                 sender.sendWithAck(ackHandler, clientAsJson, newClient, 30, 2000);
             }
         }
@@ -54,7 +54,7 @@ public class JoinSession implements IPacketLogic {
 
     private void declineJoinRequest(ServerPacketBundle bundle, PacketSender sender) {
         JSONObject declineJsonData = new JSONObject();
-        declineJsonData.put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.DECLINED_JOIN_REQUEST);
+        declineJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.DECLINED_JOIN_REQUEST);
         sender.sendToAddress(declineJsonData, bundle.getDatagramPacket().getAddress(), bundle.getDatagramPacket().getPort());
     }
 

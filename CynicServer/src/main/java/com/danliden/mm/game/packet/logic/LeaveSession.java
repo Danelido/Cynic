@@ -2,7 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -15,7 +15,7 @@ public class LeaveSession implements IPacketLogic {
     public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
         final int playerId = bundle
                 .getPacketJsonData()
-                .getInt(ValidPacketDataKeys.PlayerId);
+                .getInt(PacketKeys.PlayerId);
 
 
         PlayerClient client = sessionPlayers.findById(playerId);
@@ -30,8 +30,8 @@ public class LeaveSession implements IPacketLogic {
 
     private JSONObject buildDisconnectPackageAsJson(PlayerClient client) {
         return new JSONObject()
-                .put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
-                .put(ValidPacketDataKeys.PlayerId, client.id);
+                .put(PacketKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
+                .put(PacketKeys.PlayerId, client.id);
     }
 
 }

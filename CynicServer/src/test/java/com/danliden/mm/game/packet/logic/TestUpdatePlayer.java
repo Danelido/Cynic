@@ -1,7 +1,7 @@
 package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -92,10 +92,10 @@ public class TestUpdatePlayer {
 
     private JSONObject createPlayerUpdateData(int playerId, int health, Vector2 position) {
         return new JSONObject()
-                .put(ValidPacketDataKeys.PlayerId, playerId)
-                .put(ValidPacketDataKeys.PlayerHealth, health)
-                .put(ValidPacketDataKeys.PlayerXPos, position.x)
-                .put(ValidPacketDataKeys.PlayerYPos, position.y);
+                .put(PacketKeys.PlayerId, playerId)
+                .put(PacketKeys.PlayerHealth, health)
+                .put(PacketKeys.PlayerXPos, position.x)
+                .put(PacketKeys.PlayerYPos, position.y);
     }
 
 

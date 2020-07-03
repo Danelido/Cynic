@@ -2,7 +2,7 @@ package com.danliden.mm.game.server;
 
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.session.AckEntity;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -63,7 +63,7 @@ public class PacketSender {
     }
 
     public void sendNotConnectedPacketToSender(ServerPacketBundle bundle) {
-        JSONObject jsonData = new JSONObject().put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.NOT_CONNECTED);
+        JSONObject jsonData = new JSONObject().put(PacketKeys.PacketId, PacketType.Outgoing.NOT_CONNECTED);
         sendToAddress(jsonData, bundle.getDatagramPacket().getAddress(), bundle.getDatagramPacket().getPort());
     }
 

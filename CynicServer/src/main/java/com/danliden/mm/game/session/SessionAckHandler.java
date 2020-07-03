@@ -1,6 +1,6 @@
 package com.danliden.mm.game.session;
 
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.utils.UniqueId;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ public class SessionAckHandler {
         boolean isPacketAck;
 
         try {
-            final int ackId = packetData.getInt(ValidPacketDataKeys.AckId);
+            final int ackId = packetData.getInt(PacketKeys.AckId);
             isPacketAck = true;
 
             synchronized (ackList) {
@@ -67,7 +67,7 @@ public class SessionAckHandler {
 
     public AckEntity buildAckEntity(JSONObject jsonData, PlayerClient receiver, int maxTries, int intervalMS) {
         final int ackId = ackIDGenerator.getId();
-        jsonData.put(ValidPacketDataKeys.AckId, ackId);
+        jsonData.put(PacketKeys.AckId, ackId);
 
         final byte[] data = jsonData.toString().getBytes();
 

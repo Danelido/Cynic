@@ -2,7 +2,7 @@ package com.danliden.mm.game.session;
 
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.logic.*;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.utils.GameState;
@@ -52,7 +52,7 @@ public class GameSession {
         // If this packet is not an ack then execute packet logic
         if (!ackHandler.handleIfPacketIsAck(bundle.getPacketJsonData())) {
             int pid = bundle.getPacketJsonData()
-                    .getInt(ValidPacketDataKeys.PacketId);
+                    .getInt(PacketKeys.PacketId);
 
             IPacketLogic logic = packetLogicMapping.getOrDefault(pid, null);
             if (logic != null) {
@@ -72,8 +72,8 @@ public class GameSession {
 
     private void disconnectPlayer(PlayerClient client) {
         JSONObject disconnectPackage = new JSONObject()
-                .put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
-                .put(ValidPacketDataKeys.PlayerId, client.id);
+                .put(PacketKeys.PacketId, PacketType.Outgoing.LOST_CLIENT)
+                .put(PacketKeys.PlayerId, client.id);
         sessionPlayers.removePlayer(client.id);
         sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
     }
@@ -87,7 +87,7 @@ public class GameSession {
 
     private void sendHeartbeats() {
         JSONObject obj = new JSONObject()
-                .put(ValidPacketDataKeys.PacketId, PacketType.Outgoing.HEARTBEAT_REQUEST);
+                .put(PacketKeys.PacketId, PacketType.Outgoing.HEARTBEAT_REQUEST);
         sender.sendToMultiple(obj, sessionPlayers.getPlayers());
     }
 

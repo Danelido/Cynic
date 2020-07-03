@@ -1,6 +1,6 @@
 package com.danliden.mm.game.session;
 
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.utils.Vector2;
 import org.json.JSONObject;
 
@@ -28,19 +28,19 @@ public class PlayerClient {
 
     public JSONObject getAsJson() {
         JSONObject obj = new JSONObject();
-        obj.put(ValidPacketDataKeys.PlayerId, id);
-        obj.put(ValidPacketDataKeys.SessionID, sessionId);
-        obj.put(ValidPacketDataKeys.PlayerName, name);
-        obj.put(ValidPacketDataKeys.PlayerXPos, position.x);
-        obj.put(ValidPacketDataKeys.PlayerYPos, position.y);
-        obj.put(ValidPacketDataKeys.PlayerHealth, health);
+        obj.put(PacketKeys.PlayerId, id);
+        obj.put(PacketKeys.SessionID, sessionId);
+        obj.put(PacketKeys.PlayerName, name);
+        obj.put(PacketKeys.PlayerXPos, position.x);
+        obj.put(PacketKeys.PlayerYPos, position.y);
+        obj.put(PacketKeys.PlayerHealth, health);
         return obj;
     }
 
     public void updatePlayer(JSONObject obj) {
-        health = obj.getInt(ValidPacketDataKeys.PlayerHealth);
-        position.set(obj.getFloat(ValidPacketDataKeys.PlayerXPos),
-                obj.getFloat(ValidPacketDataKeys.PlayerYPos));
+        health = obj.getInt(PacketKeys.PlayerHealth);
+        position.set(obj.getFloat(PacketKeys.PlayerXPos),
+                obj.getFloat(PacketKeys.PlayerYPos));
     }
 
 

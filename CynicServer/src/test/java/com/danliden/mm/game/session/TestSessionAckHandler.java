@@ -1,6 +1,6 @@
 package com.danliden.mm.game.session;
 
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.server.PacketSender;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -69,8 +69,8 @@ public class TestSessionAckHandler {
         ackHandler.registerAckEntity(ackEntity2);
 
         //Create a ack packet with a valid ack id
-        JSONObject ackPack1 = new JSONObject().put(ValidPacketDataKeys.AckId, ackEntity.getAckId());
-        JSONObject ackPack2 = new JSONObject().put(ValidPacketDataKeys.AckId, ackEntity2.getAckId());
+        JSONObject ackPack1 = new JSONObject().put(PacketKeys.AckId, ackEntity.getAckId());
+        JSONObject ackPack2 = new JSONObject().put(PacketKeys.AckId, ackEntity2.getAckId());
 
         boolean result;
 
@@ -97,8 +97,8 @@ public class TestSessionAckHandler {
         ackHandler.registerAckEntity(ackEntity2);
 
         //Create a ack packet with a valid ack id
-        JSONObject ackPack1 = new JSONObject().put(ValidPacketDataKeys.PlayerName, "John Doe");
-        JSONObject ackPack2 = new JSONObject().put(ValidPacketDataKeys.PlayerId, "s");
+        JSONObject ackPack1 = new JSONObject().put(PacketKeys.PlayerName, "John Doe");
+        JSONObject ackPack2 = new JSONObject().put(PacketKeys.PlayerId, "s");
 
         boolean result;
 

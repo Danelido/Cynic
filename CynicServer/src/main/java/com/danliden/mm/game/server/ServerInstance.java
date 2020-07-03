@@ -1,7 +1,7 @@
 package com.danliden.mm.game.server;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.packet.ValidPacketDataKeys;
+import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.session.GameSession;
 import com.danliden.mm.rest.HTTPResponse;
 import com.danliden.mm.utils.UniqueId;
@@ -54,8 +54,8 @@ public class ServerInstance implements Runnable {
         if (session != null) {
             logger.info("Found an available game session");
             response.setStatusCode(HttpStatus.OK.value())
-                    .append(ValidPacketDataKeys.ServerPort, socket.getLocalPort())
-                    .append(ValidPacketDataKeys.SessionID, session.getSessionId());
+                    .append(PacketKeys.ServerPort, socket.getLocalPort())
+                    .append(PacketKeys.SessionID, session.getSessionId());
 
             return response;
         }

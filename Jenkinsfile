@@ -11,9 +11,16 @@ pipeline {
         }
         stage('Cynic Server Test') {
             steps {
-                sh 'echo "CST..."'
+                sh 'echo "Cynic Server Test..."'
                 sh 'chmod +x scripts/ServerTest.sh'
                 sh './scripts/ServerTest.sh'
+            }
+        }
+        stage('Deploying Development build') {
+            steps {
+                sh 'echo "Deploying Development Build..."'
+                sh 'chmod +x scripts/DeployDevelopmentBuild.sh'
+                sh './scripts/DeployDevelopmentBuild.sh'
             }
         }
     }
