@@ -19,8 +19,8 @@ pipeline {
         stage('Deploying Development build') {
             steps {
                 sh 'echo "Deploying Development Build..."'
-                sh 'chmod +x scripts/DeployDevelopmentBuild.sh'
-                sh './scripts/DeployDevelopmentBuild.sh'
+                sh 'chmod +x scripts/deployDevelopmentServer.sh'
+                sh './scripts/deployDevelopmentServer.sh'
             }
         }
     }
