@@ -39,16 +39,18 @@ public class TestUpdatePlayer {
         assert (player != null);
 
         Vector2 newPosition = new Vector2(400, -200);
-        int newHealth = 1;
-        JSONObject playerJsonUpdatedData = createPlayerUpdateData(player.id, newHealth, newPosition);
+        float rotation = 45.0f;
+        boolean throttling = true;
+        JSONObject playerJsonUpdatedData = createPlayerUpdateData(player.id, rotation, throttling, newPosition);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
 
         // Execute logic
         updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        assert (player.health == newHealth);
+        assert (player.rotationDegrees == rotation);
         assert (player.position.equalsTo(newPosition));
+        assert (player.throttling);
 
         // Build the expected outgoing packet
         verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
@@ -70,8 +72,9 @@ public class TestUpdatePlayer {
         assert (player != null);
 
         Vector2 newPosition = new Vector2(400, -200);
-        int newHealth = 1;
-        JSONObject playerJsonUpdatedData = createPlayerUpdateData(-1, newHealth, newPosition);
+        float rotation = 45.0f;
+        boolean throttling = true;
+        JSONObject playerJsonUpdatedData = createPlayerUpdateData(-1,rotation , throttling,  newPosition);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
 
@@ -90,10 +93,11 @@ public class TestUpdatePlayer {
         return sessionPlayers.createPlayer(bundle);
     }
 
-    private JSONObject createPlayerUpdateData(int playerId, int health, Vector2 position) {
+    private JSONObject createPlayerUpdateData(int playerId, float rotation, boolean throttling, Vector2 position) {
         return new JSONObject()
                 .put(PacketKeys.PlayerId, playerId)
-                .put(PacketKeys.PlayerHealth, health)
+                .put(PacketKeys.PlayerRotation, rotation)
+                .put(PacketKeys.Throttling, throttling)
                 .put(PacketKeys.PlayerXPos, position.x)
                 .put(PacketKeys.PlayerYPos, position.y);
     }

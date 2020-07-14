@@ -21,14 +21,12 @@ public class SessionPlayers {
 
     public PlayerClient createPlayer(final ServerPacketBundle bundle) {
         if(!isFull()) {
-            int maxHealth = 3;
             PlayerClient client = new PlayerClient(
                     "John Doe",
                     bundle.getDatagramPacket().getAddress(),
                     bundle.getDatagramPacket().getPort(),
                     IDGenerator.getId(),
-                    bundle.getSessionId(),
-                    maxHealth
+                    bundle.getSessionId()
             );
 
             players.add(client);

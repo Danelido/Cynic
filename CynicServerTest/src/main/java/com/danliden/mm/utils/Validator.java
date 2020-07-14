@@ -45,8 +45,8 @@ public class Validator {
             response.getString(ValidPacketDataKeys.PlayerName);
             response.getFloat(ValidPacketDataKeys.PlayerXPos);
             response.getFloat(ValidPacketDataKeys.PlayerYPos);
-            response.getInt(ValidPacketDataKeys.PlayerHealth);
-
+            response.getFloat(ValidPacketDataKeys.PlayerRotation);
+            response.getBoolean(ValidPacketDataKeys.Throttling);
             logger.info("Join Response OK");
 
         } catch (Exception e) {
