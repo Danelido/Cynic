@@ -15,11 +15,29 @@
       "CLIENT_UPDATE": {
         "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
         "PlayerId": "Id of the player",
+        "SessionId": "Id of the game session",
         "X": "X-Position of the client",
         "Y": "Y-Position of the client",
         "Rot": "Player Rotation",
         "Throt": "Player is throttling(gas)"
-      }
+      },
+      "VOTE_TO_START_SESSION": {
+        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+        "PlayerId": "Id of the player",
+        "SessionId": "Id of the game session"
+      },
+      "REMOVE_VOTE_TO_START_SESSION": {
+        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+        "PlayerId": "Id of the player",
+        "SessionId": "Id of the game session"
+      },
+      "SETUP_UPDATE": {
+        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+        "PlayerId": "Id of the player",
+        "SessionId": "Id of the game session",
+        "Ship": "Which ship that is selected"
+      },
+    
   },
   "Outgoing packages": {
       "NOT_CONNECTED": {
@@ -31,10 +49,7 @@
         "PlayerId": "Id of the player",
         "SessionId": "Id of the game session",
         "PlayerName": "Name of the player (Not supported)",
-        "PlayerXPos": "The start x position of the player",
-        "PlayerYPos": "The start y position of the player",
-        "Throttling": "If the player is holding the throttle(gas)",
-        "PlayerRotation": "The start rotation of the player"
+        "SessionState": "State of the session"
       },
       "LOST_CLIENT": {
           "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
@@ -61,11 +76,8 @@
         "AckId": "Unique ack id that the client needs to answer back",
         "PlayerId": "Id of the new player",
         "SessionId": "Id of the game session",
-        "PlayerName": "Name of the new player (Not supported)",
-        "PlayerXPos": "The start x position of the new player",
-        "PlayerYPos": "The start y position of the new player",
-        "Throttling": "If the player is holding the throttle(gas)",
-        "PlayerRotation": "The start rotation of the player"
+        "PlayerName": "Name of the new player (Not supported)"
       }
+
   }
 }
