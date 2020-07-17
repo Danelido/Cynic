@@ -41,12 +41,9 @@ public class Validator {
             }
 
             response.getInt(ValidPacketDataKeys.PlayerId);
-            response.getInt(ValidPacketDataKeys.SessionID);
+            response.getInt(ValidPacketDataKeys.AckId);
             response.getString(ValidPacketDataKeys.PlayerName);
-            response.getFloat(ValidPacketDataKeys.PlayerXPos);
-            response.getFloat(ValidPacketDataKeys.PlayerYPos);
-            response.getFloat(ValidPacketDataKeys.PlayerRotation);
-            response.getBoolean(ValidPacketDataKeys.Throttling);
+            response.getBoolean(ValidPacketDataKeys.PlayerReady);
             logger.info("Join Response OK");
 
         } catch (Exception e) {

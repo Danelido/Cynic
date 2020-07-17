@@ -30,7 +30,9 @@ public class TestUpdatePlayer {
         IPacketLogic updatePlayerLogic = new UpdatePlayer();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(dgPacket.getPort()).thenReturn(2020);
@@ -48,12 +50,46 @@ public class TestUpdatePlayer {
         // Execute logic
         updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        assert (player.rotationDegrees == rotation);
-        assert (player.position.equalsTo(newPosition));
-        assert (player.throttling);
+        assert (player.getRotationDegrees() == rotation);
+        assert (player.getPosition().equalsTo(newPosition));
+        assert (player.isThrottling());
 
         // Build the expected outgoing packet
         verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
+    }
+
+    @Test
+    public void testUpdatingValidPlayerInLobby() {
+        // Setup
+        final int hostAddressMock = 0;
+        IPacketLogic updatePlayerLogic = new UpdatePlayer();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = new GameState();
+
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        assert (player != null);
+
+        Vector2 newPosition = new Vector2(400, -200);
+        float rotation = 45.0f;
+        boolean throttling = true;
+        JSONObject playerJsonUpdatedData = createPlayerUpdateData(player.id, rotation, throttling, newPosition);
+
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
+
+        // Execute logic
+        updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        assert (player.getRotationDegrees() != rotation);
+        assert (!player.getPosition().equalsTo(newPosition));
+        assert (!player.isThrottling());
+
+        // Build the expected outgoing packet
+        verify(senderMock, times(0)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
     }
 
     @Test
@@ -63,7 +99,9 @@ public class TestUpdatePlayer {
         IPacketLogic updatePlayerLogic = new UpdatePlayer();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(dgPacket.getPort()).thenReturn(2020);

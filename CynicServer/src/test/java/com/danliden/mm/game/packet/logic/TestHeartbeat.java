@@ -31,7 +31,9 @@ public class TestHeartbeat {
         IPacketLogic heartbeatLogic = new Heartbeat();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);
@@ -44,12 +46,12 @@ public class TestHeartbeat {
 
         player.addFlatline();
         player.addFlatline();
-        assert (player.nrOfFlatLines == 2);
+        assert (player.getNrOfFlatLines() == 2);
 
         // Execute logic
         heartbeatLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        assert (player.nrOfFlatLines == 0);
+        assert (player.getNrOfFlatLines() == 0);
 
     }
 
@@ -61,7 +63,9 @@ public class TestHeartbeat {
         IPacketLogic heartbeatLogic = new Heartbeat();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);

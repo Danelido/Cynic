@@ -13,22 +13,24 @@ import org.json.JSONObject;
 public class UpdatePlayer implements IPacketLogic {
     @Override
     public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        final int id = bundle
-                .getPacketJsonData()
-                .getInt(PacketKeys.PlayerId);
+        if(gameState.getGameState() == GameState.GameStateEnum.IN_SESSION) {
+            final int id = bundle
+                    .getPacketJsonData()
+                    .getInt(PacketKeys.PlayerId);
 
-        PlayerClient client = sessionPlayers.findById(id);
+            PlayerClient client = sessionPlayers.findById(id);
 
-        if (client != null) {
-            client.updatePlayer(bundle.getPacketJsonData());
-            notifyOtherClients(sender, sessionPlayers, client);
-        } else {
-            sender.sendNotConnectedPacketToSender(bundle);
+            if (client != null) {
+                client.updatePlayer(bundle.getPacketJsonData());
+                notifyOtherClients(sender, sessionPlayers, client);
+            } else {
+                sender.sendNotConnectedPacketToSender(bundle);
+            }
         }
     }
 
     private void notifyOtherClients(PacketSender sender, SessionPlayers sessionPlayers, PlayerClient client) {
-        JSONObject updatePlayerJsonData = client.getAsJson();
+        JSONObject updatePlayerJsonData = client.getAsJsonForInSession();
         updatePlayerJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
         sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), client);
     }

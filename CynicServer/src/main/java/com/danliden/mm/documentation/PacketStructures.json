@@ -1,83 +1,96 @@
 {
   "Incoming packages": {
-      "JOIN_REQUEST": {
-        "PacketId": "A Valid packet type, in this case \"JOIN_REQUEST\"",
-        "SessionId": "Id of the game session"
-      },
-      "HEARTBEAT": {
-        "PacketId": "A Valid packet type, in this case \"HEARTBEAT\"",
-        "PlayerId": "Id of the player"
-      },
-      "LEFT_SESSION": {
-        "PacketId": "A Valid packet type, in this case \"LEFT_SESSION\"",
-        "PlayerId": "Id of the player"
-      },
-      "CLIENT_UPDATE": {
-        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
-        "PlayerId": "Id of the player",
-        "SessionId": "Id of the game session",
-        "X": "X-Position of the client",
-        "Y": "Y-Position of the client",
-        "Rot": "Player Rotation",
-        "Throt": "Player is throttling(gas)"
-      },
-      "VOTE_TO_START_SESSION": {
-        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
-        "PlayerId": "Id of the player",
-        "SessionId": "Id of the game session"
-      },
-      "REMOVE_VOTE_TO_START_SESSION": {
-        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
-        "PlayerId": "Id of the player",
-        "SessionId": "Id of the game session"
-      },
-      "SETUP_UPDATE": {
-        "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
-        "PlayerId": "Id of the player",
-        "SessionId": "Id of the game session",
-        "Ship": "Which ship that is selected"
-      },
-    
+    "JOIN_REQUEST": {
+      "PacketId": "A Valid packet type, in this case \"JOIN_REQUEST\"",
+      "SessionId": "Id of the game session"
+    },
+    "HEARTBEAT": {
+      "PacketId": "A Valid packet type, in this case \"HEARTBEAT\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+    "LEFT_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"LEFT_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+    "CLIENT_UPDATE": {
+      "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session",
+      "X": "X-Position of the client",
+      "Y": "Y-Position of the client",
+      "Rot": "Player Rotation",
+      "Throt": "Player is throttling(gas)"
+    },
+    "VOTE_TO_START_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"VOTE_TO_START_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+    "REMOVE_VOTE_TO_START_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+    "PLAYER_SHIP_CHANGE ( WIP )": {
+      "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    }
   },
   "Outgoing packages": {
-      "NOT_CONNECTED": {
-        "PacketId": "A Valid packet type, in this case \"NOT_CONNECTED\""
-      },
-      "JOIN_ACCEPTED": {
-        "PacketId": "A Valid packet type, in this case \"JOIN_ACCEPTED\"",
-        "AckId": "Unique ack id that the client needs to answer back",
-        "PlayerId": "Id of the player",
-        "SessionId": "Id of the game session",
-        "PlayerName": "Name of the player (Not supported)",
-        "SessionState": "State of the session"
-      },
-      "LOST_CLIENT": {
-          "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
-          "PlayerId": "Id of the player that was lost"
-      },
-      "HEARTBEAT_REQUEST": {
-        "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\""
-      },
-      "UPDATED_CLIENT": {
-        "PacketId": "A Valid packet type, in this case \"UPDATED_CLIENT\"",
-        "PlayerId": "Id of the updated player",
-        "SessionId": "Id of the game session",
-        "PlayerName": "Name of the updated player (Not supported)",
-        "PlayerXPos": "The updated x position of the player",
-        "PlayerYPos": "The updated y position of the player",
-        "Throttling": "If the player is holding the throttle(gas)",
-        "PlayerRotation": "The start rotation of the player"
-      },
-      "DECLINED_JOIN_REQUEST": {
-        "PacketId": "A Valid packet type, in this case \"DECLINED_JOIN_REQUEST\""
-      },
-      "NEW_PLAYER_JOINED" : {
-        "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
-        "AckId": "Unique ack id that the client needs to answer back",
-        "PlayerId": "Id of the new player",
-        "SessionId": "Id of the game session",
-        "PlayerName": "Name of the new player (Not supported)"
-      }
-
+    "NOT_CONNECTED": {
+      "PacketId": "A Valid packet type, in this case \"NOT_CONNECTED\""
+    },
+    "JOIN_ACCEPTED": {
+      "PacketId": "A Valid packet type, in this case \"JOIN_ACCEPTED\"",
+      "AckId": "Unique ack id that the client needs to answer back",
+      "PlayerId": "Id of the player",
+      "PlayerReady": "Have the player voted to start the game session"
+    },
+    "LOST_CLIENT": {
+      "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
+      "PlayerId": "Id of the player that was lost"
+    },
+    "HEARTBEAT_REQUEST": {
+      "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\""
+    },
+    "UPDATED_CLIENT": {
+      "PacketId": "A Valid packet type, in this case \"UPDATED_CLIENT\"",
+      "PlayerId": "Id of the updated player",
+      "PlayerXPos": "The updated x position of the player",
+      "PlayerYPos": "The updated y position of the player",
+      "Throttling": "If the player is holding the throttle(gas)",
+      "PlayerRotation": "The start rotation of the player"
+    },
+    "DECLINED_JOIN_REQUEST": {
+      "PacketId": "A Valid packet type, in this case \"DECLINED_JOIN_REQUEST\""
+    },
+    "NEW_PLAYER_JOINED": {
+      "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
+      "AckId": "Unique ack id that the client needs to answer back",
+      "PlayerId": "Id of the new player",
+      "PlayerReady": "Have the player voted to start the game session",
+      "PlayerName": "Name of the new player (Not supported)"
+    },
+    "PLAYER_VOTE_TO_START": {
+      "PacketId": "A Valid packet type, in this case \"PLAYER_VOTE_TO_START\"",
+      "PlayerId": "Id of the player that voted to start",
+      "AckId": "Unique ack id that the client needs to answer back"
+    },
+    "PLAYER_REMOVE_VOTE_TO_START": {
+      "PacketId": "A Valid packet type, in this case \"PLAYER_REMOVE_VOTE_TO_START\"",
+      "PlayerId": "Id of the player that removed their vote",
+      "AckId": "Unique ack id that the client needs to answer back"
+    },
+    "STARTING_GAME": {
+      "PacketId": "A Valid packet type, in this case \"STARTING_GAME\"",
+      "AckId": "Unique ack id that the client needs to answer back"
+    },
+    "PLAYER_SHIP_CHANGE ( WIP )": {
+      "PacketId": "A Valid packet type, in this case \"PLAYER_SHIP_CHANGE\"",
+      "AckId": "Unique ack id that the client needs to answer back"
+    }
   }
 }

@@ -31,7 +31,9 @@ public class TestLeaveSession {
         IPacketLogic leaveSessionLogic = new LeaveSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);
@@ -65,7 +67,9 @@ public class TestLeaveSession {
         IPacketLogic leaveSessionLogic = new LeaveSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);

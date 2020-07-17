@@ -11,5 +11,5 @@ public class PacketKeys {
     public static final String PlayerYPos = "Y";
     public static final String Throttling = "Throt";
     public static final String AckId = "AId";
-    public static final String SessionState = "State";
+    public static final String PlayerReady = "Rdy";
 }

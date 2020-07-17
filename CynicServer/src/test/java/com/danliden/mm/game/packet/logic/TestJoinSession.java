@@ -28,7 +28,7 @@ public class TestJoinSession {
         // Setup
         IPacketLogic joinSessionLogic = new JoinSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
-        GameState state = GameState.LOBBY;
+        GameState state = new GameState();
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
@@ -55,7 +55,7 @@ public class TestJoinSession {
         // Setup
         IPacketLogic joinSessionLogic = new JoinSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
-        GameState state = GameState.LOBBY;
+        GameState state = new GameState();
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
@@ -86,7 +86,7 @@ public class TestJoinSession {
         // Setup
         IPacketLogic joinSessionLogic = new JoinSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
-        GameState state = GameState.LOBBY;
+        GameState state = new GameState();
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
@@ -119,7 +119,8 @@ public class TestJoinSession {
         // Setup
         IPacketLogic joinSessionLogic = new JoinSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
-        GameState state = GameState.IN_SESSION;
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
@@ -150,7 +151,7 @@ public class TestJoinSession {
         // Setup
         IPacketLogic joinSessionLogic = new JoinSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
-        GameState state = GameState.LOBBY;
+        GameState state = new GameState();
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
@@ -170,6 +171,37 @@ public class TestJoinSession {
                 .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
 
         Mockito.verify(senderMock, Mockito.times(0))
+                .sendToMultipleWithAckAndExclude(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt(), Mockito.any());
+
+    }
+
+    @Test
+    public void testAddingNewPlayerWithExistingPlayersBeingPartiallyReady() {
+        // Setup
+        IPacketLogic joinSessionLogic = new JoinSession();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+        GameState state = new GameState();
+
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        addPlayer(sessionPlayers, dgPacket, 1);
+        addPlayer(sessionPlayers, dgPacket, 2);
+        addPlayer(sessionPlayers, dgPacket, 3);
+
+        prepareNewPlayer(dgPacket, 4);
+
+        // Execute logic
+        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        // Verify
+        assert (sessionPlayers.getNumberOfPlayers() == 4);
+
+        Mockito.verify(senderMock, Mockito.times(4))
+                .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
+
+        Mockito.verify(senderMock, Mockito.times(1))
                 .sendToMultipleWithAckAndExclude(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt(), Mockito.any());
 
     }

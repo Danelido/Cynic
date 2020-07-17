@@ -28,7 +28,7 @@ public class GameSession {
         this.sender = sender;
         SESSION_ID = sessionID;
         sessionPlayers = new SessionPlayers(MAX_PLAYERS);
-        currentState = GameState.LOBBY;
+        currentState = new GameState();
         ackHandler = new SessionAckHandler(sender);
         mapPacketLogic();
     }
@@ -64,7 +64,7 @@ public class GameSession {
 
     private void checkClientsHeartbeat() {
         for (PlayerClient client : sessionPlayers.getPlayers()) {
-            if (client.nrOfFlatLines >= MAX_FLAT_LINES) {
+            if (client.getNrOfFlatLines() >= MAX_FLAT_LINES) {
                 disconnectPlayer(client);
             }
         }
@@ -83,6 +83,8 @@ public class GameSession {
         packetLogicMapping.put(PacketType.Incoming.LEFT_SESSION, new LeaveSession());
         packetLogicMapping.put(PacketType.Incoming.HEARTBEAT, new Heartbeat());
         packetLogicMapping.put(PacketType.Incoming.CLIENT_UPDATE, new UpdatePlayer());
+        packetLogicMapping.put(PacketType.Incoming.VOTE_TO_START_SESSION, new VoteToStartSession());
+        packetLogicMapping.put(PacketType.Incoming.REMOVE_VOTE_TO_START_SESSION, new RemoveVoteToStartSession());
     }
 
     private void sendHeartbeats() {
@@ -96,7 +98,7 @@ public class GameSession {
     }
 
     public boolean isJoinAble() {
-        return currentState == GameState.LOBBY && !isFull();
+        return currentState.getGameState() == GameState.GameStateEnum.LOBBY && !isFull();
     }
 
     public final int getSessionId() {

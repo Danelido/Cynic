@@ -13,10 +13,11 @@ public class PlayerClient {
     public final int port;
     public final int id;
     public final int sessionId;
-    public int nrOfFlatLines = 0; // Used with session heartbeats.
-    public Vector2 position = new Vector2();
-    public float rotationDegrees = 0.f;
-    public boolean throttling = false;
+    private int nrOfFlatLines = 0; // Used with session heartbeats.
+    private Vector2 position = new Vector2();
+    private float rotationDegrees = 0.f;
+    private boolean throttling = false;
+    private boolean ready;
 
     public PlayerClient(String name, InetAddress address, int port, int id, int sessionId) {
         this.name = name;
@@ -24,13 +25,20 @@ public class PlayerClient {
         this.port = port;
         this.id = id;
         this.sessionId = sessionId;
+        this.ready = false;
     }
 
-    public JSONObject getAsJson() {
+    public JSONObject getAsJsonForLobby(){
         JSONObject obj = new JSONObject();
         obj.put(PacketKeys.PlayerId, id);
-        obj.put(PacketKeys.SessionID, sessionId);
+        obj.put(PacketKeys.PlayerReady, ready);
         obj.put(PacketKeys.PlayerName, name);
+        return obj;
+    }
+
+    public JSONObject getAsJsonForInSession() {
+        JSONObject obj = new JSONObject();
+        obj.put(PacketKeys.PlayerId, id);
         obj.put(PacketKeys.PlayerXPos, position.x);
         obj.put(PacketKeys.PlayerYPos, position.y);
         obj.put(PacketKeys.PlayerRotation, rotationDegrees);
@@ -45,13 +53,36 @@ public class PlayerClient {
                 obj.getFloat(PacketKeys.PlayerYPos));
     }
 
-
     public synchronized void addFlatline() {
         nrOfFlatLines++;
     }
 
     public synchronized void resetFlatline() {
         nrOfFlatLines = 0;
+    }
+
+    public synchronized void setIsReady(boolean isReady){
+        ready = isReady;
+    }
+
+    public int getNrOfFlatLines() {
+        return nrOfFlatLines;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public float getRotationDegrees() {
+        return rotationDegrees;
+    }
+
+    public boolean isThrottling() {
+        return throttling;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
 }

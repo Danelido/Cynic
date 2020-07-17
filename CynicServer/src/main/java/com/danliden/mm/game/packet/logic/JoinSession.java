@@ -31,13 +31,13 @@ public class JoinSession implements IPacketLogic {
     }
 
     private void sendConfirmationToClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient) {
-        JSONObject newClientJsonData = newClient.getAsJson();
+        JSONObject newClientJsonData = newClient.getAsJsonForLobby();
         newClientJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.JOIN_ACCEPTED);
         sender.sendWithAck(ackHandler, newClientJsonData, newClient, 30, 2000);
     }
 
     private void tellExistingClientsAboutNewClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient, SessionPlayers sessionPlayers) {
-        JSONObject newClientJsonData = newClient.getAsJson();
+        JSONObject newClientJsonData = newClient.getAsJsonForLobby();
         newClientJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
         sender.sendToMultipleWithAckAndExclude(ackHandler, newClientJsonData, sessionPlayers.getPlayers(), 30, 2000, newClient);
     }
@@ -45,7 +45,7 @@ public class JoinSession implements IPacketLogic {
     private void tellNewClientAboutExistingClients(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient, SessionPlayers sessionPlayers) {
         for (PlayerClient client : sessionPlayers.getPlayers()) {
             if (client.id != newClient.id) {
-                JSONObject clientAsJson = client.getAsJson();
+                JSONObject clientAsJson = client.getAsJsonForLobby();
                 clientAsJson.put(PacketKeys.PacketId, PacketType.Outgoing.NEW_PLAYER_JOINED);
                 sender.sendWithAck(ackHandler, clientAsJson, newClient, 30, 2000);
             }
@@ -59,7 +59,7 @@ public class JoinSession implements IPacketLogic {
     }
 
     private boolean isSessionJoinAble(GameState gameState, SessionPlayers sessionPlayers) {
-        return gameState == GameState.LOBBY && !sessionPlayers.isFull();
+        return gameState.getGameState() == GameState.GameStateEnum.LOBBY && !sessionPlayers.isFull();
     }
 
     private boolean doesClientExist(ServerPacketBundle bundle, SessionPlayers sessionPlayers) {
