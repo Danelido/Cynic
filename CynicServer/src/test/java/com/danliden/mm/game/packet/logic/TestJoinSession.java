@@ -2,6 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.server.PacketSender;
+import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
@@ -186,9 +187,9 @@ public class TestJoinSession {
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(dgPacket.getPort()).thenReturn(2020);
 
-        addPlayer(sessionPlayers, dgPacket, 1);
-        addPlayer(sessionPlayers, dgPacket, 2);
-        addPlayer(sessionPlayers, dgPacket, 3);
+        addPlayer(sessionPlayers, dgPacket, 1).setIsReady(true);
+        addPlayer(sessionPlayers, dgPacket, 2).setIsReady(true);
+        addPlayer(sessionPlayers, dgPacket, 3).setIsReady(false);
 
         prepareNewPlayer(dgPacket, 4);
 
@@ -198,6 +199,8 @@ public class TestJoinSession {
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
 
+        sessionPlayers.getPlayers().forEach(playerClient -> {assert(!playerClient.isReady());});
+
         Mockito.verify(senderMock, Mockito.times(4))
                 .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
 
@@ -206,11 +209,11 @@ public class TestJoinSession {
 
     }
 
-    private void addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int id) {
+    private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int id) {
         InetAddress playerAddress = mock(InetAddress.class);
         Mockito.when(dgPacket.getAddress()).thenReturn(playerAddress);
         Mockito.when(playerAddress.getHostAddress()).thenReturn(Integer.toString(id));
-        sessionPlayers.createPlayer(bundle);
+        return sessionPlayers.createPlayer(bundle);
     }
 
     private void prepareNewPlayer(final DatagramPacket dgPacket, final int id) {

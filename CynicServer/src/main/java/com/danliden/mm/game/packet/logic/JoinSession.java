@@ -15,19 +15,23 @@ public class JoinSession implements IPacketLogic {
     @Override
     public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
 
-        if (doesClientExist(bundle, sessionPlayers)) {
+        if (clientExists(bundle, sessionPlayers)) {
             return;
         }
 
         if (isSessionJoinAble(gameState, sessionPlayers)) {
             PlayerClient newClient = sessionPlayers.createPlayer(bundle);
-
+            undoAllVotesToStartSession(sessionPlayers);
             sendConfirmationToClient(sender, ackHandler, newClient);
             tellExistingClientsAboutNewClient(sender, ackHandler, newClient, sessionPlayers);
             tellNewClientAboutExistingClients(sender, ackHandler, newClient, sessionPlayers);
         } else {
             declineJoinRequest(bundle, sender);
         }
+    }
+
+    private void undoAllVotesToStartSession(SessionPlayers sessionPlayers) {
+        sessionPlayers.getPlayers().forEach(playerClient -> playerClient.setIsReady(false));
     }
 
     private void sendConfirmationToClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient) {
@@ -62,7 +66,7 @@ public class JoinSession implements IPacketLogic {
         return gameState.getGameState() == GameState.GameStateEnum.LOBBY && !sessionPlayers.isFull();
     }
 
-    private boolean doesClientExist(ServerPacketBundle bundle, SessionPlayers sessionPlayers) {
+    private boolean clientExists(ServerPacketBundle bundle, SessionPlayers sessionPlayers) {
         return sessionPlayers.findByAddressAndPort(bundle.getDatagramPacket().getAddress(), bundle.getDatagramPacket().getPort()) != null;
     }
 

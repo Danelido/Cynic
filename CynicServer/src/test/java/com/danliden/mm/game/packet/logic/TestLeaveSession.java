@@ -95,6 +95,43 @@ public class TestLeaveSession {
 
     }
 
+    @Test
+    public void testDisconnectingValidPlayerIfOthersIsPartiallyReady() {
+        // Setup
+        final int hostAddressMock = 0;
+        JSONObject mockJson = mock(JSONObject.class);
+        IPacketLogic leaveSessionLogic = new LeaveSession();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(mockJson);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock).setIsReady(true);
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock).setIsReady(true);
+        addPlayer(sessionPlayers, dgPacket, hostAddressMock).setIsReady(false);
+
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        assert (player != null);
+
+        Mockito.when(mockJson.getInt(PacketKeys.PlayerId)).thenReturn(player.id);
+
+        // Execute logic
+        leaveSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        sessionPlayers.getPlayers().forEach(playerClient -> {assert(!playerClient.isReady());});
+        assert (sessionPlayers.findById(player.id) == null);
+        assert (sessionPlayers.getNumberOfPlayers() == 3);
+
+        Mockito.verify(senderMock, Mockito.times(1))
+                .sendToMultipleWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
+
+    }
+
 
 
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int hostAddressMock) {

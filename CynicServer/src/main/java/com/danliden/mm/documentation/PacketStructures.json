@@ -49,7 +49,7 @@
       "PlayerId": "Id of the player",
       "PlayerReady": "Have the player voted to start the game session"
     },
-    "LOST_CLIENT": {
+    "LOST_CLIENT": { /* Vote reset is engaged with this packet */
       "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
       "PlayerId": "Id of the player that was lost"
     },
@@ -67,7 +67,7 @@
     "DECLINED_JOIN_REQUEST": {
       "PacketId": "A Valid packet type, in this case \"DECLINED_JOIN_REQUEST\""
     },
-    "NEW_PLAYER_JOINED": {
+    "NEW_PLAYER_JOINED": { /* Vote reset is engaged with this packet */
       "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
       "AckId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of the new player",
