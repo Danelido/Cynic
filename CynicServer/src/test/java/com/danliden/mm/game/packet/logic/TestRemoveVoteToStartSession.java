@@ -53,7 +53,7 @@ public class TestRemoveVoteToStartSession {
         assert (!player.isReady() );
 
         // Build the expected outgoing packet
-        verify(senderMock, times(1)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class TestRemoveVoteToStartSession {
         removeVoteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
         // Build the expected outgoing packet
-        verify(senderMock, times(0)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TestRemoveVoteToStartSession {
 
         // Build the expected outgoing packet
         verify(senderMock, times(1)).sendNotConnectedPacketToSender(any(ServerPacketBundle.class));
-        verify(senderMock, times(0)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket) {

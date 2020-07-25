@@ -31,7 +31,7 @@ public class TestVoteToStartSession {
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
 
     @Test
-    public void testAddingVoteFromPlayer() {
+    public void testAddingVoteFromPlayerWithNoOtherPlayers() {
         // Setup
         IPacketLogic voteToStartSession = new VoteToStartSession();
         SessionPlayers sessionPlayers = new SessionPlayers(4);
@@ -52,11 +52,10 @@ public class TestVoteToStartSession {
         // Execute logic
         voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        assert (player.isReady());
-        assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
+        assert (!player.isReady());
+        assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
 
-        verify(senderMock, timeout(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
-        verify(senderMock, times(1)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -87,8 +86,7 @@ public class TestVoteToStartSession {
         assert (player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
 
-        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
-        verify(senderMock, times(1)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -120,8 +118,7 @@ public class TestVoteToStartSession {
         assert (player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
 
-        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
-        verify(senderMock, times(1)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(2)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -147,7 +144,7 @@ public class TestVoteToStartSession {
         // Execute logic
         voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        verify(senderMock, times(0)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
     @Test
@@ -175,7 +172,7 @@ public class TestVoteToStartSession {
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
 
         verify(senderMock, times(1)).sendNotConnectedPacketToSender(any(ServerPacketBundle.class));
-        verify(senderMock, times(0)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
 

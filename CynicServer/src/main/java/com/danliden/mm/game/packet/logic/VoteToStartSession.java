@@ -19,29 +19,34 @@ public class VoteToStartSession implements IPacketLogic {
                 .getInt(PacketKeys.PlayerId);
 
         PlayerClient client = sessionPlayers.findById(id);
-        if(setToReadyIfNotNull(client, bundle, sender) && gameState.getGameState() == GameState.GameStateEnum.LOBBY){
+
+        if(!doesPlayerExist(client)) {
+            sender.sendNotConnectedPacketToSender(bundle);
+            return;
+        }
+
+        if(!enoughPlayersToStartSession(sessionPlayers)){
+            return;
+        }
+
+        if(gameState.getGameState() == GameState.GameStateEnum.LOBBY){
+            client.setIsReady(true);
             sendPlayerReadyPacketToAllPlayers(client, ackHandler, sessionPlayers, sender);
             if(startSessionIfAllPlayersReady(ackHandler, sessionPlayers, sender)){
                 gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
             }
         }
-
     }
 
-    private boolean setToReadyIfNotNull(PlayerClient client, ServerPacketBundle bundle, PacketSender sender){
-        if (client != null) {
-            client.setIsReady(true);
-            return true;
-        }
-        sender.sendNotConnectedPacketToSender(bundle);
-        return false;
+    private boolean doesPlayerExist(PlayerClient client){
+        return client != null;
     }
 
     private void sendPlayerReadyPacketToAllPlayers(PlayerClient client, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender){
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.PLAYER_VOTE_TO_START);
         packet.put(PacketKeys.PlayerId, client.id);
-        sender.sendToMultipleWithAckAndExclude(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250, client);
+        sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250);
     }
 
     private boolean startSessionIfAllPlayersReady(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender){
@@ -49,7 +54,6 @@ public class VoteToStartSession implements IPacketLogic {
             sendStartingPacketToPlayers(ackHandler, sessionPlayers, sender);
             return true;
         }
-
         return false;
     }
 
@@ -60,6 +64,10 @@ public class VoteToStartSession implements IPacketLogic {
             }
         }
         return true;
+    }
+
+    private boolean enoughPlayersToStartSession(SessionPlayers sessionPlayers){
+        return sessionPlayers.getPlayers().size() > 1;
     }
 
     private void sendStartingPacketToPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender){

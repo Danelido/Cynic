@@ -39,7 +39,7 @@ public class RemoveVoteToStartSession implements IPacketLogic {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.PLAYER_REMOVE_VOTE_TO_START);
         packet.put(PacketKeys.PlayerId, client.id);
-        sender.sendToMultipleWithAckAndExclude(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250, client);
+        sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250);
     }
 
 }
