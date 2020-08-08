@@ -7,6 +7,7 @@ import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
+import com.danliden.mm.utils.Vector3;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ public class TestVoteToStartSession {
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
     private final String VALID_SHIP_NAME = "ValidName";
+    private final Vector3 COLOR = new Vector3(1.0f, 0.5f, 1.0f);
 
     @Test
     public void testAddingVoteFromPlayerWithNoOtherPlayers() {
@@ -46,7 +48,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -77,7 +79,7 @@ public class TestVoteToStartSession {
 
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -109,14 +111,14 @@ public class TestVoteToStartSession {
         assert (player != null);
 
         // Mark all existing players as ready
-        for(int i = 0; i < sessionPlayers.getPlayers().size(); i++){
+        for (int i = 0; i < sessionPlayers.getPlayers().size(); i++) {
             PlayerClient client = sessionPlayers.getPlayers().get(i);
-            if(client.id != player.id){
+            if (client.id != player.id) {
                 client.setIsReady(true);
             }
         }
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -145,7 +147,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -170,7 +172,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id + 1, VALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id + 1, VALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -202,7 +204,7 @@ public class TestVoteToStartSession {
         assert (player != null);
 
         String INVALID_SHIP_NAME = "";
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, INVALID_SHIP_NAME);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, INVALID_SHIP_NAME, COLOR);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -221,10 +223,13 @@ public class TestVoteToStartSession {
         return sessionPlayers.createPlayer(bundle);
     }
 
-    private JSONObject createPlayerAddVotePacket(int playerId, String shipName) {
+    private JSONObject createPlayerAddVotePacket(int playerId, String shipName, Vector3 color) {
         return new JSONObject()
                 .put(PacketKeys.PlayerId, playerId)
-                .put(PacketKeys.ShipPrefabName, shipName);
+                .put(PacketKeys.ShipPrefabName, shipName)
+                .put(PacketKeys.ShipRedComponent, color.x)
+                .put(PacketKeys.ShipGreenComponent, color.y)
+                .put(PacketKeys.ShipBlueComponent, color.z);
     }
 
 }
