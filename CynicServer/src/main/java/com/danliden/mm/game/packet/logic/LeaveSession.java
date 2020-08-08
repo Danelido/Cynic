@@ -20,17 +20,12 @@ public class LeaveSession implements IPacketLogic {
 
         PlayerClient client = sessionPlayers.findById(playerId);
         if (client != null) {
-            undoAllVotesToStartSession(sessionPlayers);
             JSONObject disconnectPackage = buildDisconnectPackageAsJson(client);
             sessionPlayers.removePlayer(client.id);
             sender.sendToMultipleWithAck(ackHandler, disconnectPackage, sessionPlayers.getPlayers(), 30, 2000);
         } else {
             sender.sendNotConnectedPacketToSender(bundle);
         }
-    }
-
-    private void undoAllVotesToStartSession(SessionPlayers sessionPlayers) {
-        sessionPlayers.getPlayers().forEach(playerClient -> playerClient.setIsReady(false));
     }
 
     private JSONObject buildDisconnectPackageAsJson(PlayerClient client) {

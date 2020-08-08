@@ -10,43 +10,46 @@ import java.util.List;
 public class SessionPlayers {
 
     private final List<PlayerClient> players;
-    private final UniqueId IDGenerator;
-    private final int MAX_PLAYERS;
+    private final UniqueId idGenerator;
+    private final int maxPlayers;
 
-    public SessionPlayers(final int MAX_PLAYERS) {
-        this.MAX_PLAYERS = MAX_PLAYERS;
+    public SessionPlayers(final int maxPlayers) {
+        this.maxPlayers = maxPlayers;
         players = new ArrayList<>();
-        IDGenerator = new UniqueId(MAX_PLAYERS);
+        idGenerator = new UniqueId(maxPlayers);
     }
 
     public PlayerClient createPlayer(final ServerPacketBundle bundle) {
-        if(!isFull()) {
-            PlayerClient client = new PlayerClient(
-                    "John Doe",
-                    bundle.getDatagramPacket().getAddress(),
-                    bundle.getDatagramPacket().getPort(),
-                    IDGenerator.getId(),
-                    bundle.getSessionId()
-            );
+        synchronized (players) {
+            if (!isFull()) {
+                undoAllVotesToStartSession();
+                PlayerClient client = new PlayerClient(
+                        "John Doe",
+                        bundle.getDatagramPacket().getAddress(),
+                        bundle.getDatagramPacket().getPort(),
+                        idGenerator.getId(),
+                        bundle.getSessionId()
+                );
 
-            players.add(client);
-            return client;
+                players.add(client);
+                return client;
+            }
         }
-
         return null;
     }
 
     public void removePlayer(final int ID) {
-        for (int i = 0; i < players.size(); i++) {
-            PlayerClient player = players.get(i);
-
-            if (player.id == ID) {
-                IDGenerator.giveBackID(player.id);
-                players.remove(i);
-                return;
+        synchronized (players) {
+            for (int i = 0; i < players.size(); i++) {
+                PlayerClient player = players.get(i);
+                if (player.id == ID) {
+                    idGenerator.giveBackID(player.id);
+                    players.remove(i);
+                    break;
+                }
             }
+            undoAllVotesToStartSession();
         }
-
     }
 
     public PlayerClient findById(final int ID) {
@@ -67,15 +70,25 @@ public class SessionPlayers {
         return null;
     }
 
+    private void undoAllVotesToStartSession() {
+        players.forEach(playerClient -> playerClient.setIsReady(false));
+    }
+
     public int getNumberOfPlayers() {
         return players.size();
     }
 
     public boolean isFull() {
-        return getNumberOfPlayers() == MAX_PLAYERS;
+        return getNumberOfPlayers() == maxPlayers;
     }
 
     public List<PlayerClient> getPlayers() {
         return players;
+    }
+
+    public void setClientReady(PlayerClient client, boolean ready) {
+        synchronized (players) {
+            client.setIsReady(ready);
+        }
     }
 }

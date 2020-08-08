@@ -19,15 +19,15 @@ public class RemoveVoteToStartSession implements IPacketLogic {
                 .getInt(PacketKeys.PlayerId);
 
         PlayerClient client = sessionPlayers.findById(id);
-        if(setToNotReadyIfNotNull(client, bundle, sender) && gameState.getGameState() == GameState.GameStateEnum.LOBBY){
+        if (setToNotReadyIfNotNull(sessionPlayers, client, bundle, sender) && gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
             informAllPlayers(client, ackHandler, sessionPlayers, sender);
         }
 
     }
 
-    private boolean setToNotReadyIfNotNull(PlayerClient client, ServerPacketBundle bundle, PacketSender sender){
+    private boolean setToNotReadyIfNotNull(SessionPlayers sessionPlayers, PlayerClient client, ServerPacketBundle bundle, PacketSender sender) {
         if (client != null) {
-            client.setIsReady(false);
+            sessionPlayers.setClientReady(client, false);
             return true;
         }
 
@@ -35,7 +35,7 @@ public class RemoveVoteToStartSession implements IPacketLogic {
         return false;
     }
 
-    private void informAllPlayers(PlayerClient client, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender){
+    private void informAllPlayers(PlayerClient client, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender) {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.PLAYER_REMOVE_VOTE_TO_START);
         packet.put(PacketKeys.PlayerId, client.id);

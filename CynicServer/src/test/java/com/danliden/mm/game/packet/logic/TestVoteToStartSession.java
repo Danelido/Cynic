@@ -102,12 +102,19 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
         Mockito.when(dgPacket.getPort()).thenReturn(2020);
 
-        addPlayer(sessionPlayers, dgPacket).setIsReady(true);
-        addPlayer(sessionPlayers, dgPacket).setIsReady(true);
-        addPlayer(sessionPlayers, dgPacket).setIsReady(true);
+        addPlayer(sessionPlayers, dgPacket);
+        addPlayer(sessionPlayers, dgPacket);
+        addPlayer(sessionPlayers, dgPacket);
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
-
         assert (player != null);
+
+        // Mark all existing players as ready
+        for(int i = 0; i < sessionPlayers.getPlayers().size(); i++){
+            PlayerClient client = sessionPlayers.getPlayers().get(i);
+            if(client.id != player.id){
+                client.setIsReady(true);
+            }
+        }
 
         JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
 

@@ -43,6 +43,10 @@ public class TestJoinSession {
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 1);
 
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            assert (!playerClient.isReady());
+        });
+
         Mockito.verify(senderMock, Mockito.times(1))
                 .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
 
@@ -73,6 +77,10 @@ public class TestJoinSession {
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
+
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            assert (!playerClient.isReady());
+        });
 
         Mockito.verify(senderMock, Mockito.times(4))
                 .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
@@ -199,7 +207,9 @@ public class TestJoinSession {
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
 
-        sessionPlayers.getPlayers().forEach(playerClient -> {assert(!playerClient.isReady());});
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            assert (!playerClient.isReady());
+        });
 
         Mockito.verify(senderMock, Mockito.times(4))
                 .sendWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());

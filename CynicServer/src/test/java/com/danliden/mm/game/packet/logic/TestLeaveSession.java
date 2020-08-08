@@ -54,6 +54,9 @@ public class TestLeaveSession {
         assert (sessionPlayers.findById(player.id) == null);
         assert (sessionPlayers.getNumberOfPlayers() == 3);
 
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            assert (!playerClient.isReady());
+        });
         Mockito.verify(senderMock, Mockito.times(1))
                 .sendToMultipleWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
 
@@ -123,7 +126,9 @@ public class TestLeaveSession {
         // Execute logic
         leaveSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
-        sessionPlayers.getPlayers().forEach(playerClient -> {assert(!playerClient.isReady());});
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            assert (!playerClient.isReady());
+        });
         assert (sessionPlayers.findById(player.id) == null);
         assert (sessionPlayers.getNumberOfPlayers() == 3);
 
@@ -131,7 +136,6 @@ public class TestLeaveSession {
                 .sendToMultipleWithAck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
 
     }
-
 
 
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket, final int hostAddressMock) {

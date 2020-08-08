@@ -32,7 +32,7 @@ public class VoteToStartSession implements IPacketLogic {
         if(gameState.getGameState() == GameState.GameStateEnum.LOBBY){
             String chosenShip = extractChosenShipName(bundle);
             if(validShipName(chosenShip)) {
-                client.setIsReady(true);
+                sessionPlayers.setClientReady(client, true);
                 client.setChoosenShip(chosenShip);
                 sendPlayerReadyPacketToAllPlayers(client, ackHandler, sessionPlayers, sender);
                 if (startSessionIfAllPlayersReady(ackHandler, sessionPlayers, sender)) {

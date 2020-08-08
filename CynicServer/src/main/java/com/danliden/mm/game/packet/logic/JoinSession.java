@@ -21,17 +21,12 @@ public class JoinSession implements IPacketLogic {
 
         if (isSessionJoinAble(gameState, sessionPlayers)) {
             PlayerClient newClient = sessionPlayers.createPlayer(bundle);
-            undoAllVotesToStartSession(sessionPlayers);
             sendConfirmationToClient(sender, ackHandler, newClient);
             tellExistingClientsAboutNewClient(sender, ackHandler, newClient, sessionPlayers);
             tellNewClientAboutExistingClients(sender, ackHandler, newClient, sessionPlayers);
         } else {
             declineJoinRequest(bundle, sender);
         }
-    }
-
-    private void undoAllVotesToStartSession(SessionPlayers sessionPlayers) {
-        sessionPlayers.getPlayers().forEach(playerClient -> playerClient.setIsReady(false));
     }
 
     private void sendConfirmationToClient(PacketSender sender, SessionAckHandler ackHandler, PlayerClient newClient) {
