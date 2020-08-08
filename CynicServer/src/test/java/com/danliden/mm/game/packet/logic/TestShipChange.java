@@ -54,7 +54,7 @@ public class TestShipChange {
         ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
-        assert (player.getChoosenShip().contentEquals(newShipName));
+        assert (player.getChosenShip().contentEquals(newShipName));
 
         verify(senderMock, times(0)).sendNotConnectedPacketToSender(any(ServerPacketBundle.class));
         verify(senderMock, times(1)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
@@ -76,7 +76,7 @@ public class TestShipChange {
         addPlayer(sessionPlayers, dgPacket);
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-        player.setChoosenShip("SomethingElse");
+        player.setChosenShip("SomethingElse");
         player.setIsReady(true);
 
         String newShipName = "ValidName";
@@ -87,7 +87,7 @@ public class TestShipChange {
         ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
-        assert (!player.getChoosenShip().contentEquals(newShipName));
+        assert (!player.getChosenShip().contentEquals(newShipName));
 
         verify(senderMock, times(0)).sendNotConnectedPacketToSender(any(ServerPacketBundle.class));
         verify(senderMock, times(0)).sendToMultipleWithAckAndExclude(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt(), any(PlayerClient.class));
@@ -109,7 +109,7 @@ public class TestShipChange {
         addPlayer(sessionPlayers, dgPacket);
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-        player.setChoosenShip("SomethingElse");
+        player.setChosenShip("SomethingElse");
 
         String newShipName = "ValidName";
         JSONObject shipChangePacket = createShipChangePacket(player.id, newShipName);
@@ -140,7 +140,7 @@ public class TestShipChange {
         addPlayer(sessionPlayers, dgPacket);
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-        player.setChoosenShip("SomethingElse");
+        player.setChosenShip("SomethingElse");
         player.setIsReady(true);
 
         String newShipName = "ValidName";
@@ -170,7 +170,7 @@ public class TestShipChange {
 
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-        player.setChoosenShip("SomethingElse");
+        player.setChosenShip("SomethingElse");
         player.setIsReady(true);
 
         String newShipName = "ValidName";

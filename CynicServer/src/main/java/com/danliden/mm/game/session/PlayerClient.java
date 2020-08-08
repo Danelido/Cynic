@@ -2,6 +2,7 @@ package com.danliden.mm.game.session;
 
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.utils.Vector2;
+import com.danliden.mm.utils.Vector3;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
@@ -16,6 +17,7 @@ public class PlayerClient {
     private int nrOfFlatLines = 0; // Used with session heartbeats.
     private String shipPrefabName;
     private Vector2 position = new Vector2();
+    private Vector3 color = new Vector3();
     private float rotationDegrees = 0.f;
     private boolean throttling = false;
     private boolean ready;
@@ -30,7 +32,7 @@ public class PlayerClient {
         this.shipPrefabName = "";
     }
 
-    public JSONObject getAsJsonForLobby(){
+    public JSONObject getAsJsonForLobby() {
         JSONObject obj = new JSONObject();
         obj.put(PacketKeys.PlayerId, id);
         obj.put(PacketKeys.PlayerReady, ready);
@@ -64,7 +66,7 @@ public class PlayerClient {
         nrOfFlatLines = 0;
     }
 
-    public synchronized void setIsReady(boolean isReady){
+    public synchronized void setIsReady(boolean isReady) {
         ready = isReady;
     }
 
@@ -88,11 +90,19 @@ public class PlayerClient {
         return ready;
     }
 
-    public void setChoosenShip(String prefabName) {
+    public void setChosenShip(String prefabName) {
         this.shipPrefabName = prefabName;
     }
 
-    public String getChoosenShip() {
+    public void setShipColor(float r, float g, float b) {
+        color.set(r, g, b);
+    }
+
+    public String getChosenShip() {
         return this.shipPrefabName;
+    }
+
+    public Vector3 getColor(){
+        return this.color;
     }
 }

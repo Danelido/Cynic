@@ -44,14 +44,14 @@ public class ShipChange implements IPacketLogic {
         String shipName = bundle
                 .getPacketJsonData()
                 .getString(PacketKeys.ShipPrefabName);
-        client.setChoosenShip(shipName);
+        client.setChosenShip(shipName);
     }
 
     private void notifyAllClients(PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PlayerClient client) {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.PLAYER_SHIP_CHANGE);
         packet.put(PacketKeys.PlayerId, client.id);
-        packet.put(PacketKeys.ShipPrefabName, client.getChoosenShip());
+        packet.put(PacketKeys.ShipPrefabName, client.getChosenShip());
         sender.sendToMultipleWithAckAndExclude(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250, client);
     }
 }

@@ -13,4 +13,8 @@ public class PacketKeys {
     public static final String AckId = "AId";
     public static final String PlayerReady = "Rdy";
     public static final String ShipPrefabName = "prefName";
+    public static final String ShipRedComponent = "sc_r";
+    public static final String ShipGreenComponent = "sc_g";
+    public static final String ShipBlueComponent = "sc_b";
+
 }
