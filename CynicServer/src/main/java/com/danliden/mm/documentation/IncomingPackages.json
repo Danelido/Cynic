@@ -1,0 +1,50 @@
+{
+  "Incoming packages": {
+    "JOIN_REQUEST": {
+      "PacketId": "A Valid packet type, in this case \"JOIN_REQUEST\"",
+      "SessionId": "Id of the game session"
+    },
+
+    "HEARTBEAT": {
+      "PacketId": "A Valid packet type, in this case \"HEARTBEAT\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+
+    "LEFT_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"LEFT_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session"
+    },
+
+    "CLIENT_UPDATE": {
+      "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session",
+      "X": "X-Position of the client",
+      "Y": "Y-Position of the client",
+      "Rot": "Player Rotation",
+      "Throt": "Player is throttling(gas)"
+    },
+
+    "VOTE_TO_START_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"VOTE_TO_START_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session",
+      "PrefabName": "Name of the ship prefab"
+    },
+
+    "REMOVE_VOTE_TO_START_SESSION": {
+      "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session",
+    },
+
+    "PLAYER_SHIP_CHANGE": {
+      "PacketId": "A Valid packet type, in this case \"PLAYER_SHIP_CHANGE\"",
+      "PlayerId": "Id of the player",
+      "SessionId": "Id of the game session",
+      "PrefabName": "Name of the ship prefab"
+    }
+  }
+}

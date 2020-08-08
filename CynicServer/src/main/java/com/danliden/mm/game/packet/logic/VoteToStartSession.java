@@ -30,10 +30,14 @@ public class VoteToStartSession implements IPacketLogic {
         }
 
         if(gameState.getGameState() == GameState.GameStateEnum.LOBBY){
-            client.setIsReady(true);
-            sendPlayerReadyPacketToAllPlayers(client, ackHandler, sessionPlayers, sender);
-            if(startSessionIfAllPlayersReady(ackHandler, sessionPlayers, sender)){
-                gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+            String chosenShip = extractChosenShipName(bundle);
+            if(validShipName(chosenShip)) {
+                client.setIsReady(true);
+                client.setChoosenShip(chosenShip);
+                sendPlayerReadyPacketToAllPlayers(client, ackHandler, sessionPlayers, sender);
+                if (startSessionIfAllPlayersReady(ackHandler, sessionPlayers, sender)) {
+                    gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+                }
             }
         }
     }
@@ -46,7 +50,16 @@ public class VoteToStartSession implements IPacketLogic {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.PLAYER_VOTE_TO_START);
         packet.put(PacketKeys.PlayerId, client.id);
+        packet.put(PacketKeys.ShipPrefabName, client.getChoosenShip());
         sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 250);
+    }
+
+    private String extractChosenShipName(ServerPacketBundle bundle){
+        return bundle.getPacketJsonData().getString(PacketKeys.ShipPrefabName);
+    }
+
+    private boolean validShipName(String shipName){
+        return shipName != null && !shipName.isEmpty();
     }
 
     private boolean startSessionIfAllPlayersReady(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender){

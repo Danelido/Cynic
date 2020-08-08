@@ -85,6 +85,7 @@ public class GameSession {
         packetLogicMapping.put(PacketType.Incoming.CLIENT_UPDATE, new UpdatePlayer());
         packetLogicMapping.put(PacketType.Incoming.VOTE_TO_START_SESSION, new VoteToStartSession());
         packetLogicMapping.put(PacketType.Incoming.REMOVE_VOTE_TO_START_SESSION, new RemoveVoteToStartSession());
+        packetLogicMapping.put(PacketType.Incoming.PLAYER_SHIP_CHANGE, new ShipChange());
     }
 
     private void sendHeartbeats() {

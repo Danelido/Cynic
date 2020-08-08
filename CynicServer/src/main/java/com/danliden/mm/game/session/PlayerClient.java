@@ -14,6 +14,7 @@ public class PlayerClient {
     public final int id;
     public final int sessionId;
     private int nrOfFlatLines = 0; // Used with session heartbeats.
+    private String shipPrefabName;
     private Vector2 position = new Vector2();
     private float rotationDegrees = 0.f;
     private boolean throttling = false;
@@ -26,6 +27,7 @@ public class PlayerClient {
         this.id = id;
         this.sessionId = sessionId;
         this.ready = false;
+        this.shipPrefabName = "";
     }
 
     public JSONObject getAsJsonForLobby(){
@@ -33,6 +35,7 @@ public class PlayerClient {
         obj.put(PacketKeys.PlayerId, id);
         obj.put(PacketKeys.PlayerReady, ready);
         obj.put(PacketKeys.PlayerName, name);
+        obj.put(PacketKeys.ShipPrefabName, shipPrefabName);
         return obj;
     }
 
@@ -85,4 +88,11 @@ public class PlayerClient {
         return ready;
     }
 
+    public void setChoosenShip(String prefabName) {
+        this.shipPrefabName = prefabName;
+    }
+
+    public String getChoosenShip() {
+        return this.shipPrefabName;
+    }
 }

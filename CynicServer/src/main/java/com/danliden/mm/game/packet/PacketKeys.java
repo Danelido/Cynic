@@ -12,4 +12,5 @@ public class PacketKeys {
     public static final String Throttling = "Throt";
     public static final String AckId = "AId";
     public static final String PlayerReady = "Rdy";
+    public static final String ShipPrefabName = "prefName";
 }

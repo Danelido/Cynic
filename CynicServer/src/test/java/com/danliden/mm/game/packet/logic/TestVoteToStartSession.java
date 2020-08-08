@@ -29,6 +29,7 @@ public class TestVoteToStartSession {
     private final PacketSender senderMock = mock(PacketSender.class);
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
+    private final String VALID_SHIP_NAME = "ValidName";
 
     @Test
     public void testAddingVoteFromPlayerWithNoOtherPlayers() {
@@ -45,7 +46,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -76,7 +77,7 @@ public class TestVoteToStartSession {
 
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -108,7 +109,7 @@ public class TestVoteToStartSession {
 
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -137,7 +138,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -162,7 +163,7 @@ public class TestVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id + 1);
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id + 1, VALID_SHIP_NAME);
 
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
@@ -175,6 +176,37 @@ public class TestVoteToStartSession {
         verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
 
+    @Test
+    public void testAddingVoteFromPlayerWithEmptyShipName() {
+        // Setup
+        IPacketLogic voteToStartSession = new VoteToStartSession();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = new GameState();
+
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        addPlayer(sessionPlayers, dgPacket);
+        addPlayer(sessionPlayers, dgPacket).setIsReady(true);
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket);
+
+        assert (player != null);
+
+        String INVALID_SHIP_NAME = "";
+        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, INVALID_SHIP_NAME);
+
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
+
+        // Execute logic
+        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+
+        assert (!player.isReady());
+        assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
+
+        verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
+    }
 
     private PlayerClient addPlayer(SessionPlayers sessionPlayers, final DatagramPacket dgPacket) {
         InetAddress playerAddress = mock(InetAddress.class);
@@ -182,8 +214,10 @@ public class TestVoteToStartSession {
         return sessionPlayers.createPlayer(bundle);
     }
 
-    private JSONObject createPlayerAddVotePacket(int playerId) {
-        return new JSONObject().put(PacketKeys.PlayerId, playerId);
+    private JSONObject createPlayerAddVotePacket(int playerId, String shipName) {
+        return new JSONObject()
+                .put(PacketKeys.PlayerId, playerId)
+                .put(PacketKeys.ShipPrefabName, shipName);
     }
 
 }

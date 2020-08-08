@@ -1,61 +1,26 @@
 {
-  "Incoming packages": {
-    "JOIN_REQUEST": {
-      "PacketId": "A Valid packet type, in this case \"JOIN_REQUEST\"",
-      "SessionId": "Id of the game session"
-    },
-    "HEARTBEAT": {
-      "PacketId": "A Valid packet type, in this case \"HEARTBEAT\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session"
-    },
-    "LEFT_SESSION": {
-      "PacketId": "A Valid packet type, in this case \"LEFT_SESSION\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session"
-    },
-    "CLIENT_UPDATE": {
-      "PacketId": "A Valid packet type, in this case \"CLIENT_UPDATE\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session",
-      "X": "X-Position of the client",
-      "Y": "Y-Position of the client",
-      "Rot": "Player Rotation",
-      "Throt": "Player is throttling(gas)"
-    },
-    "VOTE_TO_START_SESSION": {
-      "PacketId": "A Valid packet type, in this case \"VOTE_TO_START_SESSION\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session"
-    },
-    "REMOVE_VOTE_TO_START_SESSION": {
-      "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session"
-    },
-    "PLAYER_SHIP_CHANGE ( WIP )": {
-      "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
-      "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session"
-    }
-  },
   "Outgoing packages": {
     "NOT_CONNECTED": {
       "PacketId": "A Valid packet type, in this case \"NOT_CONNECTED\""
     },
+
     "JOIN_ACCEPTED": {
       "PacketId": "A Valid packet type, in this case \"JOIN_ACCEPTED\"",
       "AckId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of the player",
       "PlayerReady": "Have the player voted to start the game session"
     },
-    "LOST_CLIENT": { /* Vote reset is engaged with this packet */
+
+    "LOST_CLIENT": {
+      /* Vote reset is engaged with this packet */
       "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
       "PlayerId": "Id of the player that was lost"
     },
+
     "HEARTBEAT_REQUEST": {
       "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\""
     },
+
     "UPDATED_CLIENT": {
       "PacketId": "A Valid packet type, in this case \"UPDATED_CLIENT\"",
       "PlayerId": "Id of the updated player",
@@ -64,33 +29,43 @@
       "Throttling": "If the player is holding the throttle(gas)",
       "PlayerRotation": "The start rotation of the player"
     },
+
     "DECLINED_JOIN_REQUEST": {
       "PacketId": "A Valid packet type, in this case \"DECLINED_JOIN_REQUEST\""
     },
-    "NEW_PLAYER_JOINED": { /* Vote reset is engaged with this packet */
+
+    "NEW_PLAYER_JOINED": {
+      //Vote reset is engaged with this packet
       "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
       "AckId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of the new player",
       "PlayerReady": "Have the player voted to start the game session",
       "PlayerName": "Name of the new player (Not supported)"
     },
+
     "PLAYER_VOTE_TO_START": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_VOTE_TO_START\"",
       "PlayerId": "Id of the player that voted to start",
-      "AckId": "Unique ack id that the client needs to answer back"
+      "AckId": "Unique ack id that the client needs to answer back",
+      "PrefabName": "Name of the ship prefab"
     },
+
     "PLAYER_REMOVE_VOTE_TO_START": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_REMOVE_VOTE_TO_START\"",
       "PlayerId": "Id of the player that removed their vote",
       "AckId": "Unique ack id that the client needs to answer back"
     },
+
     "STARTING_GAME": {
       "PacketId": "A Valid packet type, in this case \"STARTING_GAME\"",
       "AckId": "Unique ack id that the client needs to answer back"
     },
-    "PLAYER_SHIP_CHANGE ( WIP )": {
+
+    "PLAYER_SHIP_CHANGE": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_SHIP_CHANGE\"",
-      "AckId": "Unique ack id that the client needs to answer back"
+      "AckId": "Unique ack id that the client needs to answer back",
+      "PlayerId": "Id of who changed ship",
+      "PrefabName": "Name of the ship prefab"
     }
   }
 }
