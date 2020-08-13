@@ -16,5 +16,6 @@ public class PacketKeys {
     public static final String ShipRedComponent = "sc_r";
     public static final String ShipGreenComponent = "sc_g";
     public static final String ShipBlueComponent = "sc_b";
+    public static final String PlacementUpdate = "plcmnts";
 
 }

@@ -24,6 +24,7 @@ public abstract class PacketType {
         public static final int PLAYER_REMOVE_VOTE_TO_START = 7;
         public static final int PLAYER_SHIP_CHANGE = 8;
         public static final int STARTING_GAME = 9;
+        public static final int PLACEMENT_UPDATE = 10;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.danliden.mm.game.session;
 
 import com.danliden.mm.game.packet.PacketKeys;
+import com.danliden.mm.game.racing.Checkpoint;
 import com.danliden.mm.utils.Vector2;
 import com.danliden.mm.utils.Vector3;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ public class PlayerClient {
     public final int port;
     public final int id;
     public final int sessionId;
+
     private int nrOfFlatLines = 0; // Used with session heartbeats.
     private String shipPrefabName;
     private Vector2 position = new Vector2();
@@ -21,6 +23,7 @@ public class PlayerClient {
     private float rotationDegrees = 0.f;
     private boolean throttling = false;
     private boolean ready;
+    private Checkpoint nextCheckpoint;
 
     public PlayerClient(String name, InetAddress address, int port, int id, int sessionId) {
         this.name = name;
@@ -56,6 +59,10 @@ public class PlayerClient {
         rotationDegrees = obj.getInt(PacketKeys.PlayerRotation);
         position.set(obj.getFloat(PacketKeys.PlayerXPos),
                 obj.getFloat(PacketKeys.PlayerYPos));
+    }
+
+    public void setPosition(Vector2 position){
+        this.position = position;
     }
 
     public synchronized void addFlatline() {
@@ -98,11 +105,19 @@ public class PlayerClient {
         color.set(r, g, b);
     }
 
+    public void setNextCheckpoint(Checkpoint checkpoint) {
+        this.nextCheckpoint = checkpoint;
+    }
+
+    public Checkpoint getNextCheckpoint() {
+        return this.nextCheckpoint;
+    }
+
     public String getChosenShip() {
         return this.shipPrefabName;
     }
 
-    public Vector3 getColor(){
+    public Vector3 getColor() {
         return this.color;
     }
 }

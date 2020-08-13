@@ -45,6 +45,16 @@ public class Vector2 {
         this.div(vec.x, vec.y);
     }
 
+    public float distance(Vector2 other){
+        return distance(other.x, other.y);
+    }
+
+    public float distance(float x, float y){
+        double x2 = Math.pow(x - this.x, 2.0);
+        double y2 = Math.pow(y - this.y, 2.0);
+        return (float)Math.sqrt((x2 + y2));
+    }
+
     public void add(float x, float y) {
         this.x += x;
         this.y += y;
