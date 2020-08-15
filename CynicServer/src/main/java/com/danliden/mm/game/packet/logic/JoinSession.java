@@ -13,19 +13,19 @@ import org.json.JSONObject;
 public class JoinSession implements IPacketLogic {
 
     @Override
-    public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
+    public void execute(Properties props) {
 
-        if (clientExists(bundle, sessionPlayers)) {
+        if (clientExists(props.bundle, props.sessionPlayers)) {
             return;
         }
 
-        if (isSessionJoinAble(gameState, sessionPlayers)) {
-            PlayerClient newClient = sessionPlayers.createPlayer(bundle);
-            sendConfirmationToClient(sender, ackHandler, newClient);
-            tellExistingClientsAboutNewClient(sender, ackHandler, newClient, sessionPlayers);
-            tellNewClientAboutExistingClients(sender, ackHandler, newClient, sessionPlayers);
+        if (isSessionJoinAble(props.gameState, props.sessionPlayers)) {
+            PlayerClient newClient = props.sessionPlayers.createPlayer(props.bundle);
+            sendConfirmationToClient(props.sender, props.ackHandler, newClient);
+            tellExistingClientsAboutNewClient(props.sender, props.ackHandler, newClient, props.sessionPlayers);
+            tellNewClientAboutExistingClients(props.sender, props.ackHandler, newClient, props.sessionPlayers);
         } else {
-            declineJoinRequest(bundle, sender);
+            declineJoinRequest(props.bundle, props.sender);
         }
     }
 

@@ -23,8 +23,10 @@ public class PlayerClient {
     private float rotationDegrees = 0.f;
     private boolean throttling = false;
     private boolean ready;
-    private Checkpoint nextCheckpoint;
 
+    private int nextCheckpointIndex = -1;
+
+    private int lap = 1;
     public PlayerClient(String name, InetAddress address, int port, int id, int sessionId) {
         this.name = name;
         this.address = address;
@@ -59,6 +61,7 @@ public class PlayerClient {
         rotationDegrees = obj.getInt(PacketKeys.PlayerRotation);
         position.set(obj.getFloat(PacketKeys.PlayerXPos),
                 obj.getFloat(PacketKeys.PlayerYPos));
+        nextCheckpointIndex = obj.getInt(PacketKeys.NextCheckpointIndex);
     }
 
     public void setPosition(Vector2 position){
@@ -105,14 +108,6 @@ public class PlayerClient {
         color.set(r, g, b);
     }
 
-    public void setNextCheckpoint(Checkpoint checkpoint) {
-        this.nextCheckpoint = checkpoint;
-    }
-
-    public Checkpoint getNextCheckpoint() {
-        return this.nextCheckpoint;
-    }
-
     public String getChosenShip() {
         return this.shipPrefabName;
     }
@@ -120,4 +115,13 @@ public class PlayerClient {
     public Vector3 getColor() {
         return this.color;
     }
+
+    public int getNextCheckpointIndex() {
+        return nextCheckpointIndex;
+    }
+
+    public void setNextCheckpointIndex(int nextCheckpointIndex) {
+        this.nextCheckpointIndex = nextCheckpointIndex;
+    }
+
 }

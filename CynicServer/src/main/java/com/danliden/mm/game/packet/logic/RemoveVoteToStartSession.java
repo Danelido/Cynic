@@ -13,14 +13,14 @@ import org.json.JSONObject;
 public class RemoveVoteToStartSession implements IPacketLogic {
 
     @Override
-    public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        final int id = bundle
+    public void execute(Properties props) {
+        final int id = props.bundle
                 .getPacketJsonData()
                 .getInt(PacketKeys.PlayerId);
 
-        PlayerClient client = sessionPlayers.findById(id);
-        if (setToNotReadyIfNotNull(sessionPlayers, client, bundle, sender) && gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
-            informAllPlayers(client, ackHandler, sessionPlayers, sender);
+        PlayerClient client = props.sessionPlayers.findById(id);
+        if (setToNotReadyIfNotNull(props.sessionPlayers, client, props.bundle, props.sender) && props.gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
+            informAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
         }
 
     }

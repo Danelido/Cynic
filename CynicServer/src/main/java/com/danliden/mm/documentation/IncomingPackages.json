@@ -24,7 +24,8 @@
       "X": "X-Position of the client",
       "Y": "Y-Position of the client",
       "Rot": "Player Rotation",
-      "Throt": "Player is throttling(gas)"
+      "Throt": "Player is throttling(gas)",
+      "nci": "Player next checkpoint index"
     },
 
     "VOTE_TO_START_SESSION": {

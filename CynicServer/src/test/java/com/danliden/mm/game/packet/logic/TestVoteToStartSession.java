@@ -2,6 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.ServerPacketBundle;
+import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -30,6 +31,7 @@ public class TestVoteToStartSession {
     private final PacketSender senderMock = mock(PacketSender.class);
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
+    private final CheckpointManager checkpointManagerMock = mock(CheckpointManager.class);
     private final String VALID_SHIP_NAME = "ValidName";
     private final Vector3 COLOR = new Vector3(1.0f, 0.5f, 1.0f);
 
@@ -53,7 +55,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         assert (!player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
@@ -84,7 +87,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         assert (player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
@@ -123,7 +127,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         assert (player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
@@ -152,7 +157,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }
@@ -177,7 +183,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
 
@@ -209,7 +216,8 @@ public class TestVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
 
         // Execute logic
-        voteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        voteToStartSession.execute(properties);
 
         assert (!player.isReady());
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
@@ -232,4 +240,13 @@ public class TestVoteToStartSession {
                 .put(PacketKeys.ShipBlueComponent, color.z);
     }
 
+    private Properties createProperties(ServerPacketBundle bundle, PacketSender senderMock, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+        return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state)
+                .setCheckpointsManager(checkpointManagerMock);
+    }
 }

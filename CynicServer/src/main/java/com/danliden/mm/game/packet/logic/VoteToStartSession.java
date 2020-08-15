@@ -3,6 +3,7 @@ package com.danliden.mm.game.packet.logic;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
+import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -13,34 +14,36 @@ import org.json.JSONObject;
 public class VoteToStartSession implements IPacketLogic {
 
     @Override
-    public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        final int id = bundle
+    public void execute(Properties props) {
+        final int id = props.bundle
                 .getPacketJsonData()
                 .getInt(PacketKeys.PlayerId);
 
-        PlayerClient client = sessionPlayers.findById(id);
+        PlayerClient client = props.sessionPlayers.findById(id);
 
         if (!doesPlayerExist(client)) {
-            sender.sendNotConnectedPacketToSender(bundle);
+            props.sender.sendNotConnectedPacketToSender(props.bundle);
             return;
         }
 
-        if (!enoughPlayersToStartSession(sessionPlayers)) {
+        if (!enoughPlayersToStartSession(props.sessionPlayers)) {
             return;
         }
 
-        if (gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
-            String chosenShip = extractChosenShipName(bundle);
+        if (props.gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
+            String chosenShip = extractChosenShipName(props.bundle);
             if (validShipName(chosenShip)) {
                 client.setChosenShip(chosenShip);
                 client.setShipColor(
-                        bundle.getPacketJsonData().getFloat(PacketKeys.ShipRedComponent),
-                        bundle.getPacketJsonData().getFloat(PacketKeys.ShipGreenComponent),
-                        bundle.getPacketJsonData().getFloat(PacketKeys.ShipBlueComponent));
-                sessionPlayers.setClientReady(client, true);
-                sendPlayerReadyPacketToAllPlayers(client, ackHandler, sessionPlayers, sender);
-                if (startSessionIfAllPlayersReady(ackHandler, sessionPlayers, sender)) {
-                    gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipRedComponent),
+                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipGreenComponent),
+                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipBlueComponent));
+                props.sessionPlayers.setClientReady(client, true);
+                sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
+                if (startSessionIfAllPlayersReady(props.ackHandler, props.sessionPlayers, props.sender)) {
+                    // TODO Do not hard code the map, it should be voted by the clients
+                    props.checkpointManager.loadNewCheckpoints("SpaceYard");
+                    props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
                 }
             }
         }
@@ -95,6 +98,5 @@ public class VoteToStartSession implements IPacketLogic {
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.STARTING_GAME);
         sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 500);
     }
-
 
 }

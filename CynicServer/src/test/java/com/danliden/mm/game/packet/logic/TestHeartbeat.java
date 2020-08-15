@@ -48,8 +48,10 @@ public class TestHeartbeat {
         player.addFlatline();
         assert (player.getNrOfFlatLines() == 2);
 
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+
         // Execute logic
-        heartbeatLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        heartbeatLogic.execute(properties);
 
         assert (player.getNrOfFlatLines() == 0);
 
@@ -77,8 +79,9 @@ public class TestHeartbeat {
         // Return invalid id
         Mockito.when(mockJson.getInt(PacketKeys.PlayerId)).thenReturn(player.id+1);
 
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
         // Execute logic
-        heartbeatLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        heartbeatLogic.execute(properties);
 
        verify(senderMock, times(1)).sendNotConnectedPacketToSender(bundle);
 
@@ -89,6 +92,15 @@ public class TestHeartbeat {
         Mockito.when(dgPacket.getAddress()).thenReturn(playerAddress);
         Mockito.when(playerAddress.getHostAddress()).thenReturn(Integer.toString(hostAddressMock));
         return sessionPlayers.createPlayer(bundle);
+    }
+
+    private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+       return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state);
     }
 
 }

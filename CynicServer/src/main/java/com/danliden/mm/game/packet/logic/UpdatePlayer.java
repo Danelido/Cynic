@@ -1,12 +1,11 @@
 package com.danliden.mm.game.packet.logic;
 
-import com.danliden.mm.game.packet.PacketType;
-import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
+import com.danliden.mm.game.packet.PacketType;
+import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.racing.Placements;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
-import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
 import org.json.JSONObject;
@@ -19,26 +18,26 @@ public class UpdatePlayer implements IPacketLogic {
     private Placements placements = new Placements();
 
     @Override
-    public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        if (gameState.getGameState() == GameState.GameStateEnum.IN_SESSION) {
-            final int id = bundle
+    public void execute(Properties props) {
+        if (props.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION) {
+            final int id = props.bundle
                     .getPacketJsonData()
                     .getInt(PacketKeys.PlayerId);
 
-            PlayerClient client = sessionPlayers.findById(id);
+            PlayerClient client = props.sessionPlayers.findById(id);
 
             if (client != null) {
-                client.updatePlayer(bundle.getPacketJsonData());
-                updatePlayerPlacements(sender, sessionPlayers);
-                notifyOtherClientsUpdate(sender, sessionPlayers, client);
+                client.updatePlayer(props.bundle.getPacketJsonData());
+                updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
+                notifyOtherClientsUpdate(props.sender, props.sessionPlayers, client);
             } else {
-                sender.sendNotConnectedPacketToSender(bundle);
+                props.sender.sendNotConnectedPacketToSender(props.bundle);
             }
         }
     }
 
-    private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers) {
-        List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers());
+    private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers, CheckpointManager checkpointManager) {
+        List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers(), checkpointManager);
         notifyOtherClientsPlacements(sender, sessionPlayers, placementList);
     }
 

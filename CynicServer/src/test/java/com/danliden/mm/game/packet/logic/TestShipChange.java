@@ -51,7 +51,8 @@ public class TestShipChange {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
-        ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        ShipChange.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
         assert (player.getChosenShip().contentEquals(newShipName));
@@ -84,7 +85,8 @@ public class TestShipChange {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
-        ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        ShipChange.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
         assert (!player.getChosenShip().contentEquals(newShipName));
@@ -116,7 +118,8 @@ public class TestShipChange {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
-        ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        ShipChange.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
 
@@ -148,7 +151,8 @@ public class TestShipChange {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
-        ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        ShipChange.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
 
@@ -178,7 +182,8 @@ public class TestShipChange {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
-        ShipChange.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        ShipChange.execute(properties);
 
         assert (state.getGameState() == GameState.GameStateEnum.LOBBY);
 
@@ -196,6 +201,15 @@ public class TestShipChange {
         return new JSONObject()
                 .put(PacketKeys.PlayerId, playerId)
                 .put(PacketKeys.ShipPrefabName, shipName);
+    }
+
+    private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+        return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state);
     }
 
 }

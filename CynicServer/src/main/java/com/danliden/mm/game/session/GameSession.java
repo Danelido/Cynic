@@ -4,6 +4,7 @@ import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.logic.*;
+import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.utils.GameState;
 import org.json.JSONObject;
@@ -23,6 +24,8 @@ public class GameSession {
     private final GameState currentState;
     private final SessionAckHandler ackHandler;
     private final PacketSender sender;
+    private final Properties properties;
+    private final CheckpointManager checkpointManager;
 
     public GameSession(PacketSender sender, int sessionID) {
         this.sender = sender;
@@ -30,6 +33,8 @@ public class GameSession {
         sessionPlayers = new SessionPlayers(MAX_PLAYERS);
         currentState = new GameState();
         ackHandler = new SessionAckHandler(sender);
+        checkpointManager = new CheckpointManager();
+        properties = new Properties();
         mapPacketLogic();
     }
 
@@ -56,10 +61,20 @@ public class GameSession {
 
             IPacketLogic logic = packetLogicMapping.getOrDefault(pid, null);
             if (logic != null) {
-                logic.execute(bundle, sender, ackHandler, sessionPlayers, currentState);
+                updateProperties(bundle);
+                logic.execute(properties);
             }
         }
 
+    }
+
+    private void updateProperties(ServerPacketBundle bundle){
+        properties.setBundle(bundle)
+                .setPacketSender(sender)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(currentState)
+                .setCheckpointsManager(checkpointManager);
     }
 
     private void checkClientsHeartbeat() {

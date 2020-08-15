@@ -48,7 +48,8 @@ public class TestRemoveVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerRemoveVotePacket);
 
         // Execute logic
-        removeVoteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        removeVoteToStartSession.execute(properties);
 
         assert (!player.isReady() );
 
@@ -77,7 +78,8 @@ public class TestRemoveVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerRemoveVotePacket);
 
         // Execute logic
-        removeVoteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        removeVoteToStartSession.execute(properties);
 
         // Build the expected outgoing packet
         verify(senderMock, times(0)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
@@ -104,7 +106,8 @@ public class TestRemoveVoteToStartSession {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerRemoveVotePacket);
 
         // Execute logic
-        removeVoteToStartSession.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        removeVoteToStartSession.execute(properties);
 
         // Build the expected outgoing packet
         verify(senderMock, times(1)).sendNotConnectedPacketToSender(any(ServerPacketBundle.class));
@@ -119,5 +122,14 @@ public class TestRemoveVoteToStartSession {
 
     private JSONObject createPlayerRemoveVotePacket(int playerId) {
         return new JSONObject().put(PacketKeys.PlayerId, playerId);
+    }
+
+    private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+        return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state);
     }
 }

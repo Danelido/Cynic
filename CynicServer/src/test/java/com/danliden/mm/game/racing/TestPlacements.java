@@ -11,24 +11,23 @@ import java.util.List;
 public class TestPlacements {
 
     private Placements placements = new Placements();
+    private CheckpointManager checkpointManager = new CheckpointManager();
 
     @Test
-    public void TestPlacementsTargetingSameCheckpoint() {
+    public void testPlacementsTargetingSameCheckpoint() {
         List<PlayerClient> orderedList = new ArrayList<>();
-
-
         List<PlayerClient> shuffledList = new ArrayList<>();
+
         for (int i = 0; i < 25; i++) {
-            PlayerClient player = AddPlayer(i, 0, new Vector2(100.0f, 100.0f - i),
-                    new Vector2(110.0f, 110.f), false);
+            PlayerClient player = AddPlayer(i, 0, new Vector2(100.0f, 100.0f - i));
             orderedList.add(player);
             shuffledList.add(player);
         }
 
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
-
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList);
+        checkpointManager.setCheckpointList(generateDummyCheckpoints(25));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -38,15 +37,14 @@ public class TestPlacements {
     }
 
     @Test
-    public void TestPlacementsTargetingDifferentCheckpoints() {
+    public void testPlacementsTargetingDifferentCheckpoints() {
         List<PlayerClient> orderedList = new ArrayList<>();
 
 
         List<PlayerClient> shuffledList = new ArrayList<>();
         int checkpointIndex = 25;
         for (int i = 0; i < 50; i++) {
-            PlayerClient player = AddPlayer(i, checkpointIndex, new Vector2(100.0f, 100.0f - i),
-                    new Vector2(110.0f, 110.f), false);
+            PlayerClient player = AddPlayer(i, checkpointIndex, new Vector2(100.0f, 100.0f - i));
             orderedList.add(player);
             shuffledList.add(player);
 
@@ -58,7 +56,8 @@ public class TestPlacements {
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
 
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList);
+        checkpointManager.setCheckpointList(generateDummyCheckpoints(50));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -67,17 +66,47 @@ public class TestPlacements {
         }
     }
 
-    private PlayerClient AddPlayer(int playerId, int checkpointIndex, Vector2 playerPos, Vector2 checkpointPos, boolean startFinish) {
+    @Test
+    public void testPlacementsOnInvalidIndexes() {
+        List<PlayerClient> orderedList = new ArrayList<>();
+        List<PlayerClient> shuffledList = new ArrayList<>();
+
+        for (int i = 0; i < 25; i++) {
+            PlayerClient player = AddPlayer(i, -1, new Vector2(100.0f, 100.0f - i));
+            orderedList.add(player);
+            shuffledList.add(player);
+        }
+
+        // Shuffle the shuffledList
+        Collections.shuffle(shuffledList);
+        checkpointManager.setCheckpointList(generateDummyCheckpoints(25));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+
+        assert placementList.size() == 0;
+    }
+
+    private PlayerClient AddPlayer(int playerId, int checkpointIndex, Vector2 playerPos) {
         String name = "John Doe";
         int sessionId = 0;
         int port = 1234;
         PlayerClient player = new PlayerClient(name, null, port, playerId, sessionId);
         player.setPosition(playerPos);
-
-        Checkpoint checkpoint = new Checkpoint(checkpointPos, checkpointIndex, startFinish);
-        player.setNextCheckpoint(checkpoint);
+        player.setNextCheckpointIndex(checkpointIndex);
 
         return player;
+    }
+
+    private List<Checkpoint> generateDummyCheckpoints(int size){
+        List<Checkpoint> checkpoints= new ArrayList<>();
+
+        for(int i = 0; i < size; i ++){
+            Vector2 pivot = new Vector2(200, 200 + (i * 2) + 15);
+            boolean startFinish = i == 0;
+            Checkpoint cp = new Checkpoint(pivot, i, startFinish, Vector2.Zero(), 0.0f);
+            checkpoints.add(i, cp);
+        }
+
+        return checkpoints;
     }
 
 }

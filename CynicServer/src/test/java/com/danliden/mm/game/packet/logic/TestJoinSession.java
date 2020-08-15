@@ -38,7 +38,9 @@ public class TestJoinSession {
         prepareNewPlayer(dgPacket, 0);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
+
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 1);
@@ -73,7 +75,9 @@ public class TestJoinSession {
         prepareNewPlayer(dgPacket, 4);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
+
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
@@ -109,7 +113,9 @@ public class TestJoinSession {
         prepareNewPlayer(dgPacket, 5);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
+
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
@@ -141,7 +147,8 @@ public class TestJoinSession {
         prepareNewPlayer(dgPacket, 3);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 2);
@@ -171,7 +178,8 @@ public class TestJoinSession {
         addPlayer(sessionPlayers, dgPacket, 3);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 3);
@@ -202,7 +210,8 @@ public class TestJoinSession {
         prepareNewPlayer(dgPacket, 4);
 
         // Execute logic
-        joinSessionLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        joinSessionLogic.execute(properties);
 
         // Verify
         assert (sessionPlayers.getNumberOfPlayers() == 4);
@@ -230,5 +239,14 @@ public class TestJoinSession {
         InetAddress playerAddress = mock(InetAddress.class);
         Mockito.when(dgPacket.getAddress()).thenReturn(playerAddress);
         Mockito.when(playerAddress.getHostAddress()).thenReturn(Integer.toString(id));
+    }
+
+    private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+        return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state);
     }
 }

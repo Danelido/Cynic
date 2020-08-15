@@ -19,6 +19,10 @@ public class Vector2 {
         this.y = vec.y;
     }
 
+    public static Vector2 Zero(){
+        return new Vector2();
+    }
+
     public void set(Vector2 vec) {
         this.x = vec.x;
         this.y = vec.y;

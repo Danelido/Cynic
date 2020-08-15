@@ -70,5 +70,9 @@
       "PlayerId": "Id of who changed ship",
       "PrefabName": "Name of the ship prefab"
     }
+  },
+  "PLACEMENT_UPDATE": {
+    "PacketId": "A Valid packet type, in this case \"PLACEMENT_UPDATE\"",
+    "plcmnts": "List of player id's in order. index 0 = first place and so on"
   }
 }

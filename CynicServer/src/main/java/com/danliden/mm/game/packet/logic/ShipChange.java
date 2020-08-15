@@ -13,23 +13,23 @@ import org.json.JSONObject;
 public class ShipChange implements IPacketLogic {
 
     @Override
-    public void execute(ServerPacketBundle bundle, PacketSender sender, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState gameState) {
-        final int id = bundle
+    public void execute(Properties props) {
+        final int id = props.bundle
                 .getPacketJsonData()
                 .getInt(PacketKeys.PlayerId);
 
-        PlayerClient client = sessionPlayers.findById(id);
+        PlayerClient client = props.sessionPlayers.findById(id);
 
         if (!doesPlayerExist(client)) {
-            sender.sendNotConnectedPacketToSender(bundle);
+            props.sender.sendNotConnectedPacketToSender(props.bundle);
             return;
         }
 
-        if (!inLobby(gameState)) return;
+        if (!inLobby(props.gameState)) return;
         if (client.isReady()) return;
 
-        changeShip(bundle, client);
-        notifyAllClients(sender, ackHandler, sessionPlayers, client);
+        changeShip(props.bundle, client);
+        notifyAllClients(props.sender, props.ackHandler, props.sessionPlayers, client);
     }
 
     private boolean doesPlayerExist(PlayerClient client) {

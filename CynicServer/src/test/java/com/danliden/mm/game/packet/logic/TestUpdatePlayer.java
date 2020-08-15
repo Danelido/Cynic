@@ -48,7 +48,8 @@ public class TestUpdatePlayer {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
 
         // Execute logic
-        updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        updatePlayerLogic.execute(properties);
 
         assert (player.getRotationDegrees() == rotation);
         assert (player.getPosition().equalsTo(newPosition));
@@ -82,7 +83,8 @@ public class TestUpdatePlayer {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
 
         // Execute logic
-        updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        updatePlayerLogic.execute(properties);
 
         assert (player.getRotationDegrees() != rotation);
         assert (!player.getPosition().equalsTo(newPosition));
@@ -117,7 +119,8 @@ public class TestUpdatePlayer {
         Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
 
         // Execute logic
-        updatePlayerLogic.execute(bundle, senderMock, ackHandler, sessionPlayers, state);
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
+        updatePlayerLogic.execute(properties);
 
         assert (sessionPlayers.findById(player.id) != null);
         // Build the expected outgoing packet
@@ -137,8 +140,16 @@ public class TestUpdatePlayer {
                 .put(PacketKeys.PlayerRotation, rotation)
                 .put(PacketKeys.Throttling, throttling)
                 .put(PacketKeys.PlayerXPos, position.x)
-                .put(PacketKeys.PlayerYPos, position.y);
+                .put(PacketKeys.PlayerYPos, position.y)
+                .put(PacketKeys.NextCheckpointIndex, 0);
     }
 
-
+    private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
+        Properties properties = new Properties();
+        return properties.setBundle(bundle)
+                .setPacketSender(senderMock)
+                .setSessionAckHandler(ackHandler)
+                .setSessionPlayers(sessionPlayers)
+                .setGameState(state);
+    }
 }
