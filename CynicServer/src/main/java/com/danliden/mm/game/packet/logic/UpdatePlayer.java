@@ -28,7 +28,7 @@ public class UpdatePlayer implements IPacketLogic {
 
             if (client != null) {
                 client.updatePlayer(props.bundle.getPacketJsonData());
-                //updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
+                updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
                 notifyOtherClientsUpdate(props.sender, props.sessionPlayers, client);
             } else {
                 props.sender.sendNotConnectedPacketToSender(props.bundle);

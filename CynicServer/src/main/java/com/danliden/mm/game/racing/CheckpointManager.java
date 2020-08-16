@@ -1,7 +1,7 @@
 package com.danliden.mm.game.racing;
 
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 /*
@@ -12,9 +12,9 @@ public class CheckpointManager {
 
     private List<Checkpoint> checkpointList;
 
-    public void loadNewCheckpoints(String filename){
+    public void loadNewCheckpoints(String filename) throws IOException {
         TrackParser parser = new TrackParser();
-        //checkpointList = parser.getCheckpointsFromFile("SpaceYard");
+        checkpointList = parser.getCheckpointsFromFile(filename);
     }
 
     public Checkpoint getCheckpointByIndex(int index){
@@ -31,6 +31,9 @@ public class CheckpointManager {
         this.checkpointList = checkpointList;
     }
 
+    List<Checkpoint> getAllCheckpoints(){
+        return this.checkpointList;
+    }
 
 
 }

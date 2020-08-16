@@ -3,15 +3,20 @@ package com.danliden.mm.game.packet.logic;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class VoteToStartSession implements IPacketLogic {
+
+    private static final Logger logger = LoggerFactory.getLogger(VoteToStartSession.class);
 
     @Override
     public void execute(Properties props) {
@@ -41,11 +46,19 @@ public class VoteToStartSession implements IPacketLogic {
                 props.sessionPlayers.setClientReady(client, true);
                 sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
                 if (startSessionIfAllPlayersReady(props.ackHandler, props.sessionPlayers, props.sender)) {
-                    // TODO Do not hard code the map, it should be voted by the clients
-                    props.checkpointManager.loadNewCheckpoints("SpaceYard");
+                    loadSelectedTrackConfigurations(props);
                     props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
                 }
             }
+        }
+    }
+
+    private void loadSelectedTrackConfigurations(Properties props) {
+        try {
+            // TODO Do not hard code the map, it should be voted by the clients
+            props.checkpointManager.loadNewCheckpoints("SpaceYard");
+        } catch (IOException e) {
+            logger.debug(e.getMessage());
         }
     }
 
