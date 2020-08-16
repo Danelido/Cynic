@@ -4,6 +4,9 @@ import com.danliden.mm.utils.Vector2;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,8 +17,9 @@ import java.util.List;
 
 public class TrackParser {
 
-    List<Checkpoint> getCheckpointsFromFile(String trackName) throws IOException {
+    private static final Logger logger = LoggerFactory.getLogger(TrackParser.class);
 
+    List<Checkpoint> getCheckpointsFromFile(String trackName) throws IOException {
         File file = getFile(trackName);
         String checkpointsAsJsonString = getJsonCheckpointString(file);
         JSONArray checkpointsJsonArray = new JSONObject(checkpointsAsJsonString).getJSONArray("Checkpoints");
@@ -24,20 +28,19 @@ public class TrackParser {
 
     @NotNull
     private File getFile(String trackName) {
-        String path = "gameplay/tracks/" + trackName;
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resources = classLoader.getResource(path);
-        if (resources == null) {
-            throw new IllegalArgumentException(("Can not find track config file: " + path));
-        }
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resources = classLoader.getResource(trackName);
+        if (resources == null) {
+            throw new IllegalArgumentException(("Can not find track config file: " + trackName));
+        }
+        logger.info(resources.getFile());
         return new File(resources.getFile());
     }
 
     private String getJsonCheckpointString(File file) throws IOException {
         try (FileReader reader = new FileReader(file);
          BufferedReader br = new BufferedReader(reader)) {
-            br.readLine();// Timestamp, is just ignored
             return br.readLine();
         }
     }
