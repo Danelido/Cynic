@@ -63,7 +63,7 @@ public class VoteToStartSession implements IPacketLogic {
             return true;
         } catch (IOException e) {
             logger.debug(e.getMessage());
-            props.sender.sendSomethingWentWrongServerError(props.ackHandler, props.sessionPlayers.getPlayers(), "Could not load config for selected track");
+            props.sender.sendSomethingWentWrongServerError(props.ackHandler, props.sessionPlayers.getPlayers(), "Could not load config for selected track: " + e.getMessage());
             return false;
         }
     }
