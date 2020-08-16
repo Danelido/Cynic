@@ -28,7 +28,7 @@ public class UpdatePlayer implements IPacketLogic {
 
             if (client != null) {
                 client.updatePlayer(props.bundle.getPacketJsonData());
-                updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
+                //updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
                 notifyOtherClientsUpdate(props.sender, props.sessionPlayers, client);
             } else {
                 props.sender.sendNotConnectedPacketToSender(props.bundle);
@@ -37,8 +37,10 @@ public class UpdatePlayer implements IPacketLogic {
     }
 
     private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers, CheckpointManager checkpointManager) {
-        List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers(), checkpointManager);
-        notifyOtherClientsPlacements(sender, sessionPlayers, placementList);
+        if(checkpointManager != null) {
+            List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers(), checkpointManager);
+            notifyOtherClientsPlacements(sender, sessionPlayers, placementList);
+        }
     }
 
     private void notifyOtherClientsPlacements(PacketSender sender, SessionPlayers sessionPlayers, List<PlayerClient> placementList) {
