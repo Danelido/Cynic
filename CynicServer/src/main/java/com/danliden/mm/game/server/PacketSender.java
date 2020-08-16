@@ -67,6 +67,13 @@ public class PacketSender {
         sendToAddress(jsonData, bundle.getDatagramPacket().getAddress(), bundle.getDatagramPacket().getPort());
     }
 
+    public void sendSomethingWentWrongServerError(SessionAckHandler ackHandler, List<PlayerClient> clients, String fault){
+        JSONObject jsonData = new JSONObject();
+        jsonData.put(PacketKeys.PacketId, PacketType.Outgoing.SERVER_ERROR);
+        jsonData.put(PacketKeys.ServerError, fault);
+        sendToMultipleWithAck(ackHandler, jsonData, clients, 10, 500);
+    }
+
     public void sendToAddress(JSONObject data, InetAddress address, int port) {
         send(data.toString().getBytes(), address, port);
     }

@@ -46,20 +46,25 @@ public class VoteToStartSession implements IPacketLogic {
                         props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipBlueComponent));
                 props.sessionPlayers.setClientReady(client, true);
                 sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
-                if (startSessionIfAllPlayersReady(props.ackHandler, props.sessionPlayers, props.sender)) {
-                    loadSelectedTrackConfigurations(props);
-                    props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+                if (isAllPlayersReady(props.sessionPlayers)) {
+                    if(loadSelectedTrackConfigurations(props)) {
+                        sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender);
+                        props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+                    }
                 }
             }
         }
     }
 
-    private void loadSelectedTrackConfigurations(Properties props) {
+    private boolean loadSelectedTrackConfigurations(Properties props) {
         try {
             // TODO Do not hard code the map, it should be voted by the clients
             props.checkpointManager.loadNewCheckpoints(Tracks.SPACE_YARD);
+            return true;
         } catch (IOException e) {
             logger.debug(e.getMessage());
+            props.sender.sendSomethingWentWrongServerError(props.ackHandler, props.sessionPlayers.getPlayers(), "Could not load config for selected track");
+            return false;
         }
     }
 
@@ -86,12 +91,8 @@ public class VoteToStartSession implements IPacketLogic {
         return shipName != null && !shipName.isEmpty();
     }
 
-    private boolean startSessionIfAllPlayersReady(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender) {
-        if (isAllPlayersReady(sessionPlayers)) {
-            sendStartingPacketToPlayers(ackHandler, sessionPlayers, sender);
-            return true;
-        }
-        return false;
+    private boolean sendStartSignalToAllPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender) {
+
     }
 
     private boolean isAllPlayersReady(SessionPlayers sessionPlayers) {
