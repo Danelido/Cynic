@@ -91,10 +91,6 @@ public class VoteToStartSession implements IPacketLogic {
         return shipName != null && !shipName.isEmpty();
     }
 
-    private boolean sendStartSignalToAllPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender) {
-
-    }
-
     private boolean isAllPlayersReady(SessionPlayers sessionPlayers) {
         for (PlayerClient player : sessionPlayers.getPlayers()) {
             if (!player.isReady()) {
