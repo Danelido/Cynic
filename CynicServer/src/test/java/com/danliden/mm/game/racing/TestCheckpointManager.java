@@ -9,7 +9,7 @@ public class TestCheckpointManager {
     @Test
     public void testLoadingSpaceYardCheckpoints() throws IOException {
         CheckpointManager checkpointManager = new CheckpointManager();
-        checkpointManager.loadNewCheckpoints("SpaceYard.scfg");
+        checkpointManager.loadNewCheckpoints(Tracks.SPACE_YARD);
         assert checkpointManager.getAllCheckpoints().size() == 7;
     }
 }

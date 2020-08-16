@@ -3,6 +3,7 @@ package com.danliden.mm.game.packet.logic;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
+import com.danliden.mm.game.racing.Tracks;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -56,7 +57,7 @@ public class VoteToStartSession implements IPacketLogic {
     private void loadSelectedTrackConfigurations(Properties props) {
         try {
             // TODO Do not hard code the map, it should be voted by the clients
-            props.checkpointManager.loadNewCheckpoints("SpaceYard");
+            props.checkpointManager.loadNewCheckpoints(Tracks.SPACE_YARD);
         } catch (IOException e) {
             logger.debug(e.getMessage());
         }
