@@ -26,7 +26,6 @@ public class VoteToStartSession implements IPacketLogic {
                 .getInt(PacketKeys.PlayerId);
 
         PlayerClient client = props.sessionPlayers.findById(id);
-
         if (!doesPlayerExist(client)) {
             props.sender.sendNotConnectedPacketToSender(props.bundle);
             return;

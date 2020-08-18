@@ -7,10 +7,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,29 +17,22 @@ public class TrackParser {
     private static final Logger logger = LoggerFactory.getLogger(TrackParser.class);
 
     List<Checkpoint> getCheckpointsFromFile(String trackName) throws IOException {
-        File file = getFile(trackName);
-        String checkpointsAsJsonString = getJsonCheckpointString(file);
+        String checkpointsAsJsonString = getJsonCheckpointString(trackName);
         JSONArray checkpointsJsonArray = new JSONObject(checkpointsAsJsonString).getJSONArray("Checkpoints");
         return generateCheckpointsFromJson(checkpointsJsonArray);
     }
 
-    @NotNull
-    private File getFile(String trackName) {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resources = classLoader.getResource(trackName);
-        if (resources == null) {
-            throw new IllegalArgumentException(("Can not find track config file: " + trackName));
+    private String getJsonCheckpointString(String trackName) throws IOException {
+        InputStream inputStream = getClass().getResourceAsStream("/"+trackName);
+        if(inputStream == null){
+            logger.info("Could not load resource " + trackName);
         }
-        logger.info(resources.getFile());
-        return new File(resources.getFile());
-    }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String jsonString = reader.readLine();
 
-    private String getJsonCheckpointString(File file) throws IOException {
-        try (FileReader reader = new FileReader(file);
-         BufferedReader br = new BufferedReader(reader)) {
-            return br.readLine();
-        }
+        reader.close();
+        inputStream.close();
+        return jsonString;
     }
 
     private List<Checkpoint> generateCheckpointsFromJson(JSONArray checkpointsJsonArray){
