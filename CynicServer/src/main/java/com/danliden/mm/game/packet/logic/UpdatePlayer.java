@@ -10,7 +10,6 @@ import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpdatePlayer implements IPacketLogic {
@@ -37,7 +36,7 @@ public class UpdatePlayer implements IPacketLogic {
     }
 
     private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers, CheckpointManager checkpointManager) {
-        if(checkpointManager != null) {
+        if (checkpointManager != null) {
             List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers(), checkpointManager);
             notifyOtherClientsPlacements(sender, sessionPlayers, placementList);
         }
@@ -49,12 +48,14 @@ public class UpdatePlayer implements IPacketLogic {
     }
 
     private JSONObject buildPlacementPacket(List<PlayerClient> placementList) {
-        List<Integer> orderedPlayerIds = new ArrayList<>();
-        placementList.forEach(player -> orderedPlayerIds.add(player.id));
+        StringBuilder orderedPlayerIds = new StringBuilder();
+        for (PlayerClient playerClient : placementList) {
+            orderedPlayerIds.append(playerClient.id).append(",");
+        }
 
         JSONObject placementPacket = new JSONObject();
         placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
-        placementPacket.put(PacketKeys.PlacementUpdate, orderedPlayerIds);
+        placementPacket.put(PacketKeys.PlacementUpdate, orderedPlayerIds.toString());
 
         return placementPacket;
     }
