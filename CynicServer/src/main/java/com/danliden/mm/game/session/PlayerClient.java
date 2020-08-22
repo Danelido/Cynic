@@ -1,7 +1,6 @@
 package com.danliden.mm.game.session;
 
 import com.danliden.mm.game.packet.PacketKeys;
-import com.danliden.mm.game.racing.Checkpoint;
 import com.danliden.mm.utils.Vector2;
 import com.danliden.mm.utils.Vector3;
 import org.json.JSONObject;
@@ -25,8 +24,8 @@ public class PlayerClient {
     private boolean ready;
 
     private int nextCheckpointIndex = -1;
-
     private int lap = 1;
+
     public PlayerClient(String name, InetAddress address, int port, int id, int sessionId) {
         this.name = name;
         this.address = address;
@@ -62,10 +61,15 @@ public class PlayerClient {
         position.set(obj.getFloat(PacketKeys.PlayerXPos),
                 obj.getFloat(PacketKeys.PlayerYPos));
         nextCheckpointIndex = obj.getInt(PacketKeys.NextCheckpointIndex);
+        lap = obj.getInt(PacketKeys.PlayerLap);
     }
 
     public void setPosition(Vector2 position){
         this.position = position;
+    }
+
+    public void setLap(int lap) {
+        this.lap = lap;
     }
 
     public synchronized void addFlatline() {
@@ -122,6 +126,10 @@ public class PlayerClient {
 
     public void setNextCheckpointIndex(int nextCheckpointIndex) {
         this.nextCheckpointIndex = nextCheckpointIndex;
+    }
+
+    public int getLap() {
+        return lap;
     }
 
 }

@@ -18,23 +18,26 @@ public class Placements {
 
         @Override
         public int compare(PlayerClient o1, PlayerClient o2) {
-
             Checkpoint p1CheckPoint = checkpointManager.getCheckpointByIndex(o1.getNextCheckpointIndex());
             Checkpoint p2CheckPoint = checkpointManager.getCheckpointByIndex(o2.getNextCheckpointIndex());
 
-            if (p1CheckPoint.getIndex() < p2CheckPoint.getIndex()) {
-                return 1;
-            } else if (p1CheckPoint.getIndex() > p2CheckPoint.getIndex()) {
-                return -1;
-            } else {
-                // Chasing the same checkpoint
-                Vector2 checkpointPosition = p1CheckPoint.getPivot();
-                float playerOneDist = o1.getPosition().distance(checkpointPosition);
-                float playerTwoDist = o2.getPosition().distance(checkpointPosition);
+            int lapCompareVal = Integer.compare(o2.getLap(), o1.getLap());
+            if(lapCompareVal == 0){
+                int checkpointCompareVal = Integer.compare(p2CheckPoint.getIndex(), p1CheckPoint.getIndex());
+                if(checkpointCompareVal == 0){
+                    Vector2 checkpointPosition = p1CheckPoint.getPivot();
+                    float playerOneDist = o1.getPosition().distance(checkpointPosition);
+                    float playerTwoDist = o2.getPosition().distance(checkpointPosition);
 
-                return Float.compare(playerOneDist, playerTwoDist);
+                    return Float.compare(playerOneDist, playerTwoDist);
+                }
+
+                return checkpointCompareVal;
             }
+
+            return lapCompareVal;
         }
+
     }
 
     public List<PlayerClient> getPlacements(List<PlayerClient> players, CheckpointManager checkpointManager) {

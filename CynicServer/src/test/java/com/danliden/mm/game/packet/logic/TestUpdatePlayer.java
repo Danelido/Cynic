@@ -141,7 +141,8 @@ public class TestUpdatePlayer {
                 .put(PacketKeys.Throttling, throttling)
                 .put(PacketKeys.PlayerXPos, position.x)
                 .put(PacketKeys.PlayerYPos, position.y)
-                .put(PacketKeys.NextCheckpointIndex, 0);
+                .put(PacketKeys.NextCheckpointIndex, 0)
+                .put(PacketKeys.PlayerLap, 0);
     }
 
     private Properties createProperties(ServerPacketBundle bundle,PacketSender senderMock,SessionAckHandler ackHandler,SessionPlayers sessionPlayers, GameState state){
