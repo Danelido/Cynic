@@ -44,7 +44,7 @@ public class ServerJoinTest implements ICynicTest {
                     logger.info("Popping recent package");
                     return packet;
                 }else{
-                    logger.info("Received heartbeat packet");
+                    logger.info("Received heartbeat packet.");
                 }
             }
             logger.info("No package received, re-sending...");
