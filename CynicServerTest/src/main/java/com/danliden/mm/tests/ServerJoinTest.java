@@ -40,8 +40,12 @@ public class ServerJoinTest implements ICynicTest {
             JSONObject packet = udpClient.popPacket();
 
             if(packet != null){
-                logger.info("Popping recent package");
-                return packet;
+                if(!isHeartbeat(packet)) {
+                    logger.info("Popping recent package");
+                    return packet;
+                }else{
+                    logger.info("Received heartbeat packet");
+                }
             }
             logger.info("No package received, re-sending...");
             int timeBetweenTriesMillis = 1000;
@@ -49,6 +53,16 @@ public class ServerJoinTest implements ICynicTest {
         }
 
         return null;
+    }
+
+    private boolean isHeartbeat(JSONObject packet){
+        try{
+            int packetId = packet.getInt(ValidPacketDataKeys.PacketId);
+            return (packetId == PacketType.Incoming.HEARTBEAT_REQUEST);
+        }catch(Exception e){
+            logger.warn(e.getMessage());
+        }
+        return false;
     }
 
 }
