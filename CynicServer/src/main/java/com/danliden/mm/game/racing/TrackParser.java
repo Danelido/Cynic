@@ -23,7 +23,7 @@ public class TrackParser {
     }
 
     private String getJsonCheckpointString(String trackName) throws IOException {
-        InputStream inputStream = getClass().getResourceAsStream("/"+trackName);
+        InputStream inputStream = getClass().getResourceAsStream("/gameplay/tracks/"+trackName);
         if(inputStream == null){
             logger.info("Could not load resource " + trackName);
         }
