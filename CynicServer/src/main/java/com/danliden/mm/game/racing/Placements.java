@@ -12,7 +12,7 @@ public class Placements {
     private static class PlacementComparator implements Comparator<PlayerClient> {
         private CheckpointManager checkpointManager;
 
-        public PlacementComparator(CheckpointManager checkpointManager){
+        public PlacementComparator(CheckpointManager checkpointManager) {
             this.checkpointManager = checkpointManager;
         }
 
@@ -22,26 +22,24 @@ public class Placements {
             Checkpoint p2CheckPoint = checkpointManager.getCheckpointByIndex(o2.getNextCheckpointIndex());
 
             int lapCompareVal = Integer.compare(o2.getLap(), o1.getLap());
-            if(lapCompareVal == 0){
+            if (lapCompareVal == 0) {
                 int checkpointCompareVal = Integer.compare(p2CheckPoint.getIndex(), p1CheckPoint.getIndex());
-                if(checkpointCompareVal == 0){
+                if (checkpointCompareVal == 0) {
                     Vector2 checkpointPosition = p1CheckPoint.getPivot();
                     float playerOneDist = o1.getPosition().distance(checkpointPosition);
                     float playerTwoDist = o2.getPosition().distance(checkpointPosition);
 
                     return Float.compare(playerOneDist, playerTwoDist);
                 }
-
                 return checkpointCompareVal;
             }
-
             return lapCompareVal;
         }
 
     }
 
     public List<PlayerClient> getPlacements(List<PlayerClient> players, CheckpointManager checkpointManager) {
-        if(!hasValidIndexes(players)){
+        if (!hasValidIndexes(players)) {
             return new ArrayList<>();
         }
         List<PlayerClient> placementList = new ArrayList<>(players);
@@ -49,7 +47,7 @@ public class Placements {
         return placementList;
     }
 
-    public boolean hasValidIndexes(List<PlayerClient> players){
+    public boolean hasValidIndexes(List<PlayerClient> players) {
         for (PlayerClient player : players) {
             if (player.getNextCheckpointIndex() == -1) {
                 return false;

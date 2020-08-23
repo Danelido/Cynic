@@ -47,22 +47,27 @@ public class UpdatePlayer implements IPacketLogic {
         sender.sendToMultiple(placementPacket, sessionPlayers.getPlayers());
     }
 
-    private JSONObject buildPlacementPacket(List<PlayerClient> placementList) {
-        StringBuilder orderedPlayerIds = new StringBuilder();
-        for (PlayerClient playerClient : placementList) {
-            orderedPlayerIds.append(playerClient.id).append(",");
-        }
-
-        JSONObject placementPacket = new JSONObject();
-        placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
-        placementPacket.put(PacketKeys.PlacementUpdate, orderedPlayerIds.toString());
-
-        return placementPacket;
-    }
-
     private void notifyOtherClientsUpdate(PacketSender sender, SessionPlayers sessionPlayers, PlayerClient client) {
         JSONObject updatePlayerJsonData = client.getAsJsonForInSession();
         updatePlayerJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
         sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), client);
     }
+
+    private JSONObject buildPlacementPacket(List<PlayerClient> placementList) {
+        JSONObject placementPacket = new JSONObject();
+        StringBuilder placementsString = buildPlacementString(placementList);
+        placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
+        placementPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
+
+        return placementPacket;
+    }
+
+    private StringBuilder buildPlacementString(List<PlayerClient> placementList) {
+        StringBuilder orderedPlayerIds = new StringBuilder();
+        for (PlayerClient playerClient : placementList) {
+            orderedPlayerIds.append(playerClient.id).append(",");
+        }
+        return orderedPlayerIds;
+    }
+
 }

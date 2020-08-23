@@ -69,8 +69,8 @@ public class PacketSender {
 
     public void sendSomethingWentWrongServerError(SessionAckHandler ackHandler, List<PlayerClient> clients, String fault){
         JSONObject jsonData = new JSONObject();
-        jsonData.put(PacketKeys.PacketId, PacketType.Outgoing.SERVER_ERROR);
-        jsonData.put(PacketKeys.ServerError, fault);
+        jsonData.put(PacketKeys.PacketId, PacketType.Outgoing.FATAL_SERVER_ERROR);
+        jsonData.put(PacketKeys.FatalServerError, fault);
         sendToMultipleWithAck(ackHandler, jsonData, clients, 10, 500);
     }
 

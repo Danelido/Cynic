@@ -21,38 +21,50 @@ public class VoteToStartSession implements IPacketLogic {
 
     @Override
     public void execute(Properties props) {
+        if (props.gameState.getGameState() != GameState.GameStateEnum.LOBBY) {
+            return;
+        }
+
         final int id = props.bundle
                 .getPacketJsonData()
                 .getInt(PacketKeys.PlayerId);
-
         PlayerClient client = props.sessionPlayers.findById(id);
+
         if (!doesPlayerExist(client)) {
             props.sender.sendNotConnectedPacketToSender(props.bundle);
             return;
         }
 
-        if (!enoughPlayersToStartSession(props.sessionPlayers)) {
+        if (!enoughPlayersToStartSession(props.sessionPlayers)){
             return;
         }
 
-        if (props.gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
-            String chosenShip = extractChosenShipName(props.bundle);
-            if (validShipName(chosenShip)) {
-                client.setChosenShip(chosenShip);
-                client.setShipColor(
-                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipRedComponent),
-                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipGreenComponent),
-                        props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipBlueComponent));
-                props.sessionPlayers.setClientReady(client, true);
-                sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
-                if (isAllPlayersReady(props.sessionPlayers)) {
-                    if(loadSelectedTrackConfigurations(props)) {
-                        sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender);
-                        props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
-                    }
-                }
-            }
+        if (!setupSelectedShip(props, client)){
+            return; // TODO: Send error code
         }
+
+        props.sessionPlayers.setClientReady(client, true);
+        sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
+
+        if (isAllPlayersReady(props.sessionPlayers) && loadSelectedTrackConfigurations(props)) {
+            sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender);
+            props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+        }
+
+    }
+
+    private boolean setupSelectedShip(Properties props, PlayerClient client) {
+        String chosenShip = extractChosenShipName(props.bundle);
+        if (validShipName(chosenShip)) {
+            client.setChosenShip(chosenShip);
+            client.setShipColor(
+                    props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipRedComponent),
+                    props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipGreenComponent),
+                    props.bundle.getPacketJsonData().getFloat(PacketKeys.ShipBlueComponent));
+            return true;
+        }
+
+        return false;
     }
 
     private boolean loadSelectedTrackConfigurations(Properties props) {
@@ -60,7 +72,7 @@ public class VoteToStartSession implements IPacketLogic {
             // TODO Do not hard code the map, it should be voted by the clients
             props.checkpointManager.loadNewCheckpoints(Tracks.SPACE_YARD);
             return true;
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e ) {
             logger.debug(e.getMessage());
             props.sender.sendSomethingWentWrongServerError(props.ackHandler, props.sessionPlayers.getPlayers(), "Could not load config for selected track: " + e.getMessage());
             return false;

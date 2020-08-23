@@ -153,9 +153,7 @@ public class TestVoteToStartSession {
         assert (player != null);
 
         JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
-
-        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerAddVotePacket);
-
+        
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
         voteToStartSession.execute(properties);
