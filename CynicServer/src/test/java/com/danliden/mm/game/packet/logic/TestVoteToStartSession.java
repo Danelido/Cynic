@@ -151,8 +151,6 @@ public class TestVoteToStartSession {
 
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-
-        JSONObject playerAddVotePacket = createPlayerAddVotePacket(player.id, VALID_SHIP_NAME, COLOR);
         
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
