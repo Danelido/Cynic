@@ -151,7 +151,7 @@ public class TestVoteToStartSession {
 
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
-        
+
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
         voteToStartSession.execute(properties);

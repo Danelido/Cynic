@@ -29,17 +29,47 @@ public class UpdatePlayer implements IPacketLogic {
                 client.updatePlayer(props.bundle.getPacketJsonData());
                 updatePlayerPlacements(props.sender, props.sessionPlayers, props.checkpointManager);
                 notifyOtherClientsUpdate(props.sender, props.sessionPlayers, client);
+                // Check if a client has won
+                checkForWinnings(props, client);
             } else {
                 props.sender.sendNotConnectedPacketToSender(props.bundle);
             }
         }
     }
 
+    private void checkForWinnings(Properties props, PlayerClient client) {
+        if(client.getLap() > 3){
+            client.setHasFinishedRace(true);
+            // is this the first client that has finished?
+                // if so then start the 30 seconds count down
+                // Notify clients
+
+            if(client.getLocalPlacement() <= props.sessionPlayers.getPlayers().size() -1 && client.getLocalPlacement() <= 3){
+                // Reward ( future )
+            }
+
+            // Send a packet to the player telling him/her about this
+
+        }
+    }
+
     private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers, CheckpointManager checkpointManager) {
         if (checkpointManager != null) {
             List<PlayerClient> placementList = placements.getPlacements(sessionPlayers.getPlayers(), checkpointManager);
+            updateLocalPlacements(sessionPlayers, placementList);
             notifyOtherClientsPlacements(sender, sessionPlayers, placementList);
         }
+    }
+
+    private void updateLocalPlacements(SessionPlayers sessionPlayers, List<PlayerClient> placementList) {
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            for (int i = 0; i < placementList.size(); i++) {
+                if(playerClient.id == placementList.get(i).id){
+                    playerClient.setLocalPlacement(i);
+                    break;
+                }
+            }
+        });
     }
 
     private void notifyOtherClientsPlacements(PacketSender sender, SessionPlayers sessionPlayers, List<PlayerClient> placementList) {

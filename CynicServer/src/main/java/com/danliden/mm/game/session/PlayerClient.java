@@ -25,6 +25,8 @@ public class PlayerClient {
 
     private int nextCheckpointIndex = -1;
     private int lap = 1;
+    private int localPlacement = -1;
+    private boolean hasFinishedRace = false;
 
     public PlayerClient(String name, InetAddress address, int port, int id, int sessionId) {
         this.name = name;
@@ -110,6 +112,22 @@ public class PlayerClient {
 
     public void setShipColor(float r, float g, float b) {
         color.set(r, g, b);
+    }
+
+    public void setLocalPlacement(int newLocalPlacement) {
+        this.localPlacement = newLocalPlacement;
+    }
+
+    public void setHasFinishedRace(boolean hasFinishedRace) {
+        this.hasFinishedRace = hasFinishedRace;
+    }
+
+    public int getLocalPlacement() {
+        return localPlacement;
+    }
+
+    public boolean isHasFinishedRace() {
+        return hasFinishedRace;
     }
 
     public String getChosenShip() {
