@@ -22,4 +22,6 @@ public class PacketKeys {
     public static final String NextCheckpointIndex = "NCI";
     public static final String FatalServerError = "FatErr";
     public static final String PlayerLap = "Lap";
+    public static final String DoomTimer = "DMT";
+    public static final String Timestamp = "TMSTMP";
 }

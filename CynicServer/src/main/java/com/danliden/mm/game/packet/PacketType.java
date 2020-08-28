@@ -26,6 +26,7 @@ public abstract class PacketType {
         public static final int STARTING_GAME = 9;
         public static final int PLACEMENT_UPDATE = 10;
         public static final int FATAL_SERVER_ERROR = 11;
+        public static final int DOOM_TIMER = 12;
     }
 
 }

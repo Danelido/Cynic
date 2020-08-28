@@ -25,12 +25,14 @@ public class PacketSender {
     }
 
     public void sendWithAck(SessionAckHandler ackHandler, JSONObject jsonData, PlayerClient client, int maxTries, int intervalMS) {
+        addTimeStampToPacket(jsonData);
         AckEntity ackEntity = ackHandler.buildAckEntity(jsonData, client, maxTries, intervalMS);
         ackHandler.registerAckEntity(ackEntity);
         send(ackEntity.getOutgoingData(), ackEntity.getClient().address, ackEntity.getClient().port);
     }
 
     public void sendToMultipleWithAck(SessionAckHandler ackHandler, JSONObject jsonData, List<PlayerClient> clients, int maxTries, int intervalMS) {
+        addTimeStampToPacket(jsonData);
         for (PlayerClient client : clients) {
             AckEntity ackEntity = ackHandler.buildAckEntity(jsonData, client, maxTries, intervalMS);
             ackHandler.registerAckEntity(ackEntity);
@@ -39,6 +41,7 @@ public class PacketSender {
     }
 
     public void sendToMultipleWithAckAndExclude(SessionAckHandler ackHandler, JSONObject jsonData, List<PlayerClient> clients, int maxTries, int intervalMS, PlayerClient excludedClient) {
+        addTimeStampToPacket(jsonData);
         for (PlayerClient client : clients) {
             if (client.id != excludedClient.id) {
                 AckEntity ackEntity = ackHandler.buildAckEntity(jsonData, client, maxTries, intervalMS);
@@ -48,16 +51,18 @@ public class PacketSender {
         }
     }
 
-    public void sendToMultiple(JSONObject data, List<PlayerClient> clients) {
+    public void sendToMultiple(JSONObject jsonData, List<PlayerClient> clients) {
+        addTimeStampToPacket(jsonData);
         for (PlayerClient client : clients) {
-            send(data.toString().getBytes(), client.address, client.port);
+            send(jsonData.toString().getBytes(), client.address, client.port);
         }
     }
 
-    public void sendToMultipleWithExclude(JSONObject data, List<PlayerClient> clients, PlayerClient excludedClient) {
+    public void sendToMultipleWithExclude(JSONObject jsonData, List<PlayerClient> clients, PlayerClient excludedClient) {
+        addTimeStampToPacket(jsonData);
         for (PlayerClient client : clients) {
             if (client.id != excludedClient.id) {
-                send(data.toString().getBytes(), client.address, client.port);
+                send(jsonData.toString().getBytes(), client.address, client.port);
             }
         }
     }
@@ -74,8 +79,8 @@ public class PacketSender {
         sendToMultipleWithAck(ackHandler, jsonData, clients, 10, 500);
     }
 
-    public void sendToAddress(JSONObject data, InetAddress address, int port) {
-        send(data.toString().getBytes(), address, port);
+    public void sendToAddress(JSONObject jsonData, InetAddress address, int port) {
+        send(jsonData.toString().getBytes(), address, port);
     }
 
     public void send(final byte[] data, final InetAddress address, final int port) {
@@ -85,6 +90,10 @@ public class PacketSender {
         } catch (Exception e) {
             logger.debug(e.getMessage());
         }
+    }
+
+    private void addTimeStampToPacket(JSONObject packet) {
+        packet.put(PacketKeys.Timestamp, System.currentTimeMillis());
     }
 
 

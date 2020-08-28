@@ -236,7 +236,7 @@ public class TestVoteToStartSession {
                 .put(PacketKeys.ShipBlueComponent, color.z);
     }
 
-    private Properties createProperties(ServerPacketBundle bundle, PacketSender senderMock, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState state){
+    private Properties createProperties(ServerPacketBundle bundle, PacketSender senderMock, SessionAckHandler ackHandler, SessionPlayers sessionPlayers, GameState state) {
         Properties properties = new Properties();
         return properties.setBundle(bundle)
                 .setPacketSender(senderMock)

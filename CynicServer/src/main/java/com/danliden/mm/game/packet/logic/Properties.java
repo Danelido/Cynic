@@ -2,6 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.racing.CheckpointManager;
+import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
@@ -14,6 +15,7 @@ public class Properties {
     SessionPlayers sessionPlayers;
     GameState gameState;
     CheckpointManager checkpointManager;
+    DoomTimer doomTimer;
 
     public Properties setBundle(ServerPacketBundle bundle){
         this.bundle = bundle;
@@ -45,4 +47,8 @@ public class Properties {
         return this;
     }
 
+    public Properties setDoomTimer(DoomTimer doomTimer){
+        this.doomTimer = doomTimer;
+        return this;
+    }
 }

@@ -4,6 +4,8 @@ import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.session.GameSession;
 import com.danliden.mm.rest.HTTPResponse;
+import com.danliden.mm.utils.TimeMeasurement;
+import com.danliden.mm.utils.TimeUnits;
 import com.danliden.mm.utils.UniqueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +114,7 @@ public class ServerInstance implements Runnable {
     private void handleGeneralUpdate() throws Exception {
         for (Map.Entry<Integer, GameSession> entry : gameSessionMap.entrySet()) {
             GameSession session = entry.getValue();
-            session.onServerUpdate(UPDATE_INTERVAL_MS);
+            session.onServerUpdate(TimeMeasurement.of(UPDATE_INTERVAL_MS, TimeUnits.MILLISECONDS));
         }
         Thread.sleep(UPDATE_INTERVAL_MS);
     }

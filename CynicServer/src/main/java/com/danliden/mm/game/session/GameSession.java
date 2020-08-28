@@ -5,6 +5,7 @@ import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.logic.*;
 import com.danliden.mm.game.racing.CheckpointManager;
+import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.utils.GameState;
 import org.json.JSONObject;
@@ -21,26 +22,41 @@ public class GameSession {
     private final int SESSION_ID;
 
     private final SessionPlayers sessionPlayers;
-    private final GameState currentState;
+    private final GameState gameState;
     private final SessionAckHandler ackHandler;
     private final PacketSender sender;
     private final Properties properties;
     private final CheckpointManager checkpointManager;
+    private final DoomTimer doomTimer;
 
     public GameSession(PacketSender sender, int sessionID) {
         this.sender = sender;
         SESSION_ID = sessionID;
         sessionPlayers = new SessionPlayers(MAX_PLAYERS);
-        currentState = new GameState();
+        gameState = new GameState();
         ackHandler = new SessionAckHandler(sender);
         checkpointManager = new CheckpointManager();
+        doomTimer = new DoomTimer(ackHandler, sessionPlayers, gameState, sender);
         properties = new Properties();
         mapPacketLogic();
     }
 
-    public void onServerUpdate(final int updateInterval) {
+    public void onServerUpdate(final int updateIntervalMs) {
         checkClientsHeartbeat();
-        ackHandler.update(updateInterval);
+        ackHandler.update(updateIntervalMs);
+        doomTimer.update(updateIntervalMs);
+
+        if(doomTimer.getCurrentState() == DoomTimer.State.FINISHED){
+            doomTimer.stop();
+            gameState.setGameState(GameState.GameStateEnum.IN_SESSION_END);
+            /* Todo:
+                - Send packet to clients indicating that it is over with all the placements
+                - Start a timer task of 10(?) seconds
+                    - When time is up, set state to IN_LOBBY
+                    - Reset everything worth resetting.
+                    - Write unit tests!
+            */
+        }
     }
 
     public void onServerHeartbeat() {
@@ -73,8 +89,9 @@ public class GameSession {
                 .setPacketSender(sender)
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
-                .setGameState(currentState)
-                .setCheckpointsManager(checkpointManager);
+                .setGameState(gameState)
+                .setCheckpointsManager(checkpointManager)
+                .setDoomTimer(doomTimer);
     }
 
     private void checkClientsHeartbeat() {
@@ -114,7 +131,7 @@ public class GameSession {
     }
 
     public boolean isJoinAble() {
-        return currentState.getGameState() == GameState.GameStateEnum.LOBBY && !isFull();
+        return gameState.getGameState() == GameState.GameStateEnum.LOBBY && !isFull();
     }
 
     public final int getSessionId() {

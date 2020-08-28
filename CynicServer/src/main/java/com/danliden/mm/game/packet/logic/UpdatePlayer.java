@@ -8,6 +8,8 @@ import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
+import com.danliden.mm.utils.TimeMeasurement;
+import com.danliden.mm.utils.TimeUnits;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -40,9 +42,12 @@ public class UpdatePlayer implements IPacketLogic {
     private void checkForWinnings(Properties props, PlayerClient client) {
         if(client.getLap() > 3){
             client.setHasFinishedRace(true);
-            // is this the first client that has finished?
+            if(firstPlayerToFinish(client, props.sessionPlayers)){
                 // if so then start the 30 seconds count down
+                props.doomTimer.startCountdown(TimeMeasurement.of(30, TimeUnits.SECONDS));
                 // Notify clients
+
+            }
 
             if(client.getLocalPlacement() <= props.sessionPlayers.getPlayers().size() -1 && client.getLocalPlacement() <= 3){
                 // Reward ( future )
@@ -51,6 +56,18 @@ public class UpdatePlayer implements IPacketLogic {
             // Send a packet to the player telling him/her about this
 
         }
+    }
+
+    private boolean firstPlayerToFinish(PlayerClient client, SessionPlayers sessionPlayers){
+        for (PlayerClient player: sessionPlayers.getPlayers()) {
+            if(player.id == client.id){
+                continue;
+            }
+            if(player.isHasFinishedRace()){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updatePlayerPlacements(PacketSender sender, SessionPlayers sessionPlayers, CheckpointManager checkpointManager) {
