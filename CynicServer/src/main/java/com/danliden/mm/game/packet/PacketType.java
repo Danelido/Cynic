@@ -27,6 +27,9 @@ public abstract class PacketType {
         public static final int PLACEMENT_UPDATE = 10;
         public static final int FATAL_SERVER_ERROR = 11;
         public static final int DOOM_TIMER = 12;
+        public static final int END_OF_DOOM_TIMER_WITH_PLACEMENTS = 13;
+        public static final int END_OF_LOOKING_AT_PLACEMENTS_TIMER = 14;
+        public static final int BACK_TO_LOBBY = 14;
     }
 
 }

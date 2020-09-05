@@ -4,14 +4,16 @@ import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.logic.*;
-import com.danliden.mm.game.racing.CheckpointManager;
-import com.danliden.mm.game.racing.DoomTimer;
+import com.danliden.mm.game.packet.logic.Properties;
+import com.danliden.mm.game.racing.*;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.utils.GameState;
+import com.danliden.mm.utils.TimeMeasurement;
+import com.danliden.mm.utils.TimeUnits;
+import com.danliden.mm.utils.TimedExecution;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameSession {
 
@@ -46,27 +48,46 @@ public class GameSession {
         ackHandler.update(updateIntervalMs);
         doomTimer.update(updateIntervalMs);
 
-        if(doomTimer.getCurrentState() == DoomTimer.State.FINISHED){
+        if (doomTimer.getCurrentState() == DoomTimer.State.FINISHED) {
             doomTimer.stop();
             gameState.setGameState(GameState.GameStateEnum.IN_SESSION_END);
-            /* Todo:
-                - Send packet to clients indicating that it is over with all the placements
-                - Start a timer task of 10(?) seconds
-                    - When time is up, set state to IN_LOBBY
-                    - Reset everything worth resetting.
-                    - Write unit tests!
-            */
+            sendEndOfRacePacketWithPlacements();
+            startEndGameTasks(TimeMeasurement.of(10, TimeUnits.SECONDS));
         }
     }
 
+    private void sendEndOfRacePacketWithPlacements() {
+        Placements placements = new Placements();
+        List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(sessionPlayers.getPlayers());
+        JSONObject doomTimerEndPacket = new JSONObject();
+        StringBuilder placementsString = buildPlacementString(placementList);
+        doomTimerEndPacket.put(PacketKeys.PacketId, PacketType.Outgoing.END_OF_DOOM_TIMER_WITH_PLACEMENTS);
+        doomTimerEndPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
+        sender.sendToMultipleWithAck(ackHandler, doomTimerEndPacket, sessionPlayers.getPlayers(), 10, 500);
+
+    }
+
+    private StringBuilder buildPlacementString(List<PlayerClient> placementList) {
+        StringBuilder orderedPlayerIds = new StringBuilder();
+        for (PlayerClient playerClient : placementList) {
+            orderedPlayerIds.append(playerClient.id).append(",");
+        }
+        return orderedPlayerIds;
+    }
+
+    private void startEndGameTasks(int time) {
+        new TimedExecution()
+                .setTime(time)
+                .setIntervalExecution(new EndGameIntervalTask(properties), TimeMeasurement.of(500, TimeUnits.MILLISECONDS))
+                .setPostTimerExecution(new EndGameTask(properties))
+                .start();
+    }
+
     public void onServerHeartbeat() {
-        // Increase flat lines
         for (PlayerClient client : sessionPlayers.getPlayers()) {
             client.addFlatline();
         }
-        // Send out heartbeats
         sendHeartbeats();
-
     }
 
     public void handleData(ServerPacketBundle bundle) {
@@ -84,7 +105,7 @@ public class GameSession {
 
     }
 
-    private void updateProperties(ServerPacketBundle bundle){
+    private void updateProperties(ServerPacketBundle bundle) {
         properties.setBundle(bundle)
                 .setPacketSender(sender)
                 .setSessionAckHandler(ackHandler)

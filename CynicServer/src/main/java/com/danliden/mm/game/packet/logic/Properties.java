@@ -9,45 +9,45 @@ import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
 
 public class Properties {
-    ServerPacketBundle bundle;
-    PacketSender sender;
-    SessionAckHandler ackHandler;
-    SessionPlayers sessionPlayers;
-    GameState gameState;
-    CheckpointManager checkpointManager;
-    DoomTimer doomTimer;
+    public ServerPacketBundle bundle;
+    public PacketSender sender;
+    public SessionAckHandler ackHandler;
+    public SessionPlayers sessionPlayers;
+    public GameState gameState;
+    public CheckpointManager checkpointManager;
+    public DoomTimer doomTimer;
 
-    public Properties setBundle(ServerPacketBundle bundle){
+    public Properties setBundle(ServerPacketBundle bundle) {
         this.bundle = bundle;
         return this;
     }
 
-    public Properties setPacketSender(PacketSender sender){
+    public Properties setPacketSender(PacketSender sender) {
         this.sender = sender;
         return this;
     }
 
-    public Properties setSessionAckHandler(SessionAckHandler ackHandler){
+    public Properties setSessionAckHandler(SessionAckHandler ackHandler) {
         this.ackHandler = ackHandler;
         return this;
     }
 
-    public Properties setSessionPlayers(SessionPlayers sessionPlayers){
+    public Properties setSessionPlayers(SessionPlayers sessionPlayers) {
         this.sessionPlayers = sessionPlayers;
         return this;
     }
 
-    public Properties setGameState(GameState gameState){
+    public Properties setGameState(GameState gameState) {
         this.gameState = gameState;
         return this;
     }
 
-    public Properties setCheckpointsManager(CheckpointManager checkpointsManager){
+    public Properties setCheckpointsManager(CheckpointManager checkpointsManager) {
         this.checkpointManager = checkpointsManager;
         return this;
     }
 
-    public Properties setDoomTimer(DoomTimer doomTimer){
+    public Properties setDoomTimer(DoomTimer doomTimer) {
         this.doomTimer = doomTimer;
         return this;
     }

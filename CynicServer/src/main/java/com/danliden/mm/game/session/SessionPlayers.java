@@ -91,4 +91,10 @@ public class SessionPlayers {
             client.setIsReady(ready);
         }
     }
+
+    public void resetAllPlayers() {
+        for(PlayerClient client: players){
+            client.reset();
+        }
+    }
 }

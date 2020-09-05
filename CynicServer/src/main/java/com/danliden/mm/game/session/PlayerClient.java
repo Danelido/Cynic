@@ -66,6 +66,17 @@ public class PlayerClient {
         lap = obj.getInt(PacketKeys.PlayerLap);
     }
 
+    public void reset() {
+        throttling = false;
+        rotationDegrees = 0.0f;
+        position = Vector2.Zero();
+        nextCheckpointIndex = -1;
+        lap = 1;
+        localPlacement = -1;
+        hasFinishedRace = false;
+        ready = false;
+    }
+
     public void setPosition(Vector2 position){
         this.position = position;
     }
@@ -149,5 +160,4 @@ public class PlayerClient {
     public int getLap() {
         return lap;
     }
-
 }

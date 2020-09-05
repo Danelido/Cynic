@@ -1,7 +1,8 @@
 package com.danliden.mm.game.packet;
 
 public class PacketKeys {
-    private PacketKeys(){}
+    private PacketKeys() {
+    }
 
     public static final String PacketId = "PacketId";
     public static final String SessionID = "SessionId";
@@ -23,5 +24,6 @@ public class PacketKeys {
     public static final String FatalServerError = "FatErr";
     public static final String PlayerLap = "Lap";
     public static final String DoomTimer = "DMT";
+    public static final String EndOfRaceTimer = "EORT";
     public static final String Timestamp = "TMSTMP";
 }

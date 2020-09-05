@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class DoomTimer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
