@@ -1,7 +1,6 @@
 package com.danliden.mm.game.racing;
 
 import com.danliden.mm.game.session.PlayerClient;
-import com.danliden.mm.utils.Randomizer;
 import com.danliden.mm.utils.Vector2;
 import org.junit.Test;
 
@@ -69,12 +68,10 @@ public class TestPlacements {
 
     @Test
     public void testPlacementsOnInvalidIndexes() {
-        List<PlayerClient> orderedList = new ArrayList<>();
         List<PlayerClient> shuffledList = new ArrayList<>();
 
         for (int i = 0; i < 25; i++) {
             PlayerClient player = AddPlayer(i, -1, 0, new Vector2(100.0f, 100.0f - i));
-            orderedList.add(player);
             shuffledList.add(player);
         }
 
@@ -160,7 +157,6 @@ public class TestPlacements {
     @Test
     public void TestSortingPlayersInEndGameScenario(){
         List<PlayerClient> orderedList = new ArrayList<>();
-        List<PlayerClient> shuffledList = new ArrayList<>();
 
         PlayerClient dummy1 = AddPlayer(10, 3, 2, new Vector2(100.0f, 50.0f));
         dummy1.setLocalPlacement(1);
@@ -171,18 +167,22 @@ public class TestPlacements {
         dummy2.setHasFinishedRace(true);
 
         PlayerClient dummy3 = AddPlayer(11, 2, 1, new Vector2(100.0f, 80.0f));
+        dummy3.setLocalPlacement(3);
+
         PlayerClient dummy4 = AddPlayer(13, 2, 1, new Vector2(100.0f, 50.0f));
+        dummy4.setLocalPlacement(4);
+
 
         orderedList.add(dummy1);
         orderedList.add(dummy2);
         orderedList.add(dummy3);
         orderedList.add(dummy4);
 
-        shuffledList.addAll(orderedList);
+        List<PlayerClient> shuffledList = new ArrayList<>(orderedList);
         Collections.shuffle(shuffledList);
 
         checkpointManager.setCheckpointList(generateDummyCheckpoints(5));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(shuffledList);
 
         assert placementList.size() == orderedList.size();
 

@@ -27,7 +27,7 @@ public class CheckpointManager {
     }
 
     // Used for tests
-    void setCheckpointList(List<Checkpoint> checkpointList){
+    public void setCheckpointList(List<Checkpoint> checkpointList){
         this.checkpointList = checkpointList;
     }
 

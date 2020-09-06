@@ -1,10 +1,10 @@
 package com.danliden.mm.game.server;
 
 import com.danliden.mm.rest.HTTPResponse;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;

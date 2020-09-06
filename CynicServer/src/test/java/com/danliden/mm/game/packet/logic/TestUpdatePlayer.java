@@ -2,6 +2,8 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
+import com.danliden.mm.game.racing.Checkpoint;
+import com.danliden.mm.game.racing.CheckpointManager;
 import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
@@ -10,11 +12,13 @@ import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
 import com.danliden.mm.utils.Vector2;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 
@@ -24,6 +28,12 @@ public class TestUpdatePlayer {
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
     private final DoomTimer doomTimer = mock(DoomTimer.class);
+    private CheckpointManager checkpointManager = new CheckpointManager();
+
+    @Before
+    public void before(){
+        checkpointManager.setCheckpointList(new ArrayList<>());
+    }
 
     @Test
     public void testUpdatingValidPlayer() {
@@ -290,6 +300,7 @@ public class TestUpdatePlayer {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(state)
+                .setCheckpointsManager(checkpointManager)
                 .setDoomTimer(doomTimer);
     }
 }
