@@ -12,18 +12,18 @@ public class PacketKeys {
     public static final String PlayerRotation = "Rot";
     public static final String PlayerXPos = "X";
     public static final String PlayerYPos = "Y";
-    public static final String Throttling = "THRT";
+    public static final String Throttling = "Thrt";
     public static final String AckId = "AId";
     public static final String PlayerReady = "Rdy";
-    public static final String ShipPrefabName = "PrefName";
-    public static final String ShipRedComponent = "SC_R";
-    public static final String ShipGreenComponent = "SC_G";
-    public static final String ShipBlueComponent = "SC_B";
+    public static final String ShipPrefabName = "PreName";
+    public static final String ShipRedComponent = "Shprc";
+    public static final String ShipGreenComponent = "Shpgc";
+    public static final String ShipBlueComponent = "Shpbc";
     public static final String PlacementUpdate = "Plcs";
-    public static final String NextCheckpointIndex = "NCI";
+    public static final String NextCheckpointIndex = "Nci";
     public static final String FatalServerError = "FatErr";
     public static final String PlayerLap = "Lap";
-    public static final String DoomTimer = "DMT";
-    public static final String EndOfRaceTimer = "EORT";
-    public static final String Timestamp = "TMSTMP";
+    public static final String DoomTimer = "Dmt";
+    public static final String EndOfRaceTimer = "Eort";
+    public static final String Timestamp = "Tmstmp";
 }

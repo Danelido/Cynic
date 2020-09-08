@@ -115,7 +115,6 @@ public class TestShipChange {
 
         String newShipName = "ValidName";
         JSONObject shipChangePacket = createShipChangePacket(player.id, newShipName);
-        Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
@@ -148,7 +147,6 @@ public class TestShipChange {
 
         String newShipName = "ValidName";
         JSONObject shipChangePacket = createShipChangePacket(player.id, newShipName);
-        Mockito.when(bundle.getPacketJsonData()).thenReturn(shipChangePacket);
 
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);

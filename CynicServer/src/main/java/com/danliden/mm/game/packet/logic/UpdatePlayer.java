@@ -19,7 +19,8 @@ public class UpdatePlayer implements IPacketLogic {
 
     @Override
     public void execute(Properties props) {
-        if (props.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION) {
+        if (props.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION ||
+                props.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_DOOM_TIMER) {
             final int id = props.bundle
                     .getPacketJsonData()
                     .getInt(PacketKeys.PlayerId);
@@ -61,7 +62,6 @@ public class UpdatePlayer implements IPacketLogic {
             client.setHasFinishedRace(true);
             if(firstPlayerToFinish(client, props.sessionPlayers)){
                 props.doomTimer.startCountdown(TimeMeasurement.of(30, TimeUnits.SECONDS));
-                // Notify clients
             }
 
         }
@@ -95,7 +95,6 @@ public class UpdatePlayer implements IPacketLogic {
         StringBuilder placementsString = buildPlacementString(placementList);
         placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
         placementPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
-
         return placementPacket;
     }
 

@@ -6,28 +6,32 @@
 
     "JOIN_ACCEPTED": {
       "PacketId": "A Valid packet type, in this case \"JOIN_ACCEPTED\"",
-      "AckId": "Unique ack id that the client needs to answer back",
+      "AId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of the player",
-      "PlayerReady": "Have the player voted to start the game session"
+      "Rdy": "Have the player voted to start the game session as boolean",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "LOST_CLIENT": {
-      /* Vote reset is engaged with this packet */
+      "_comment": "Vote reset is engaged with this packet",
       "PacketId": "A Valid packet type, in this case \"LOST_CLIENT\"",
-      "PlayerId": "Id of the player that was lost"
+      "PlayerId": "Id of the player that was lost",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "HEARTBEAT_REQUEST": {
-      "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\""
+      "PacketId": "A Valid packet type, in this case \"HEARTBEAT_REQUEST\"",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "UPDATED_CLIENT": {
       "PacketId": "A Valid packet type, in this case \"UPDATED_CLIENT\"",
       "PlayerId": "Id of the updated player",
-      "PlayerXPos": "The updated x position of the player",
-      "PlayerYPos": "The updated y position of the player",
-      "Throttling": "If the player is holding the throttle(gas)",
-      "PlayerRotation": "The start rotation of the player"
+      "X": "The updated x position of the player",
+      "Y": "The updated y position of the player",
+      "Thrt": "If the player is holding the throttle(gas) as boolean",
+      "Rot": "The start rotation of the player",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "DECLINED_JOIN_REQUEST": {
@@ -35,44 +39,86 @@
     },
 
     "NEW_PLAYER_JOINED": {
-      //Vote reset is engaged with this packet
+      "_comment": "Vote reset is engaged with this packet",
       "PacketId": "A Valid packet type, in this case \"NEW_PLAYER_JOINED\"",
-      "AckId": "Unique ack id that the client needs to answer back",
+      "AId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of the new player",
-      "PlayerReady": "Have the player voted to start the game session",
-      "PlayerName": "Name of the new player (Not supported)"
+      "Rdy": "Have the player voted to start the game session",
+      "Name": "Name of the new player (Not supported)",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "PLAYER_VOTE_TO_START": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_VOTE_TO_START\"",
       "PlayerId": "Id of the player that voted to start",
-      "AckId": "Unique ack id that the client needs to answer back",
-      "PrefabName": "Name of the ship prefab",
-      "sc_r": "Ship color red component (0.0 - 1.0)",
-      "sc_g": "Ship color green component (0.0 - 1.0)",
-      "sc_b": "Ship color blue component (0.0 - 1.0)"
+      "AId": "Unique ack id that the client needs to answer back",
+      "PreName": "Name of the ship prefab",
+      "Shprc": "Ship color red component (0.0 - 1.0)",
+      "Shpgc": "Ship color green component (0.0 - 1.0)",
+      "Shpbc": "Ship color blue component (0.0 - 1.0)",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "PLAYER_REMOVE_VOTE_TO_START": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_REMOVE_VOTE_TO_START\"",
       "PlayerId": "Id of the player that removed their vote",
-      "AckId": "Unique ack id that the client needs to answer back"
+      "AId": "Unique ack id that the client needs to answer back",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "STARTING_GAME": {
       "PacketId": "A Valid packet type, in this case \"STARTING_GAME\"",
-      "AckId": "Unique ack id that the client needs to answer back"
+      "AId": "Unique ack id that the client needs to answer back",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
     },
 
     "PLAYER_SHIP_CHANGE": {
       "PacketId": "A Valid packet type, in this case \"PLAYER_SHIP_CHANGE\"",
-      "AckId": "Unique ack id that the client needs to answer back",
+      "AId": "Unique ack id that the client needs to answer back",
       "PlayerId": "Id of who changed ship",
-      "PrefabName": "Name of the ship prefab"
+      "PreName": "Name of the ship prefab",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "PLACEMENT_UPDATE": {
+      "PacketId": "A Valid packet type, in this case \"PLACEMENT_UPDATE\"",
+      "Plcs": "Placements as a string containing player ids in order. example \"4,2,1,3\" where playerId 4 is in first place",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "FATAL_SERVER_ERROR": {
+      "PacketId": "A Valid packet type, in this case \"FATAL_SERVER_ERROR\"",
+      "AId": "Unique ack id that the client needs to answer back",
+      "FatErr" : "Server error message as string",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "DOOM_TIMER": {
+      "PacketId": "A Valid packet type, in this case \"DOOM_TIMER\"",
+      "AId": "Unique ack id that the client needs to answer back",
+      "Dmt": "Time left on doom timer in ms",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "END_OF_RACE": {
+      "PacketId": "A Valid packet type, in this case \"END_OF_RACE\"",
+      "AId": "Unique ack id that the client needs to answer back",
+      "Plcs": "Placements as a string containing player ids in order. example \"4,2,1,3\" where playerId 4 is in first place",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "LOOKING_AT_PLACEMENTS_TIMER" : {
+      "PacketId": "A Valid packet type, in this case \"LOOKING_AT_PLACEMENTS_TIMER\"",
+      "AId": "Unique ack id that the client needs to answer back",
+      "Eort": "Time left in ms",
+      "Tmstmp" : "Timestamp as long (currentTimeMillis)"
+    },
+
+    "BACK_TO_LOBBY" : {
+      "PacketId": "A Valid packet type, in this case \"BACK_TO_LOBBY\"",
+      "AId": "Unique ack id that the client needs to answer back"
     }
-  },
-  "PLACEMENT_UPDATE": {
-    "PacketId": "A Valid packet type, in this case \"PLACEMENT_UPDATE\"",
-    "plcmnts": "List of player id's in order. index 0 = first place and so on"
+
   }
+
 }

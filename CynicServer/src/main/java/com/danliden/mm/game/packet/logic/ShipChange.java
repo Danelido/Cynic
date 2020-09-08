@@ -14,6 +14,8 @@ public class ShipChange implements IPacketLogic {
 
     @Override
     public void execute(Properties props) {
+        if (!inLobby(props.gameState)) return;
+
         final int id = props.bundle
                 .getPacketJsonData()
                 .getInt(PacketKeys.PlayerId);
@@ -25,7 +27,6 @@ public class ShipChange implements IPacketLogic {
             return;
         }
 
-        if (!inLobby(props.gameState)) return;
         if (client.isReady()) return;
 
         changeShip(props.bundle, client);

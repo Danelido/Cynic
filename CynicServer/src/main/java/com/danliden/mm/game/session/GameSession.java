@@ -27,9 +27,9 @@ public class GameSession {
     private final GameState gameState;
     private final SessionAckHandler ackHandler;
     private final PacketSender sender;
-    private final Properties properties;
     private final CheckpointManager checkpointManager;
     private final DoomTimer doomTimer;
+    final Properties properties;
 
     public GameSession(PacketSender sender, int sessionID) {
         this.sender = sender;
@@ -61,10 +61,9 @@ public class GameSession {
         List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(sessionPlayers.getPlayers());
         JSONObject doomTimerEndPacket = new JSONObject();
         StringBuilder placementsString = buildPlacementString(placementList);
-        doomTimerEndPacket.put(PacketKeys.PacketId, PacketType.Outgoing.END_OF_DOOM_TIMER_WITH_PLACEMENTS);
+        doomTimerEndPacket.put(PacketKeys.PacketId, PacketType.Outgoing.END_OF_RACE);
         doomTimerEndPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
         sender.sendToMultipleWithAck(ackHandler, doomTimerEndPacket, sessionPlayers.getPlayers(), 10, 500);
-
     }
 
     private StringBuilder buildPlacementString(List<PlayerClient> placementList) {
@@ -105,7 +104,7 @@ public class GameSession {
 
     }
 
-    private void updateProperties(ServerPacketBundle bundle) {
+    void updateProperties(ServerPacketBundle bundle) {
         properties.setBundle(bundle)
                 .setPacketSender(sender)
                 .setSessionAckHandler(ackHandler)

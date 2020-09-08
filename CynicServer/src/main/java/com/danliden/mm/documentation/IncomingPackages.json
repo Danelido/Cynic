@@ -33,15 +33,15 @@
       "PlayerId": "Id of the player",
       "SessionId": "Id of the game session",
       "PrefabName": "Name of the ship prefab",
-      "sc_r": "Ship color red component (0.0 - 1.0)",
-      "sc_g": "Ship color green component (0.0 - 1.0)",
-      "sc_b": "Ship color blue component (0.0 - 1.0)"
+      "Shprc": "Ship color red component (0.0 - 1.0)",
+      "Shpgc": "Ship color green component (0.0 - 1.0)",
+      "Shpbc": "Ship color blue component (0.0 - 1.0)"
     },
 
     "REMOVE_VOTE_TO_START_SESSION": {
       "PacketId": "A Valid packet type, in this case \"REMOVE_VOTE_TO_START_SESSION\"",
       "PlayerId": "Id of the player",
-      "SessionId": "Id of the game session",
+      "SessionId": "Id of the game session"
     },
 
     "PLAYER_SHIP_CHANGE": {

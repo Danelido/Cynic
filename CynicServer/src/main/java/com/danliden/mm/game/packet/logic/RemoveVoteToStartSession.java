@@ -14,15 +14,18 @@ public class RemoveVoteToStartSession implements IPacketLogic {
 
     @Override
     public void execute(Properties props) {
+        if (props.gameState.getGameState() != GameState.GameStateEnum.LOBBY) {
+            return;
+        }
+
         final int id = props.bundle
-                .getPacketJsonData()
-                .getInt(PacketKeys.PlayerId);
+                    .getPacketJsonData()
+                    .getInt(PacketKeys.PlayerId);
 
         PlayerClient client = props.sessionPlayers.findById(id);
         if (setToNotReadyIfNotNull(props.sessionPlayers, client, props.bundle, props.sender) && props.gameState.getGameState() == GameState.GameStateEnum.LOBBY) {
             informAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
         }
-
     }
 
     private boolean setToNotReadyIfNotNull(SessionPlayers sessionPlayers, PlayerClient client, ServerPacketBundle bundle, PacketSender sender) {

@@ -72,6 +72,42 @@ public class TestUpdatePlayer {
     }
 
     @Test
+    public void testUpdatingValidPlayerInDoomTimerState() {
+        // Setup
+        final int hostAddressMock = 0;
+        IPacketLogic updatePlayerLogic = new UpdatePlayer();
+        SessionPlayers sessionPlayers = new SessionPlayers(4);
+
+        GameState state = new GameState();
+        state.setGameState(GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
+
+        Mockito.when(bundle.getSessionId()).thenReturn(10100);
+        Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);
+        Mockito.when(dgPacket.getPort()).thenReturn(2020);
+
+        PlayerClient player = addPlayer(sessionPlayers, dgPacket, hostAddressMock);
+        assert (player != null);
+
+        Vector2 newPosition = new Vector2(400, -200);
+        float rotation = 45.0f;
+        boolean throttling = true;
+        JSONObject playerJsonUpdatedData = createPlayerUpdateData(player.id, rotation, throttling, newPosition, 0);
+
+        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerJsonUpdatedData);
+
+        // Execute logic
+        Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state, doomTimer);
+        updatePlayerLogic.execute(properties);
+
+        assert (player.getRotationDegrees() == rotation);
+        assert (player.getPosition().equalsTo(newPosition));
+        assert (player.isThrottling());
+
+        // Build the expected outgoing packet
+        verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
+    }
+
+    @Test
     public void testUpdatingValidPlayerInLobby() {
         // Setup
         final int hostAddressMock = 0;

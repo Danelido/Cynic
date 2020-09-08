@@ -73,9 +73,6 @@ public class TestRemoveVoteToStartSession {
         PlayerClient player = addPlayer(sessionPlayers, dgPacket);
         assert (player != null);
 
-        JSONObject playerRemoveVotePacket = createPlayerRemoveVotePacket(player.id);
-
-        Mockito.when(bundle.getPacketJsonData()).thenReturn(playerRemoveVotePacket);
 
         // Execute logic
         Properties properties = createProperties(bundle, senderMock, ackHandler, sessionPlayers, state);
@@ -92,7 +89,7 @@ public class TestRemoveVoteToStartSession {
         SessionPlayers sessionPlayers = new SessionPlayers(4);
 
         GameState state = new GameState();
-        state.setGameState(GameState.GameStateEnum.IN_SESSION);
+        state.setGameState(GameState.GameStateEnum.LOBBY);
 
         Mockito.when(bundle.getSessionId()).thenReturn(10100);
         Mockito.when(bundle.getDatagramPacket()).thenReturn(dgPacket);

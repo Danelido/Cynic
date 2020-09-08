@@ -26,7 +26,7 @@ public class EndGameIntervalTask extends Execution {
 
     private void sendCountdownPacket() {
         JSONObject packet = new JSONObject();
-        packet.put(PacketKeys.PacketId, PacketType.Outgoing.END_OF_LOOKING_AT_PLACEMENTS_TIMER);
+        packet.put(PacketKeys.PacketId, PacketType.Outgoing.LOOKING_AT_PLACEMENTS_TIMER);
         packet.put(PacketKeys.EndOfRaceTimer, currentTime);
         properties.sender.sendToMultipleWithAck(
                 properties.ackHandler,
