@@ -19,9 +19,10 @@ public class GameSession {
 
     private final Map<Integer, IPacketLogic> packetLogicMapping = new HashMap<>();
 
-    private static final int MAX_PLAYERS = 4;
-    private static final int MAX_FLAT_LINES = 20;
-    private final int SESSION_ID;
+    static final int MAX_PLAYERS = 4;
+    static final int MAX_FLAT_LINES = 20;
+    int TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS = 10000;
+    final int SESSION_ID;
 
     private final SessionPlayers sessionPlayers;
     private final GameState gameState;
@@ -44,6 +45,7 @@ public class GameSession {
     }
 
     public void onServerUpdate(final int updateIntervalMs) {
+        checkIfShouldExitToLobby();
         checkClientsHeartbeat();
         ackHandler.update(updateIntervalMs);
         doomTimer.update(updateIntervalMs);
@@ -52,7 +54,14 @@ public class GameSession {
             doomTimer.stop();
             gameState.setGameState(GameState.GameStateEnum.IN_SESSION_END);
             sendEndOfRacePacketWithPlacements();
-            startEndGameTasks(TimeMeasurement.of(10, TimeUnits.SECONDS));
+            startEndGameTasks(TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS);
+        }
+    }
+
+    private void checkIfShouldExitToLobby() {
+        if(gameState.getGameState() != GameState.GameStateEnum.LOBBY && sessionPlayers.getNumberOfPlayers() == 0){
+            // Maybe clear ackhandler and all that as well?
+            gameState.setGameState(GameState.GameStateEnum.LOBBY);
         }
     }
 
@@ -115,7 +124,8 @@ public class GameSession {
     }
 
     private void checkClientsHeartbeat() {
-        for (PlayerClient client : sessionPlayers.getPlayers()) {
+        for (int i = sessionPlayers.getNumberOfPlayers() - 1; i >= 0; i--) {
+            PlayerClient client = sessionPlayers.getPlayers().get(i);
             if (client.getNrOfFlatLines() >= MAX_FLAT_LINES) {
                 disconnectPlayer(client);
             }

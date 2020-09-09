@@ -1,11 +1,14 @@
 package com.danliden.mm.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TimedExecution {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private int time;
     private int intervalTime;
     private final AtomicBoolean running = new AtomicBoolean(false);
@@ -55,7 +58,7 @@ public class TimedExecution {
                 if (!running.get()) {
                     return;
                 }
-
+                logger.debug("Execution time: {}\nCurrentTimeMillis: {}", executionTimes, System.currentTimeMillis());
                 executionTimes--;
                 runIntervalExecution();
 
@@ -81,7 +84,7 @@ public class TimedExecution {
                 running.set(false);
                 this.cancel();
             }
-        }, 0, time);
+        }, 0, 500);
     }
 
     public boolean isRunning() {

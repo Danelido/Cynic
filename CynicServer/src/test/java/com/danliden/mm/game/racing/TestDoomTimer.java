@@ -57,7 +57,7 @@ public class TestDoomTimer {
 
         verifyState(doomTimer.getCurrentState(), DoomTimer.State.STARTED);
         verifyTime(doomTimer.getCurrentTimeMs(), startTimeMs - intervalMs);
-        verify(senderMock, times(2)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
+        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
         verifyGameState(gameState.getGameState(), GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
     }
 
@@ -77,7 +77,7 @@ public class TestDoomTimer {
 
         verifyState(doomTimer.getCurrentState(), DoomTimer.State.STARTED);
         verifyTime(doomTimer.getCurrentTimeMs(), startTimeMs - intervalMs - intervalMs);
-        verify(senderMock, times(2)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
+        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
         verifyGameState(gameState.getGameState(), GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
     }
 
@@ -96,7 +96,7 @@ public class TestDoomTimer {
 
         verifyState(doomTimer.getCurrentState(), DoomTimer.State.FINISHED);
         verifyTime(doomTimer.getCurrentTimeMs(), 0);
-        verify(senderMock, times(2)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
+        verify(senderMock, times(1)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
         verifyGameState(gameState.getGameState(), GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
     }
 

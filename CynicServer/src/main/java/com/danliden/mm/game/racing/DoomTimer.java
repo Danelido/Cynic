@@ -51,7 +51,6 @@ public class DoomTimer {
             currentState = State.STARTED;
             currentTimeMs = startTimeMs;
             lastTimeMs = startTimeMs;
-            sendTimerPacket();
         }
     }
 
