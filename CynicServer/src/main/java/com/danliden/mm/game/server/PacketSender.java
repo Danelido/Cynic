@@ -93,7 +93,8 @@ public class PacketSender {
     }
 
     private void addTimeStampToPacket(JSONObject packet) {
-        packet.put(PacketKeys.Timestamp, System.currentTimeMillis());
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        packet.put(PacketKeys.Timestamp, timestamp);
     }
 
 
