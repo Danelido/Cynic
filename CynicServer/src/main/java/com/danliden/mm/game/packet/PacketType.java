@@ -29,7 +29,7 @@ public abstract class PacketType {
         public static final int DOOM_TIMER = 12;
         public static final int END_OF_RACE = 13;
         public static final int LOOKING_AT_PLACEMENTS_TIMER = 14;
-        public static final int BACK_TO_LOBBY = 14;
+        public static final int BACK_TO_LOBBY = 15;
     }
 
 }
