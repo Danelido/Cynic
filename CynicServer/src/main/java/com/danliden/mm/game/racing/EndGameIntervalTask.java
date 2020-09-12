@@ -8,14 +8,14 @@ import org.json.JSONObject;
 
 public class EndGameIntervalTask extends Execution {
     private Properties properties;
-    private int currentTime;
+    private long currentTime;
 
     public EndGameIntervalTask(Properties properties) {
         this.properties = properties;
     }
 
     @Override
-    public void setCurrentTime(int currentTimeMs) {
+    public void setCurrentTime(long currentTimeMs) {
         currentTime = currentTimeMs;
     }
 
@@ -33,7 +33,7 @@ public class EndGameIntervalTask extends Execution {
                 packet,
                 properties.sessionPlayers.getPlayers(),
                 5,
-                150);
+                200);
     }
 
 }

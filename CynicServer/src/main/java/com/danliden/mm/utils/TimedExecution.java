@@ -14,11 +14,7 @@ public class TimedExecution {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Execution intervalExecution;
     private Execution postTimerExecution;
-
-    public TimedExecution() {
-
-    }
-
+    
     public TimedExecution start() {
         if (!running.get()) {
             running.set(true);
@@ -52,7 +48,7 @@ public class TimedExecution {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             private int executionTimes = (int) (Math.ceil((double) time / (double) intervalTime));
-
+            private long startTime = System.currentTimeMillis();
             @Override
             public void run() {
                 if (!running.get()) {
@@ -70,6 +66,9 @@ public class TimedExecution {
 
             private void runIntervalExecution() {
                 if (intervalExecution != null) {
+
+                    long timeDiff = System.currentTimeMillis() - startTime;
+                    intervalExecution.setCurrentTime(timeDiff);
                     intervalExecution.run();
                 }
             }

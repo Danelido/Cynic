@@ -2,10 +2,10 @@ package com.danliden.mm.utils;
 
 public class Execution implements Runnable {
 
-    public void setCurrentTime(int currentTimeMs) {
+    public void setCurrentTime(long currentTimeMs) {
     }
 
-    public void setInitialTime(int initialTime) {
+    public void setInitialTime(long initialTime) {
     }
 
     @Override
