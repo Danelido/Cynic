@@ -14,8 +14,11 @@ public class PlacementsCheckpointComparator implements Comparator<PlayerClient> 
 
         @Override
         public int compare(PlayerClient o1, PlayerClient o2) {
-            if(o1.isHasFinishedRace() || o2.isHasFinishedRace())
-                return 0;
+            if(o1.isHasFinishedRace() && o2.isHasFinishedRace()) {
+                return Integer.compare(o1.getLocalPlacement(), o2.getLocalPlacement());
+            }else if(o1.isHasFinishedRace() || o2.isHasFinishedRace()){
+                return Boolean.compare(o2.isHasFinishedRace(), o1.isHasFinishedRace());
+            }
 
             Checkpoint p1CheckPoint = checkpointManager.getCheckpointByIndex(o1.getNextCheckpointIndex());
             Checkpoint p2CheckPoint = checkpointManager.getCheckpointByIndex(o2.getNextCheckpointIndex());

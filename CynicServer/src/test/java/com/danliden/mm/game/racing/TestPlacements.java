@@ -191,6 +191,25 @@ public class TestPlacements {
         }
     }
 
+    @Test
+    public void TestOnePlayerFinishedAndOneNotMoved(){
+        List<PlayerClient> playerList = new ArrayList<>();
+
+        PlayerClient dummy1 = AddPlayer(10, 1, 1, new Vector2(100.0f, 50.0f));
+        dummy1.setHasFinishedRace(false);
+        playerList.add(dummy1);
+
+        PlayerClient dummy2 = AddPlayer(11, 1, 4, new Vector2(100.0f, 90.0f));
+        dummy2.setHasFinishedRace(true);
+        playerList.add(dummy2);
+
+        checkpointManager.setCheckpointList(generateDummyCheckpoints(5));
+        List<PlayerClient> clients = placements.getPlacements(playerList, checkpointManager);
+
+        assert clients.get(0).id == dummy2.id;
+        assert clients.get(1).id == dummy1.id;
+    }
+
     private PlayerClient AddPlayer(int playerId, int checkpointIndex, int lap, Vector2 playerPos) {
         String name = "John Doe";
         int sessionId = 0;
