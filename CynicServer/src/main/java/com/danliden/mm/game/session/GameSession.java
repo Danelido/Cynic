@@ -20,7 +20,7 @@ public class GameSession {
     private final Map<Integer, IPacketLogic> packetLogicMapping = new HashMap<>();
 
     static final int MAX_PLAYERS = 4;
-    static final int MAX_FLAT_LINES = 20;
+    static final int MAX_FLAT_LINES = 8;
     int TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS = 10000;
     final int SESSION_ID;
 
@@ -28,7 +28,7 @@ public class GameSession {
     private final GameState gameState;
     private final SessionAckHandler ackHandler;
     private final PacketSender sender;
-    private final CheckpointManager checkpointManager;
+    private final TrackManager trackManager;
     private final DoomTimer doomTimer;
     final Properties properties;
 
@@ -38,7 +38,7 @@ public class GameSession {
         sessionPlayers = new SessionPlayers(MAX_PLAYERS);
         gameState = new GameState();
         ackHandler = new SessionAckHandler(sender);
-        checkpointManager = new CheckpointManager();
+        trackManager = new TrackManager();
         doomTimer = new DoomTimer(ackHandler, sessionPlayers, gameState, sender);
         properties = new Properties();
         mapPacketLogic();
@@ -119,7 +119,7 @@ public class GameSession {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(gameState)
-                .setCheckpointsManager(checkpointManager)
+                .setCheckpointsManager(trackManager)
                 .setDoomTimer(doomTimer);
     }
 

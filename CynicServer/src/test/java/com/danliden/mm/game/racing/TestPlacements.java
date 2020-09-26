@@ -11,7 +11,7 @@ import java.util.List;
 public class TestPlacements {
 
     private Placements placements = new Placements();
-    private CheckpointManager checkpointManager = new CheckpointManager();
+    private TrackManager trackManager = new TrackManager();
 
     @Test
     public void testPlacementsTargetingSameCheckpoint() {
@@ -26,8 +26,8 @@ public class TestPlacements {
 
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(25));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(25));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, trackManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -56,8 +56,8 @@ public class TestPlacements {
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
 
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(50));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(50));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, trackManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -77,8 +77,8 @@ public class TestPlacements {
 
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(25));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(25));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, trackManager);
 
         assert placementList.size() == 0;
     }
@@ -109,8 +109,8 @@ public class TestPlacements {
         // Shuffle the shuffledList
         Collections.shuffle(shuffledList);
 
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(50));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(50));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, trackManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -144,8 +144,8 @@ public class TestPlacements {
         shuffledList.add(0, player);
         orderedList.add(0, player);
 
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(50));
-        List<PlayerClient> placementList = placements.getPlacements(shuffledList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(50));
+        List<PlayerClient> placementList = placements.getPlacements(shuffledList, trackManager);
 
         assert placementList.size() == orderedList.size();
 
@@ -181,7 +181,7 @@ public class TestPlacements {
         List<PlayerClient> shuffledList = new ArrayList<>(orderedList);
         Collections.shuffle(shuffledList);
 
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(5));
+        trackManager.setCheckpointList(generateDummyCheckpoints(5));
         List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(shuffledList);
 
         assert placementList.size() == orderedList.size();
@@ -203,8 +203,8 @@ public class TestPlacements {
         dummy2.setHasFinishedRace(true);
         playerList.add(dummy2);
 
-        checkpointManager.setCheckpointList(generateDummyCheckpoints(5));
-        List<PlayerClient> clients = placements.getPlacements(playerList, checkpointManager);
+        trackManager.setCheckpointList(generateDummyCheckpoints(5));
+        List<PlayerClient> clients = placements.getPlacements(playerList, trackManager);
 
         assert clients.get(0).id == dummy2.id;
         assert clients.get(1).id == dummy1.id;

@@ -6,10 +6,10 @@ import com.danliden.mm.utils.Vector2;
 import java.util.Comparator;
 
 public class PlacementsCheckpointComparator implements Comparator<PlayerClient> {
-    private final CheckpointManager checkpointManager;
+    private final TrackManager trackManager;
 
-        public PlacementsCheckpointComparator(CheckpointManager checkpointManager) {
-            this.checkpointManager = checkpointManager;
+        public PlacementsCheckpointComparator(TrackManager trackManager) {
+            this.trackManager = trackManager;
         }
 
         @Override
@@ -20,8 +20,8 @@ public class PlacementsCheckpointComparator implements Comparator<PlayerClient> 
                 return Boolean.compare(o2.isHasFinishedRace(), o1.isHasFinishedRace());
             }
 
-            Checkpoint p1CheckPoint = checkpointManager.getCheckpointByIndex(o1.getNextCheckpointIndex());
-            Checkpoint p2CheckPoint = checkpointManager.getCheckpointByIndex(o2.getNextCheckpointIndex());
+            Checkpoint p1CheckPoint = trackManager.getCheckpointByIndex(o1.getNextCheckpointIndex());
+            Checkpoint p2CheckPoint = trackManager.getCheckpointByIndex(o2.getNextCheckpointIndex());
 
             int lapCompareVal = Integer.compare(o2.getLap(), o1.getLap());
             if (lapCompareVal == 0) {

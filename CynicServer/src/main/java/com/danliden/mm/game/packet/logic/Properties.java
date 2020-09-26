@@ -1,7 +1,7 @@
 package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.racing.CheckpointManager;
+import com.danliden.mm.game.racing.TrackManager;
 import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -14,7 +14,7 @@ public class Properties {
     public SessionAckHandler ackHandler;
     public SessionPlayers sessionPlayers;
     public GameState gameState;
-    public CheckpointManager checkpointManager;
+    public TrackManager trackManager;
     public DoomTimer doomTimer;
 
     public Properties setBundle(ServerPacketBundle bundle) {
@@ -42,8 +42,8 @@ public class Properties {
         return this;
     }
 
-    public Properties setCheckpointsManager(CheckpointManager checkpointsManager) {
-        this.checkpointManager = checkpointsManager;
+    public Properties setCheckpointsManager(TrackManager checkpointsManager) {
+        this.trackManager = checkpointsManager;
         return this;
     }
 

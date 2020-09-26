@@ -70,7 +70,7 @@ public class VoteToStartSession implements IPacketLogic {
     private boolean loadSelectedTrackConfigurations(Properties props) {
         try {
             // TODO Do not hard code the map, it should be voted by the clients
-            props.checkpointManager.loadNewCheckpoints(Tracks.SPACE_YARD);
+            props.trackManager.loadTrack(Tracks.SPACE_YARD);
             return true;
         } catch (IOException | NullPointerException e ) {
             logger.debug(e.getMessage());

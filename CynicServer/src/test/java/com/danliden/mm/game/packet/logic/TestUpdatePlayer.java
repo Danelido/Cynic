@@ -2,8 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
-import com.danliden.mm.game.racing.Checkpoint;
-import com.danliden.mm.game.racing.CheckpointManager;
+import com.danliden.mm.game.racing.TrackManager;
 import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
@@ -28,11 +27,11 @@ public class TestUpdatePlayer {
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
     private final DoomTimer doomTimer = mock(DoomTimer.class);
-    private CheckpointManager checkpointManager = new CheckpointManager();
+    private TrackManager trackManager = new TrackManager();
 
     @Before
     public void before(){
-        checkpointManager.setCheckpointList(new ArrayList<>());
+        trackManager.setCheckpointList(new ArrayList<>());
     }
 
     @Test
@@ -336,7 +335,7 @@ public class TestUpdatePlayer {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(state)
-                .setCheckpointsManager(checkpointManager)
+                .setCheckpointsManager(trackManager)
                 .setDoomTimer(doomTimer);
     }
 }

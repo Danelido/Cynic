@@ -2,7 +2,7 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.ServerPacketBundle;
-import com.danliden.mm.game.racing.CheckpointManager;
+import com.danliden.mm.game.racing.TrackManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
@@ -31,7 +31,7 @@ public class TestVoteToStartSession {
     private final PacketSender senderMock = mock(PacketSender.class);
     private final DatagramPacket dgPacket = mock(DatagramPacket.class);
     private final SessionAckHandler ackHandler = mock(SessionAckHandler.class);
-    private final CheckpointManager checkpointManagerMock = mock(CheckpointManager.class);
+    private final TrackManager trackManagerMock = mock(TrackManager.class);
     private final String VALID_SHIP_NAME = "ValidName";
     private final Vector3 COLOR = new Vector3(1.0f, 0.5f, 1.0f);
 
@@ -243,6 +243,6 @@ public class TestVoteToStartSession {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(state)
-                .setCheckpointsManager(checkpointManagerMock);
+                .setCheckpointsManager(trackManagerMock);
     }
 }

@@ -1,21 +1,19 @@
 package com.danliden.mm.game.racing;
 
 import com.danliden.mm.game.session.PlayerClient;
-import com.danliden.mm.utils.Vector2;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Placements {
 
 
-    public List<PlayerClient> getPlacements(List<PlayerClient> players, CheckpointManager checkpointManager) {
+    public List<PlayerClient> getPlacements(List<PlayerClient> players, TrackManager trackManager) {
         if (!hasValidIndexes(players)) {
             return new ArrayList<>();
         }
         List<PlayerClient> placementList = new ArrayList<>(players);
-        placementList.sort(new PlacementsCheckpointComparator(checkpointManager));
+        placementList.sort(new PlacementsCheckpointComparator(trackManager));
         return placementList;
     }
 

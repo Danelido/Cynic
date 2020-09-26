@@ -22,7 +22,7 @@ public class ServerInstance implements Runnable {
     private static final int MAX_PACKET_SIZE = 1024;
 
     private static final int UPDATE_INTERVAL_MS = 100;
-    private static final int HEARTBEAT_INTERVAL_MS = 1500;
+    private static final int HEARTBEAT_INTERVAL_MS = 1000;
 
     private final DatagramSocket socket;
     private final Map<Integer, GameSession> gameSessionMap = new HashMap<>();

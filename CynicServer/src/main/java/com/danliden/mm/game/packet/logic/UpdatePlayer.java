@@ -38,8 +38,8 @@ public class UpdatePlayer implements IPacketLogic {
     }
 
     private void updatePlayerPlacements(Properties props, PlayerClient client) {
-        if (props.checkpointManager != null) {
-            List<PlayerClient> placementList = placements.getPlacements(props.sessionPlayers.getPlayers(), props.checkpointManager);
+        if (props.trackManager != null) {
+            List<PlayerClient> placementList = placements.getPlacements(props.sessionPlayers.getPlayers(), props.trackManager);
             updateLocalPlacements(props.sessionPlayers, placementList);
             checkForWinnings(props, client);
             notifyOtherClientsPlacements(props.sender, props.sessionPlayers, placementList);
