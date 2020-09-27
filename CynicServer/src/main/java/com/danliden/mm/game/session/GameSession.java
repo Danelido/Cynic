@@ -7,22 +7,17 @@ import com.danliden.mm.game.packet.logic.*;
 import com.danliden.mm.game.packet.logic.Properties;
 import com.danliden.mm.game.racing.*;
 import com.danliden.mm.game.server.PacketSender;
-import com.danliden.mm.utils.GameState;
-import com.danliden.mm.utils.TimeMeasurement;
-import com.danliden.mm.utils.TimeUnits;
-import com.danliden.mm.utils.TimedExecution;
+import com.danliden.mm.utils.*;
 import org.json.JSONObject;
 
 import java.util.*;
 
 public class GameSession {
-
     private final Map<Integer, IPacketLogic> packetLogicMapping = new HashMap<>();
 
     static final int MAX_PLAYERS = 4;
-    static final int MAX_FLAT_LINES = 8;
-    int TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS = 10000;
-    final int SESSION_ID;
+    static int endOfRaceTime = Configuration.getEndOfRaceTime();
+    final int sessionId;
 
     private final SessionPlayers sessionPlayers;
     private final GameState gameState;
@@ -30,11 +25,12 @@ public class GameSession {
     private final PacketSender sender;
     private final TrackManager trackManager;
     private final DoomTimer doomTimer;
+    private final Placements placements = new Placements();
     final Properties properties;
 
     public GameSession(PacketSender sender, int sessionID) {
         this.sender = sender;
-        SESSION_ID = sessionID;
+        sessionId = sessionID;
         sessionPlayers = new SessionPlayers(MAX_PLAYERS);
         gameState = new GameState();
         ackHandler = new SessionAckHandler(sender);
@@ -45,8 +41,15 @@ public class GameSession {
     }
 
     public void onServerUpdate(final int updateIntervalMs) {
-        checkIfShouldExitToLobby();
         checkClientsHeartbeat();
+        checkIfShouldExitToLobby();
+
+        if (gameState.getGameState() == GameState.GameStateEnum.IN_SESSION ||
+                gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_DOOM_TIMER) {
+            sendPlacementUpdates();
+            sendUpdatePackages();
+        }
+
         ackHandler.update(updateIntervalMs);
         doomTimer.update(updateIntervalMs);
 
@@ -54,7 +57,7 @@ public class GameSession {
             doomTimer.stop();
             gameState.setGameState(GameState.GameStateEnum.IN_SESSION_END);
             sendEndOfRacePacketWithPlacements();
-            startEndGameTasks(TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS);
+            startEndGameTasks(endOfRaceTime);
         }
     }
 
@@ -66,13 +69,31 @@ public class GameSession {
     }
 
     private void sendEndOfRacePacketWithPlacements() {
-        Placements placements = new Placements();
         List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(sessionPlayers.getPlayers());
         JSONObject doomTimerEndPacket = new JSONObject();
         StringBuilder placementsString = buildPlacementString(placementList);
         doomTimerEndPacket.put(PacketKeys.PacketId, PacketType.Outgoing.END_OF_RACE);
         doomTimerEndPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
         sender.sendToMultipleWithAck(ackHandler, doomTimerEndPacket, sessionPlayers.getPlayers(), 10, 500);
+    }
+
+    private void sendUpdatePackages() {
+        sessionPlayers.getPlayers().forEach(playerClient -> {
+            JSONObject updatePlayerJsonData = playerClient.getAsJsonForInSession();
+            updatePlayerJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
+            sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), playerClient);
+        });
+
+    }
+
+    private void sendPlacementUpdates() {
+
+        List<PlayerClient> placementList = placements.getPlacementsFromLocalPositions(sessionPlayers.getPlayers());
+        JSONObject placementPacket = new JSONObject();
+        StringBuilder placementsString = buildPlacementString(placementList);
+        placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
+        placementPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
+        sender.sendToMultiple(placementPacket, sessionPlayers.getPlayers());
     }
 
     private StringBuilder buildPlacementString(List<PlayerClient> placementList) {
@@ -119,14 +140,14 @@ public class GameSession {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(gameState)
-                .setCheckpointsManager(trackManager)
+                .setTrackManager(trackManager)
                 .setDoomTimer(doomTimer);
     }
 
     private void checkClientsHeartbeat() {
         for (int i = sessionPlayers.getNumberOfPlayers() - 1; i >= 0; i--) {
             PlayerClient client = sessionPlayers.getPlayers().get(i);
-            if (client.getNrOfFlatLines() >= MAX_FLAT_LINES) {
+            if (client.getNrOfFlatLines() >= Configuration.getMissedHeartbeatsBeforeDisconnect()) {
                 disconnectPlayer(client);
             }
         }
@@ -165,7 +186,7 @@ public class GameSession {
     }
 
     public final int getSessionId() {
-        return SESSION_ID;
+        return sessionId;
     }
 
 }

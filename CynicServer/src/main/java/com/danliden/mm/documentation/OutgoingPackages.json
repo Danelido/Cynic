@@ -69,6 +69,7 @@
     "STARTING_GAME": {
       "PacketId": "A Valid packet type, in this case \"STARTING_GAME\"",
       "AId": "Unique ack id that the client needs to answer back",
+      "StartPos": "Starting positions of players, ex: PlayerId-xPos,yPos;PlayerId-xPos,yPos;PlayerId-xPos,yPos;PlayerId-xPos,yPos",
       "Tmstmp" : "Timestamp as String (currentTimeMillis)"
     },
 

@@ -42,7 +42,7 @@ public class Properties {
         return this;
     }
 
-    public Properties setCheckpointsManager(TrackManager checkpointsManager) {
+    public Properties setTrackManager(TrackManager checkpointsManager) {
         this.trackManager = checkpointsManager;
         return this;
     }

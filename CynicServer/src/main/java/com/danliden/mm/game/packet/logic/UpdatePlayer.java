@@ -1,15 +1,13 @@
 package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketKeys;
-import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.racing.Placements;
-import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionPlayers;
+import com.danliden.mm.utils.Configuration;
 import com.danliden.mm.utils.GameState;
 import com.danliden.mm.utils.TimeMeasurement;
 import com.danliden.mm.utils.TimeUnits;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -30,7 +28,6 @@ public class UpdatePlayer implements IPacketLogic {
             if (client != null) {
                 client.updatePlayer(props.bundle.getPacketJsonData());
                 updatePlayerPlacements(props, client);
-                notifyOtherClientsUpdate(props.sender, props.sessionPlayers, client);
             } else {
                 props.sender.sendNotConnectedPacketToSender(props.bundle);
             }
@@ -42,7 +39,6 @@ public class UpdatePlayer implements IPacketLogic {
             List<PlayerClient> placementList = placements.getPlacements(props.sessionPlayers.getPlayers(), props.trackManager);
             updateLocalPlacements(props.sessionPlayers, placementList);
             checkForWinnings(props, client);
-            notifyOtherClientsPlacements(props.sender, props.sessionPlayers, placementList);
         }
     }
 
@@ -61,7 +57,7 @@ public class UpdatePlayer implements IPacketLogic {
         if(client.getLap() > 3){
             client.setHasFinishedRace(true);
             if(firstPlayerToFinish(client, props.sessionPlayers)){
-                props.doomTimer.startCountdown(TimeMeasurement.of(30, TimeUnits.SECONDS));
+                props.doomTimer.startCountdown(TimeMeasurement.of(Configuration.getDoomTimerSeconds(), TimeUnits.SECONDS));
             }
 
         }
@@ -78,32 +74,4 @@ public class UpdatePlayer implements IPacketLogic {
         }
         return true;
     }
-
-    private void notifyOtherClientsPlacements(PacketSender sender, SessionPlayers sessionPlayers, List<PlayerClient> placementList) {
-        JSONObject placementPacket = buildPlacementPacket(placementList);
-        sender.sendToMultiple(placementPacket, sessionPlayers.getPlayers());
-    }
-
-    private void notifyOtherClientsUpdate(PacketSender sender, SessionPlayers sessionPlayers, PlayerClient client) {
-        JSONObject updatePlayerJsonData = client.getAsJsonForInSession();
-        updatePlayerJsonData.put(PacketKeys.PacketId, PacketType.Outgoing.UPDATED_CLIENT);
-        sender.sendToMultipleWithExclude(updatePlayerJsonData, sessionPlayers.getPlayers(), client);
-    }
-
-    private JSONObject buildPlacementPacket(List<PlayerClient> placementList) {
-        JSONObject placementPacket = new JSONObject();
-        StringBuilder placementsString = buildPlacementString(placementList);
-        placementPacket.put(PacketKeys.PacketId, PacketType.Outgoing.PLACEMENT_UPDATE);
-        placementPacket.put(PacketKeys.PlacementUpdate, placementsString.toString());
-        return placementPacket;
-    }
-
-    private StringBuilder buildPlacementString(List<PlayerClient> placementList) {
-        StringBuilder orderedPlayerIds = new StringBuilder();
-        for (PlayerClient playerClient : placementList) {
-            orderedPlayerIds.append(playerClient.id).append(",");
-        }
-        return orderedPlayerIds;
-    }
-
 }

@@ -3,6 +3,7 @@ package com.danliden.mm.game.packet.logic;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.PacketType;
 import com.danliden.mm.game.packet.ServerPacketBundle;
+import com.danliden.mm.game.racing.TrackManager;
 import com.danliden.mm.game.racing.Tracks;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
@@ -14,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
+
+import static com.danliden.mm.utils.StartingPositionsStringBuilder.buildStartingPositionsString;
 
 public class VoteToStartSession implements IPacketLogic {
 
@@ -47,7 +51,7 @@ public class VoteToStartSession implements IPacketLogic {
         sendPlayerReadyPacketToAllPlayers(client, props.ackHandler, props.sessionPlayers, props.sender);
 
         if (isAllPlayersReady(props.sessionPlayers) && loadSelectedTrackConfigurations(props)) {
-            sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender);
+            sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender, props.trackManager);
             props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
         }
 
@@ -115,10 +119,13 @@ public class VoteToStartSession implements IPacketLogic {
         return sessionPlayers.getPlayers().size() > 1;
     }
 
-    private void sendStartingPacketToPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender) {
+    private void sendStartingPacketToPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender, TrackManager trackManager) {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.STARTING_GAME);
+        packet.put(PacketKeys.StartingPositions, buildStartingPositionsString(sessionPlayers.getPlayers(), trackManager.getAllStartingPoints()));
         sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 500);
     }
+
+
 
 }

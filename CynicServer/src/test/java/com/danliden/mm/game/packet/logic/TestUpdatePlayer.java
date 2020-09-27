@@ -65,9 +65,6 @@ public class TestUpdatePlayer {
         assert (player.getRotationDegrees() == rotation);
         assert (player.getPosition().equalsTo(newPosition));
         assert (player.isThrottling());
-
-        // Build the expected outgoing packet
-        verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
     }
 
     @Test
@@ -101,9 +98,6 @@ public class TestUpdatePlayer {
         assert (player.getRotationDegrees() == rotation);
         assert (player.getPosition().equalsTo(newPosition));
         assert (player.isThrottling());
-
-        // Build the expected outgoing packet
-        verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
     }
 
     @Test
@@ -136,9 +130,6 @@ public class TestUpdatePlayer {
         assert (player.getRotationDegrees() != rotation);
         assert (!player.getPosition().equalsTo(newPosition));
         assert (!player.isThrottling());
-
-        // Build the expected outgoing packet
-        verify(senderMock, times(0)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
     }
 
     @Test
@@ -207,7 +198,6 @@ public class TestUpdatePlayer {
         assert (player.isThrottling());
         assert (player.isHasFinishedRace());
 
-        verify(senderMock, times(1)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
         verify(doomTimer, times(1)).startCountdown(anyInt());
     }
 
@@ -256,7 +246,6 @@ public class TestUpdatePlayer {
         assert (player2.isThrottling());
         assert (!player2.isHasFinishedRace());
 
-        verify(senderMock, times(2)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
         verify(doomTimer, times(1)).startCountdown(anyInt());
     }
 
@@ -305,7 +294,6 @@ public class TestUpdatePlayer {
         assert (player2.isThrottling());
         assert (player2.isHasFinishedRace());
 
-        verify(senderMock, times(2)).sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
         verify(doomTimer, times(1)).startCountdown(anyInt());
     }
 
@@ -335,7 +323,7 @@ public class TestUpdatePlayer {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(state)
-                .setCheckpointsManager(trackManager)
+                .setTrackManager(trackManager)
                 .setDoomTimer(doomTimer);
     }
 }

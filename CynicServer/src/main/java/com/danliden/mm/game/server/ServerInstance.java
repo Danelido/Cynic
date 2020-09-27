@@ -4,12 +4,14 @@ import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.session.GameSession;
 import com.danliden.mm.rest.HTTPResponse;
+import com.danliden.mm.utils.Configuration;
 import com.danliden.mm.utils.TimeMeasurement;
 import com.danliden.mm.utils.TimeUnits;
 import com.danliden.mm.utils.UniqueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import sun.security.krb5.Config;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -18,11 +20,11 @@ import java.util.Map;
 
 public class ServerInstance implements Runnable {
 
-    private static final int MAX_GAME_SESSIONS = 150;
-    private static final int MAX_PACKET_SIZE = 1024;
+    private static final int MAX_GAME_SESSIONS = Configuration.getMaxGameSessions();
+    private static final int MAX_PACKET_SIZE = Configuration.getMaxIncomingPacketSizeBytes();
 
-    private static final int UPDATE_INTERVAL_MS = 100;
-    private static final int HEARTBEAT_INTERVAL_MS = 1000;
+    private static final int UPDATE_INTERVAL_MS = 1000 / Configuration.getUpdateFrequency();
+    private static final int HEARTBEAT_INTERVAL_MS = 1000 / Configuration.getHeartbeatFrequency();
 
     private final DatagramSocket socket;
     private final Map<Integer, GameSession> gameSessionMap = new HashMap<>();

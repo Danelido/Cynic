@@ -4,6 +4,7 @@ import com.danliden.mm.game.packet.ServerPacketBundle;
 import com.danliden.mm.game.packet.logic.Properties;
 import com.danliden.mm.game.racing.DoomTimer;
 import com.danliden.mm.game.server.PacketSender;
+import com.danliden.mm.utils.Configuration;
 import com.danliden.mm.utils.GameState;
 import com.danliden.mm.utils.TimeMeasurement;
 import com.danliden.mm.utils.TimeUnits;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import sun.security.krb5.Config;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -48,6 +50,24 @@ public class TestGameSession {
     }
 
     @Test
+    public void testOnServerUpdate(){
+        GameSession gameSession = new GameSession(senderMock, 0);
+        gameSession.updateProperties(bundleMock);
+        gameSession.properties.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+        addPlayer(gameSession, dgPacketMock, 0);
+        addPlayer(gameSession, dgPacketMock, 1);
+
+        gameSession.onServerUpdate(100);
+
+        verify(senderMock, times(gameSession.properties.sessionPlayers.getNumberOfPlayers()))
+                .sendToMultipleWithExclude(any(JSONObject.class), anyList(), any(PlayerClient.class));
+
+        verify(senderMock, times(1))
+                .sendToMultiple(any(JSONObject.class), anyList());
+    }
+
+
+    @Test
     public void testDisconnectPlayerOnNoHeartbeatResponse(){
         GameSession gameSession = new GameSession(senderMock, 0);
         gameSession.updateProperties(bundleMock);
@@ -55,14 +75,14 @@ public class TestGameSession {
         addPlayer(gameSession, dgPacketMock, 0);
         addPlayer(gameSession, dgPacketMock, 1);
 
-        for(int i = 0; i < GameSession.MAX_FLAT_LINES; i++){
+        for(int i = 0; i < Configuration.getMissedHeartbeatsBeforeDisconnect(); i++){
             gameSession.onServerHeartbeat();
         }
 
         gameSession.onServerUpdate(0);
 
         assert gameSession.properties.sessionPlayers.getPlayers().size() == 0;
-        verify(senderMock, times(GameSession.MAX_FLAT_LINES))
+        verify(senderMock, times(Configuration.getMissedHeartbeatsBeforeDisconnect()))
                 .sendToMultiple(any(JSONObject.class), anyList());
         verify(senderMock, times(2))
                 .sendToMultipleWithAck(any(SessionAckHandler.class),
@@ -100,7 +120,7 @@ public class TestGameSession {
         gameSession.properties.gameState
                 .setGameState(GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
 
-        gameSession.TIME_UNTIL_LOBBY_FROM_SCOREBOARD_MS =TimeMeasurement.of(3, TimeUnits.SECONDS);
+        gameSession.endOfRaceTime = TimeMeasurement.of(3, TimeUnits.SECONDS);
         gameSession.properties.doomTimer.startCountdown(TimeMeasurement.of(2, TimeUnits.SECONDS));
         gameSession.onServerUpdate(TimeMeasurement.of(2, TimeUnits.SECONDS));
 

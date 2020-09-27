@@ -2,14 +2,17 @@ package com.danliden.mm.game.packet.logic;
 
 import com.danliden.mm.game.packet.PacketKeys;
 import com.danliden.mm.game.packet.ServerPacketBundle;
+import com.danliden.mm.game.racing.StartingPoint;
 import com.danliden.mm.game.racing.TrackManager;
 import com.danliden.mm.game.server.PacketSender;
 import com.danliden.mm.game.session.PlayerClient;
 import com.danliden.mm.game.session.SessionAckHandler;
 import com.danliden.mm.game.session.SessionPlayers;
 import com.danliden.mm.utils.GameState;
+import com.danliden.mm.utils.Vector2;
 import com.danliden.mm.utils.Vector3;
 import org.json.JSONObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -17,6 +20,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -34,6 +39,16 @@ public class TestVoteToStartSession {
     private final TrackManager trackManagerMock = mock(TrackManager.class);
     private final String VALID_SHIP_NAME = "ValidName";
     private final Vector3 COLOR = new Vector3(1.0f, 0.5f, 1.0f);
+
+    @Before
+    public void Before() {
+        List<StartingPoint> startingPoints = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            startingPoints.add(new StartingPoint(new Vector2(i, i)));
+        }
+
+        Mockito.when(trackManagerMock.getAllStartingPoints()).thenReturn(startingPoints);
+    }
 
     @Test
     public void testAddingVoteFromPlayerWithNoOtherPlayers() {
@@ -243,6 +258,6 @@ public class TestVoteToStartSession {
                 .setSessionAckHandler(ackHandler)
                 .setSessionPlayers(sessionPlayers)
                 .setGameState(state)
-                .setCheckpointsManager(trackManagerMock);
+                .setTrackManager(trackManagerMock);
     }
 }
