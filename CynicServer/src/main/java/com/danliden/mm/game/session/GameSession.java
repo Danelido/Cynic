@@ -43,7 +43,6 @@ public class GameSession {
     public void onServerUpdate(final int updateIntervalMs) {
         checkClientsHeartbeat();
         checkIfShouldExitToLobby();
-
         if (gameState.getGameState() == GameState.GameStateEnum.IN_SESSION ||
                 gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_DOOM_TIMER) {
             sendPlacementUpdates();
@@ -52,6 +51,9 @@ public class GameSession {
 
         ackHandler.update(updateIntervalMs);
         doomTimer.update(updateIntervalMs);
+        if(doomTimer.getCurrentState() == DoomTimer.State.STARTED){
+            checkIfShouldEndDoomTimer();
+        }
 
         if (doomTimer.getCurrentState() == DoomTimer.State.FINISHED) {
             doomTimer.stop();
@@ -61,9 +63,19 @@ public class GameSession {
         }
     }
 
+    private void checkIfShouldEndDoomTimer() {
+        List<PlayerClient> playerClients = sessionPlayers.getPlayers();
+        for(int i = 0; i < playerClients.size(); i++) {
+            if(!playerClients.get(i).isHasFinishedRace()){
+                return;
+            }
+        }
+
+        doomTimer.overrideState(DoomTimer.State.FINISHED);
+    }
+
     private void checkIfShouldExitToLobby() {
         if(gameState.getGameState() != GameState.GameStateEnum.LOBBY && sessionPlayers.getNumberOfPlayers() == 0){
-            // Maybe clear ackhandler and all that as well?
             gameState.setGameState(GameState.GameStateEnum.LOBBY);
         }
     }

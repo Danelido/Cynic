@@ -96,6 +96,10 @@ public class DoomTimer {
         }
     }
 
+    public void overrideState(State state){
+        currentState = state;
+    }
+
     public int getCurrentTimeMs() {
         return currentTimeMs;
     }

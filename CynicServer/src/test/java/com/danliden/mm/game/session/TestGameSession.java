@@ -109,6 +109,23 @@ public class TestGameSession {
         assert gameSession.properties.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_END;
     }
 
+    @Test
+    public void testStateChangeFromDoomTimerEarlyAllPlayerFinished(){
+        GameSession gameSession = new GameSession(senderMock, 0);
+        gameSession.updateProperties(bundleMock);
+
+        addPlayer(gameSession, dgPacketMock, 0).setHasFinishedRace(true);
+        addPlayer(gameSession, dgPacketMock, 1).setHasFinishedRace(true);
+
+        gameSession.properties.gameState
+                .setGameState(GameState.GameStateEnum.IN_SESSION_DOOM_TIMER);
+
+        gameSession.properties.doomTimer.startCountdown(TimeMeasurement.of(10, TimeUnits.SECONDS));
+        gameSession.onServerUpdate(TimeMeasurement.of(1, TimeUnits.SECONDS));
+
+        assert gameSession.properties.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_END;
+    }
+
     @Test(timeout = 15000)
     public void testStateChangeFromEndGameTask() throws InterruptedException {
         GameSession gameSession = new GameSession(senderMock, 0);
