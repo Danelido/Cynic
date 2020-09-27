@@ -103,6 +103,7 @@ public class ServerInstance implements Runnable {
                 while (true) {
                     try {
                         handleGeneralUpdate();
+                        Thread.sleep(UPDATE_INTERVAL_MS);
                     } catch (Exception e) {
                         /* Empty */
                     }
@@ -118,7 +119,6 @@ public class ServerInstance implements Runnable {
             GameSession session = entry.getValue();
             session.onServerUpdate(TimeMeasurement.of(UPDATE_INTERVAL_MS, TimeUnits.MILLISECONDS));
         }
-        Thread.sleep(UPDATE_INTERVAL_MS);
     }
 
     private void runHeartbeatWorker() {
@@ -128,6 +128,7 @@ public class ServerInstance implements Runnable {
                 while (true) {
                     try {
                         handleHeartbeat();
+                        Thread.sleep(HEARTBEAT_INTERVAL_MS);
                     } catch (Exception e) {
                         /* Empty */
                     }
@@ -143,7 +144,6 @@ public class ServerInstance implements Runnable {
             GameSession session = entry.getValue();
             session.onServerHeartbeat();
         }
-        Thread.sleep(HEARTBEAT_INTERVAL_MS);
     }
 
     private void handleIncomingPackages() throws Exception {

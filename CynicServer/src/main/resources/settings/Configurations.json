@@ -1,7 +1,7 @@
 {
   "MissedHeartbeatsBeforeDisconnect": 8,
   "HeartbeatFrequency": 1,
-  "UpdateFrequency": 30,
+  "UpdateFrequency": 18,
   "DoomTimerSeconds": 25,
   "EndOfRaceTime": 10,
   "MaxGameSessions": 150,
