@@ -26,8 +26,8 @@ public class TestStartingPositionStringBuilder {
             players.add(new PlayerClient(null, null, 0, i, 0));
         }
 
-        String startingPointString = buildStartingPositionsString(players, startingPoints);
-
+        String startingPointString = buildStartingPositionsStringAndSetPositions(players, startingPoints);
+        verifyPlayerPositions(players, startingPoints);
         verifyString(startingPointString, players, startingPoints);
 
     }
@@ -45,12 +45,20 @@ public class TestStartingPositionStringBuilder {
             players.add(new PlayerClient(null, null, 0, i, 0));
         }
 
-        String startingPointString = buildStartingPositionsString(players, startingPoints);
+        String startingPointString = buildStartingPositionsStringAndSetPositions(players, startingPoints);
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.StartingPositions, startingPointString);
         System.out.println(packet.toString());
+        verifyPlayerPositions(players, startingPoints);
         verifyString(packet.getString(PacketKeys.StartingPositions), players, startingPoints);
 
+    }
+
+    private void verifyPlayerPositions(List<PlayerClient> players, List<StartingPoint> startingPoints){
+        int index = 0;
+        for (PlayerClient player : players) {
+            assert player.getPosition().equalsTo(startingPoints.get(index++).getPosition());
+        }
     }
 
     private void verifyString(String startingPointString, List<PlayerClient> players, List<StartingPoint> startingPoints) {

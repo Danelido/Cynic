@@ -15,9 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
-import static com.danliden.mm.utils.StartingPositionsStringBuilder.buildStartingPositionsString;
+import static com.danliden.mm.utils.StartingPositionsStringBuilder.buildStartingPositionsStringAndSetPositions;
 
 public class VoteToStartSession implements IPacketLogic {
 
@@ -122,7 +121,7 @@ public class VoteToStartSession implements IPacketLogic {
     private void sendStartingPacketToPlayers(SessionAckHandler ackHandler, SessionPlayers sessionPlayers, PacketSender sender, TrackManager trackManager) {
         JSONObject packet = new JSONObject();
         packet.put(PacketKeys.PacketId, PacketType.Outgoing.STARTING_GAME);
-        packet.put(PacketKeys.StartingPositions, buildStartingPositionsString(sessionPlayers.getPlayers(), trackManager.getAllStartingPoints()));
+        packet.put(PacketKeys.StartingPositions, buildStartingPositionsStringAndSetPositions(sessionPlayers.getPlayers(), trackManager.getAllStartingPoints()));
         sender.sendToMultipleWithAck(ackHandler, packet, sessionPlayers.getPlayers(), 10, 500);
     }
 
