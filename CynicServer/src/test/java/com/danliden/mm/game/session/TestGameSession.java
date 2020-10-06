@@ -154,6 +154,30 @@ public class TestGameSession {
         assert gameSession.properties.gameState.getGameState() == GameState.GameStateEnum.LOBBY;
     }
 
+    @Test(timeout = 15000)
+    public void testCountdownStart() throws InterruptedException {
+        GameSession gameSession = new GameSession(senderMock, 0);
+        gameSession.updateProperties(bundleMock);
+
+        addPlayer(gameSession, dgPacketMock, 0);
+        addPlayer(gameSession, dgPacketMock, 1);
+
+        gameSession.properties.gameState
+                .setGameState(GameState.GameStateEnum.IN_SESSION_COUNTDOWN_TO_START);
+
+        gameSession.raceCountdownTime = TimeMeasurement.of(1, TimeUnits.SECONDS);
+        gameSession.onServerUpdate(TimeMeasurement.of(2, TimeUnits.SECONDS));
+        Thread.sleep(2000);
+        assert gameSession.properties.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION;
+
+        verify(senderMock, times(3))
+                .sendToMultipleWithAck(any(SessionAckHandler.class),
+                        any(JSONObject.class),
+                        anyList(),
+                        anyInt(),
+                        anyInt());
+    }
+
     @Test
     public void testExitingToLobbyIfNoPlayerExists(){
         GameSession gameSession = new GameSession(senderMock, 0);
@@ -178,6 +202,8 @@ public class TestGameSession {
             Thread.sleep(1000);
         }
     }
+
+
 
 
 
