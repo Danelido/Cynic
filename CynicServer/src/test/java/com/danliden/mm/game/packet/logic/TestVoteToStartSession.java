@@ -146,7 +146,7 @@ public class TestVoteToStartSession {
         voteToStartSession.execute(properties);
 
         assert (player.isReady());
-        assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION);
+        assert (state.getGameState() == GameState.GameStateEnum.IN_SESSION_COUNTDOWN_TO_START);
 
         verify(senderMock, times(2)).sendToMultipleWithAck(any(SessionAckHandler.class), any(JSONObject.class), anyList(), anyInt(), anyInt());
     }

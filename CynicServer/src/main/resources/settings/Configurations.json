@@ -3,7 +3,8 @@
   "HeartbeatFrequency": 1,
   "UpdateFrequency": 18,
   "DoomTimerSeconds": 25,
-  "EndOfRaceTime": 10,
+  "EndOfRaceTime": 10000,
+  "RaceCountdownTime": 5000,
   "MaxGameSessions": 150,
   "MaxIncomingPacketSizeBytes": 1024
 }

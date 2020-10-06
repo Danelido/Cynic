@@ -51,7 +51,7 @@ public class VoteToStartSession implements IPacketLogic {
 
         if (isAllPlayersReady(props.sessionPlayers) && loadSelectedTrackConfigurations(props)) {
             sendStartingPacketToPlayers(props.ackHandler, props.sessionPlayers, props.sender, props.trackManager);
-            props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+            props.gameState.setGameState(GameState.GameStateEnum.IN_SESSION_COUNTDOWN_TO_START);
         }
 
     }

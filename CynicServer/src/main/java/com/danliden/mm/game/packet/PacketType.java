@@ -30,6 +30,8 @@ public abstract class PacketType {
         public static final int END_OF_RACE = 13;
         public static final int LOOKING_AT_PLACEMENTS_TIMER = 14;
         public static final int BACK_TO_LOBBY = 15;
+        public static final int SESSION_COUNTDOWN = 16;
+        public static final int START_RACE = 17;
     }
 
 }

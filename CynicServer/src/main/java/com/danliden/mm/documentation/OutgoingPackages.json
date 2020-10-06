@@ -118,8 +118,18 @@
     "BACK_TO_LOBBY" : {
       "PacketId": "A Valid packet type, in this case \"BACK_TO_LOBBY\"",
       "AId": "Unique ack id that the client needs to answer back"
-    }
+    },
 
+    "SESSION_COUNTDOWN" : {
+      "PacketId": "A Valid packet type, in this case \"SESSION_COUNTDOWN\"",
+      "AId": "Unique ack id that the client needs to answer back",
+      "Tmstmp" : "Timestamp as String (currentTimeMillis)"
+    },
+
+    "START_RACE" : {
+      "PacketId": "A Valid packet type, in this case \"START_RACE\"",
+      "AId": "Unique ack id that the client needs to answer back"
+    }
   }
 
 }

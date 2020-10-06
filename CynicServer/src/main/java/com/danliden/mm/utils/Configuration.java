@@ -42,6 +42,7 @@ public class Configuration {
     private static final int EndOfRaceTime = configurationAsJson.getInt("EndOfRaceTime");
     private static final int MaxGameSessions = configurationAsJson.getInt("MaxGameSessions");
     private static final int MaxIncomingPacketSizeBytes = configurationAsJson.getInt("MaxIncomingPacketSizeBytes");
+    private static final int RaceCountdownTime = configurationAsJson.getInt("RaceCountdownTime");
 
     public static int getMissedHeartbeatsBeforeDisconnect() {
         return MissedHeartbeatsBeforeDisconnect;
@@ -69,5 +70,9 @@ public class Configuration {
 
     public static int getMaxIncomingPacketSizeBytes() {
         return MaxIncomingPacketSizeBytes;
+    }
+
+    public static int getRaceCountdownTime() {
+        return RaceCountdownTime;
     }
 }

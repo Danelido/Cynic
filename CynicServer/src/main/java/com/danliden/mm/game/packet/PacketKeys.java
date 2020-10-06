@@ -25,6 +25,7 @@ public class PacketKeys {
     public static final String PlayerLap = "Lap";
     public static final String DoomTimer = "Dmt";
     public static final String EndOfRaceTimer = "Eort";
+    public static final String SessionCountdown = "Scdwn";
     public static final String Timestamp = "Tmstmp";
     public static final String StartingPositions = "StartPos";
 }

@@ -144,7 +144,7 @@ public class TestGameSession {
         assert gameSession.properties.gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_END;
         waitForStateChangeFromTimedExecution(gameSession.properties);
 
-        verify(senderMock, times(9))
+        verify(senderMock, times(6))
                 .sendToMultipleWithAck(any(SessionAckHandler.class),
                         any(JSONObject.class),
                         anyList(),

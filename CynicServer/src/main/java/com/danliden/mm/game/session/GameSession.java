@@ -17,6 +17,7 @@ public class GameSession {
 
     static final int MAX_PLAYERS = 4;
     static int endOfRaceTime = Configuration.getEndOfRaceTime();
+    static int raceCountdownTime = Configuration.getRaceCountdownTime();
     final int sessionId;
 
     private final SessionPlayers sessionPlayers;
@@ -43,6 +44,12 @@ public class GameSession {
     public void onServerUpdate(final int updateIntervalMs) {
         checkClientsHeartbeat();
         checkIfShouldExitToLobby();
+
+        if(gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_COUNTDOWN_TO_START){
+            startInSessionCountdownTask(raceCountdownTime);
+            gameState.setGameState(GameState.GameStateEnum.IN_SESSION);
+        }
+
         if (gameState.getGameState() == GameState.GameStateEnum.IN_SESSION ||
                 gameState.getGameState() == GameState.GameStateEnum.IN_SESSION_DOOM_TIMER) {
             sendPlacementUpdates();
@@ -119,8 +126,16 @@ public class GameSession {
     private void startEndGameTasks(int time) {
         new TimedExecution()
                 .setTime(time)
-                .setIntervalExecution(new EndGameIntervalTask(properties), TimeMeasurement.of(500, TimeUnits.MILLISECONDS))
+                .setIntervalExecution(new EndGameIntervalTask(properties), TimeMeasurement.of(1, TimeUnits.SECONDS))
                 .setPostTimerExecution(new EndGameTask(properties))
+                .start();
+    }
+
+    private void startInSessionCountdownTask(int time) {
+        new TimedExecution()
+                .setTime(time)
+                .setIntervalExecution(new SessionIntervalCountdownTask(properties), TimeMeasurement.of(500, TimeUnits.MILLISECONDS))
+                .setPostTimerExecution(new SessionEndCountdownTask(properties))
                 .start();
     }
 

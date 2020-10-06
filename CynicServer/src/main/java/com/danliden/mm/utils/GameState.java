@@ -5,6 +5,7 @@ public class GameState{
     public enum GameStateEnum {
         LOBBY,
         IN_SESSION,
+        IN_SESSION_COUNTDOWN_TO_START,
         IN_SESSION_DOOM_TIMER,
         IN_SESSION_END
     }
