@@ -82,7 +82,7 @@ public class TimedExecution {
                 running.set(false);
                 this.cancel();
             }
-        }, 0, 500);
+        }, 0, intervalTime);
     }
 
     public boolean isRunning() {
